@@ -1,0 +1,37 @@
+<resources>
+    <!-- Dimensions - application -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_top_margin">7dp</dimen>
+    <bool name="isTablet">false</bool>
+
+    <!--Dimensions - LoginActivity-->
+    <dimen name="login_activity_Rlt02_margin_left">30dp</dimen>
+    <dimen name="login_activity_Rlt02_margin_right">30dp</dimen>
+    <dimen name="login_activity_Rlt02_elevation">4dp</dimen>
+    <dimen name="login_activity_Rlt02_padding">10dp</dimen>
+    <dimen name="login_activity_ImglogoGpi_width">100dp</dimen>
+    <dimen name="login_activity_ImglogoGpi_height">100dp</dimen>
+    <dimen name="login_activity_Lnr01_paddingTop">10dp</dimen>
+    <dimen name="login_activity_Txt01_paddingTop">5dp</dimen>
+    <dimen name="login_activity_BtnConnexion_TextSize">18sp</dimen>
+    <dimen name="login_activity_BtnConnexion_padding">11dp</dimen>
+    <dimen name="login_activity_BtnConnexion_cornerRadius">16dp</dimen>
+    <dimen name="login_activity_TxtCopyright_TextSize">12dp</dimen>
+    <dimen name="login_activity_TxtCopyright_marginBottom">12dp</dimen>
+    <dimen name="login_activity_EdtPassword_marginTop">16dp</dimen>
+
+    <!--Dimensions - SettingsActivity-->
+    <dimen name="settings_activity_Lnr01_paddingTop">5dp</dimen>
+    <dimen name="settings_activity_updateIcon_width">30dp</dimen>
+    <dimen name="settings_activity_updateIcon_height">30dp</dimen>
+    <dimen name="settings_activity_updateIcon_marginRight">8dp</dimen>
+    <dimen name="settings_activity_TxtParametreValue_marginTop">8dp</dimen>
+    <dimen name="settings_activity_TxtParametreValue_marginBottom">12dp</dimen>
+    <dimen name="settings_activity_TxtParametreValue_textSize">11dp</dimen>
+    <dimen name="settings_activity_TxtParametre_textSize">22dp</dimen>
+
+    <!--Dimensions - ServeurNodeFragment-->
+    <dimen name="serveur_node_fragment_Rlt01_padding">20dp</dimen>
+
+</resources>

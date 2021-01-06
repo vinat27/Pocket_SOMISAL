@@ -1,0 +1,71 @@
+<resources>
+
+    <style name="SomisalTheme" parent="SomisalTheme.Base">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:textViewStyle">@style/MontserratTextViewStyle</item>
+        <item name="android:buttonStyle">@style/MonstserratButtonStyle</item>
+        <item name="android:dialogTheme">@style/CustomDialog</item>
+    </style>
+
+    <style name="SomisalTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:textViewStyle">@style/MontserratTextViewStyle</item>
+        <item name="android:buttonStyle">@style/MonstserratButtonStyle</item>
+    </style>
+
+    <style name="Widget.AppTheme.BottomSheet" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item> <!-- This is important -->
+        <item name="android:statusBarColor">@color/white</item> <!-- And then this will be needed -->
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:textViewStyle">@style/MontserratTextViewStyle</item>
+        <item name="android:buttonStyle">@style/MonstserratButtonStyle</item>
+    </style>
+
+    <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_card_custom_corners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">18dp</item>
+        <item name="cornerSizeTopLeft">18dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+    <!--Style de TextViews-->
+    <style name="MontserratTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+    </style>
+    <!--Style de Buttons-->
+    <style name="MonstserratButtonStyle" parent="android:Widget.Material.Button">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+    </style>
+    <!--Style -->
+    <style name="MontserratTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+    </style>
+
+    <style name="expandedappbar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">#ffff</item>
+    </style>
+
+    <style name="collapsedappbar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">28dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!--Titre d'un DialogFragment(Modal)-->
+    <style name="CustomDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">false</item>
+    </style>
+
+</resources>

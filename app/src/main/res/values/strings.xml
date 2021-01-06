@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SOMISAL</string>
+
+    <!--LoginActivity-->
+    <string name="login_activity_MbSpnSystem_hint">Système</string>
+    <string name="login_activity_EdtLogin_hint">Identifiant</string>
+    <string name="login_activity_BtnConnexion">CONNEXION</string>
+    <string name="login_activity_TxtCopyright_text">Copyright © SOMINFOR 2020</string>
+
+    <!--SettingsActivity-->
+    <string name="settings_activity_TxtParametre_text">URL Serveur</string>
+    <string name="settings_activity_NoServer">Pas d\'URL enregistré. Saisir une URL</string>
+
+    <!--ServeurNodeFragment-->
+    <string name="serveur_node_fragment_Title">Mise à jour URL</string>
+</resources>

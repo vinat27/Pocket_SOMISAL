@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Rlt01"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/serveur_node_fragment_Rlt01_padding">
+
+
+    <LinearLayout
+        android:id="@+id/melissa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/Edtserveur_nom"
+                android:background="@color/white"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nom ou adresse IP du serveur"
+                android:inputType="text"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/BtnsaveIp"
+        android:layout_width="195dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/melissa"
+        android:background="#1a3170"
+        android:text="Valider"
+        android:textSize="16dp"
+        android:textColor="#FFFFFF"
+        android:padding="9dp"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

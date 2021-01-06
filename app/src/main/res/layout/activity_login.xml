@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.LoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/Rlt01"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back_mobile"
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        >
+
+        <ImageView
+            android:id="@+id/ImglogoGpi"
+            android:layout_width="@dimen/login_activity_ImglogoGpi_width"
+            android:layout_height="@dimen/login_activity_ImglogoGpi_height"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/activity_top_margin"
+            android:src="@drawable/logo_sominfor"/>
+
+        <RelativeLayout
+            android:id="@+id/Rlt02"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImglogoGpi"
+            android:layout_marginLeft="@dimen/login_activity_Rlt02_margin_left"
+            android:layout_marginRight="@dimen/login_activity_Rlt02_margin_right"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="#fff"
+            android:elevation="@dimen/login_activity_Rlt02_elevation"
+            android:orientation="vertical"
+            android:padding="@dimen/login_activity_Rlt02_padding">
+
+            <LinearLayout
+                android:id="@+id/Lnr01"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/login_activity_Lnr01_paddingTop">
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/MbSpnSystem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:hint="@string/login_activity_MbSpnSystem_hint"
+                    android:focusableInTouchMode="false"
+                    app:met_floatingLabel="normal" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/EdtLogin"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableTint="@color/white"
+                        android:background="@color/white"
+                        android:singleLine="true"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:hint="@string/login_activity_EdtLogin_hint"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/EdtPassword"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/login_activity_EdtPassword_marginTop"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:singleLine="true"
+                        android:drawableTint="@color/grey_darken_2"
+                        android:background="@color/white"
+                        android:hint="Mot de passe"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/Txt01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:paddingTop="@dimen/login_activity_Txt01_paddingTop"
+                    android:text="" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BtnConnexion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:gravity="center"
+                    android:text="@string/login_activity_BtnConnexion"
+                    android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
+                    android:padding="@dimen/login_activity_BtnConnexion_padding"
+                    app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+                    android:textAllCaps="false"
+                    app:backgroundTint="@color/colorPrimary"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/TxtCopyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/login_activity_TxtCopyright_text"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_light"
+            android:layout_marginBottom="@dimen/login_activity_TxtCopyright_marginBottom"
+            android:textSize="@dimen/login_activity_TxtCopyright_TextSize"
+            />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
