@@ -13,4 +13,9 @@
 
     <!--ServeurNodeFragment-->
     <string name="serveur_node_fragment_Title">Mise à jour URL</string>
+    <string name="serveur_node_fragment_EdtServeurNodeIp">Nom ou adresse IP du serveur</string>
+    <string name="serveur_node_fragment_BtnValider_hint">VALIDER</string>
+    <string name="serveur_node_fragment_toast01">Serveur enregistré</string>
+    <string name="serveur_node_fragment_toast02">Une erreur s\'est produite</string>
+    <string name="serveur_node_fragment_toast03">Modification effectuée</string>
 </resources>

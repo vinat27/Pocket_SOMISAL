@@ -33,5 +33,7 @@
 
     <!--Dimensions - ServeurNodeFragment-->
     <dimen name="serveur_node_fragment_Rlt01_padding">20dp</dimen>
+    <dimen name="serveur_node_fragment_Lnr01_paddingTop">25dp</dimen>
+    <dimen name="serveur_node_fragment_BtnValider_marginTop">25dp</dimen>
 
 </resources>

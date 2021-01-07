@@ -48,10 +48,6 @@
     <style name="MonstserratButtonStyle" parent="android:Widget.Material.Button">
         <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
-    <!--Style -->
-    <style name="MontserratTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
-    </style>
 
     <style name="expandedappbar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">28sp</item>
@@ -67,5 +63,12 @@
     <style name="CustomDialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">false</item>
     </style>
+
+    <style name="myInputText" parent="android:TextAppearance">
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="hintTextColor">@color/colorAccent</item>
+    </style>
+
+
 
 </resources>

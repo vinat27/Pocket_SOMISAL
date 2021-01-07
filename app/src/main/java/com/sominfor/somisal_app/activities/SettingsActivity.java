@@ -93,4 +93,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Affichage nom de serveur
+     * @void
+     */
+    public void setServeurNodeToTextView(String label){
+        TxtParametreValue.setText(label);
+    }
 }

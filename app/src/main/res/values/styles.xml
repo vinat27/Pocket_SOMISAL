@@ -6,6 +6,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:dividerHeight">1px</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="hintTextColor">@color/colorAccent</item>
     </style>
 
     <style name="SomisalTheme.Base" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -14,7 +16,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="hintTextColor">@color/colorAccent</item>
     </style>
 
     <style name="SomisalTheme.NoActionBar">
@@ -25,5 +28,10 @@
     <style name="SomisalTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
     <style name="SomisalTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="MyTextInputLayout_overlay">
+        <item name="colorOnSurface">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorAccent</item>
+    </style>
 
 </resources>
