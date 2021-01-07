@@ -6,6 +6,11 @@
     <string name="login_activity_EdtLogin_hint">Identifiant</string>
     <string name="login_activity_BtnConnexion">CONNEXION</string>
     <string name="login_activity_TxtCopyright_text">Copyright © SOMINFOR 2020</string>
+    <string name="login_activity_Snackbar01_NoServeur">Aucun serveur spécifié.</string>
+    <string name="login_activity_Snackbar01_Action">Configurer</string>
+    <string name="login_activity_Snackbar01_NoConnexion">Echec connexion au serveur</string>
+    <string name="login_activity_Snackbar03_NoAuthentication">Identifiants incorrects</string>
+
 
     <!--SettingsActivity-->
     <string name="settings_activity_TxtParametre_text">URL Serveur</string>
@@ -18,4 +23,17 @@
     <string name="serveur_node_fragment_toast01">Serveur enregistré</string>
     <string name="serveur_node_fragment_toast02">Une erreur s\'est produite</string>
     <string name="serveur_node_fragment_toast03">Modification effectuée</string>
+    <string name="title_activity_dashboard">Accueil</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!--DashboardActivity-->
+    <string name="menu_client">Clients</string>
+    <string name="menu_produit">Produits</string>
+    <string name="menu_devis">Devis</string>
+    <string name="menu_commande">Commandes</string>
 </resources>

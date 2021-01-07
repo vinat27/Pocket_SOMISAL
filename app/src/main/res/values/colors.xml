@@ -13,4 +13,5 @@
     <color name="grey_darken_2">#616161</color>
     <color name="grey_darken_3">#424242</color>
     <color name="black">#000000</color>
+    <color name="red">#f44336</color>
 </resources>

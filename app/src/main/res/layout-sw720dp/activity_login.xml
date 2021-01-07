@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/Ctl01"
     tools:context=".activities.LoginActivity">
 
     <RelativeLayout
@@ -49,6 +50,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
                     android:hint="@string/login_activity_MbSpnSystem_hint"
+                    app:met_textColor="@color/black"
+                    app:met_textColorHint="@color/black"
                     android:focusableInTouchMode="false"
                     app:met_floatingLabel="normal" />
 

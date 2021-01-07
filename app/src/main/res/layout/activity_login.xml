@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/Ctl01"
     tools:context=".activities.LoginActivity">
 
     <RelativeLayout
@@ -50,7 +51,9 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:hint="@string/login_activity_MbSpnSystem_hint"
                     android:focusableInTouchMode="false"
-                    app:met_floatingLabel="normal" />
+                    app:met_floatingLabel="normal"
+                    app:met_textColor="@color/black"
+                    app:met_textColorHint="@color/black"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
