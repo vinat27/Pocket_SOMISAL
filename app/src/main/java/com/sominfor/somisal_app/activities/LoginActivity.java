@@ -178,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
         }, (VolleyError error) -> {
             error.printStackTrace();
             /**Erreur connexion**/
-            Snackbar snackbar=  Snackbar.make(constraintLayout,getResources().getString(R.string.login_activity_Snackbar01_NoConnexion), Snackbar.LENGTH_LONG);
+            Snackbar snackbar =  Snackbar.make(constraintLayout,getResources().getString(R.string.login_activity_Snackbar01_NoConnexion), Snackbar.LENGTH_LONG);
             snackbar.setBackgroundTint(ContextCompat.getColor(getApplicationContext(),R.color.red));
             snackbar.show();
         });

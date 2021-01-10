@@ -19,7 +19,7 @@
 
     <group
         android:id="@+id/menu_bottom"
-        android:checkableBehavior="none">
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_devis"
             android:icon="@drawable/ic_baseline_list_alt_24_black"
