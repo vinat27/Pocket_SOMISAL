@@ -13,11 +13,7 @@ public class Famille {
   private String  fapdesam;
   private String fapstatu;
 
-    public Famille(String fapcofam, String fapsofam, String fapdesam, String fapstatu) {
-        this.fapcofam = fapcofam;
-        this.fapsofam = fapsofam;
-        this.fapdesam = fapdesam;
-        this.fapstatu = fapstatu;
+    public Famille() {
     }
 
     public String getFapcofam() {

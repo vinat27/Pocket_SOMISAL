@@ -36,4 +36,9 @@
     <string name="menu_produit">Produits</string>
     <string name="menu_devis">Devis</string>
     <string name="menu_commande">Commandes</string>
+
+    <!--FilterProduitFullDialog-->
+    <string name="filter_produit_full_dialog_setTitle">Filtrer</string>
+    <string name="filter_produit_full_dialog_fragment_MbSpnFamille_hint">Famille</string>
+    <string name="filter_produit_full_dialog_fragment_MbSpnSoFamille_hint">Sous-Famille</string>
 </resources>

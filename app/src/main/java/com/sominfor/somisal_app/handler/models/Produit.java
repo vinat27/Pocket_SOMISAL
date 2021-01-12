@@ -1,5 +1,7 @@
 package com.sominfor.somisal_app.handler.models;
 
+import java.io.Serializable;
+
 /**
  * Créé par kguillard le 08,janvier,2021
  * SOMINFOR
@@ -7,7 +9,7 @@ package com.sominfor.somisal_app.handler.models;
  * Gestion de systèmes AS400
  */
 
-public class Produit {
+public class Produit implements Serializable {
     private int procopro;
     private String protypro;
     private String prolipro;
@@ -43,6 +45,14 @@ public class Produit {
 
     public void setProcopro(int procopro) {
         this.procopro = procopro;
+    }
+
+    public int getPronuprm() {
+        return pronuprm;
+    }
+
+    public void setPronuprm(int pronuprm) {
+        this.pronuprm = pronuprm;
     }
 
     public String getProtypro() {
@@ -99,14 +109,6 @@ public class Produit {
 
     public void setProstatu(String prostatu) {
         this.prostatu = prostatu;
-    }
-
-    public int getPronuprm() {
-        return pronuprm;
-    }
-
-    public void setPronuprm(int pronuprm) {
-        this.pronuprm = pronuprm;
     }
 
     public String getProuncdt() {

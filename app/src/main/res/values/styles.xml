@@ -39,7 +39,8 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
-    <style name="SomisalTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+    <style name="SomisalTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+    </style>
 
     <style name="SomisalTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
@@ -47,5 +48,7 @@
         <item name="colorOnSurface">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorAccent</item>
     </style>
+
+
 
 </resources>

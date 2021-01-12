@@ -39,4 +39,17 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <!--Dimensions - filter_produit_full_dialog_fragment-->
+    <dimen name="filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop">16dp</dimen>
+
+    <!--Dimensions - item_produit-->
+    <dimen name="item_produit_TxtProCoPro_textSize">11dp</dimen>
+    <dimen name="item_produit_TxtProLiPro_textSize">12dp</dimen>
+
+    <!--Dimensions - activity_fiche_produit-->
+    <dimen name="activity_fiche_produit_TxtProLipro_marginTop">8dp</dimen>
+    <dimen name="activity_fiche_produit_TxtProLipro_textSize">13dp</dimen>
+    <dimen name="activity_fiche_produit_TxtProCoPro_marginTop">5dp</dimen>
+    <dimen name="activity_fiche_produit_TxtProCoPro_textSize">12dp</dimen>
+    <dimen name="activity_fiche_produit_LinearLayout_marginTop">6dp</dimen>
 </resources>

@@ -19,4 +19,8 @@
     <dimen name="settings_activity_TxtParametreValue_marginBottom">12dp</dimen>
     <dimen name="settings_activity_TxtParametreValue_textSize">18dp</dimen>
     <dimen name="settings_activity_TxtParametre_textSize">22dp</dimen>
+
+    <!--Dimensions - item_produit-->
+    <dimen name="item_produit_TxtProCoPro_textSize">12dp</dimen>
+    <dimen name="item_produit_TxtProLiPro_textSize">13dp</dimen>
 </resources>

@@ -43,6 +43,8 @@
             android:orientation="vertical"
             android:paddingTop="@dimen/login_activity_Lnr01_paddingTop">
 
+
+
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/MbSpnFamille"
                 android:layout_width="match_parent"

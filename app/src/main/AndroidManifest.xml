@@ -14,6 +14,9 @@
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.FicheProduitActivity"
+            android:label="Fiche Produit"></activity>
+        <activity
             android:name=".activities.DashboardActivity"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/SomisalTheme.NoActionBar">
@@ -26,7 +29,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="Paramètres" />
-        <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.LoginActivity" />
     </application>
 
 </manifest>
