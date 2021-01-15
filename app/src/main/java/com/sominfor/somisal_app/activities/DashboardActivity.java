@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.fragments.DevisFragment;
 import com.sominfor.somisal_app.fragments.ProduitFragment;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.CustomTypefaceSpan;
@@ -145,6 +146,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         }else if (id == R.id.nav_produit) {
             /**Ecran Produit (saisie d'intervention)**/
             f = new ProduitFragment();
+        }else if (id == R.id.nav_devis){
+            f = new DevisFragment();
         }
         fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, f).commit();

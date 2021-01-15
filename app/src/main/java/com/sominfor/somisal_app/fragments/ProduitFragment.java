@@ -1,6 +1,8 @@
 package com.sominfor.somisal_app.fragments;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,7 +63,7 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
  * SOMINFOR
  * Paris, FRANCE
  */
-public class ProduitFragment extends Fragment implements SearchView.OnQueryTextListener, CallbackListener {
+public class ProduitFragment extends Fragment implements CallbackListener {
     IndexFastScrollRecyclerView mRecyclerView;
     List<Produit> produits;
     ProduitAdapter produitAdapter;
@@ -68,6 +72,8 @@ public class ProduitFragment extends Fragment implements SearchView.OnQueryTextL
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
+    private MenuItem mSearchItem;
+    private SearchView sv;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.produit_fragment, container, false);
@@ -104,15 +110,16 @@ public class ProduitFragment extends Fragment implements SearchView.OnQueryTextL
         mRecyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getActivity(), mRecyclerView, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-
                 Produit produit = produits.get(position);
-                if (produit != null) {
-                    //Interventions
+                if (produit != null && produit.getPronuprm() != 0) {
+                    //Produits
                     Intent i = new Intent(getActivity(), FicheProduitActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("produit", produit);
                     i.putExtras(bundle);
                     startActivity(i);
+                }else{
+                    Toast.makeText(getActivity(), getResources().getString(R.string.produit_fragment_noStock), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -124,18 +131,7 @@ public class ProduitFragment extends Fragment implements SearchView.OnQueryTextL
 
         return view;
     }
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-
-        //interventionAdapter.getFilter().filter(newText);
-
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -154,6 +150,24 @@ public class ProduitFragment extends Fragment implements SearchView.OnQueryTextL
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.produit_fragment_menu, menu);
+        mSearchItem = menu.findItem(R.id.action_search);
+        sv = (SearchView) MenuItemCompat.getActionView(mSearchItem);
+        sv.setIconified(true);
+
+        SearchManager searchManager = (SearchManager)  getActivity().getSystemService(Context.SEARCH_SERVICE);
+        sv.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                produitAdapter.getFilter().filter(query);
+                return true;
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -215,6 +229,7 @@ public class ProduitFragment extends Fragment implements SearchView.OnQueryTextL
                         produit.setProlipro(jsonObject.getString("PROLIPRO"));
                         produit.setProcofam(jsonObject.getString("PROCOFAM"));
                         produit.setProsofam(jsonObject.getString("PROSOFAM"));
+                        produit.setPronuprm(jsonObject.getInt("PRONUPRM"));
                         //Populariser la liste des produits
                         produits.add(produit);
                     }catch(JSONException e){

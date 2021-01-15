@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_search"
+        android:title="Search"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="2"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_baseline_filter_list_24_white"
+        app:showAsAction="always" >
+        <menu>
+    <item
+        android:id="@+id/action_soldes"
+        android:title="Devis soldés"
+        android:orderInCategory="2"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_archives"
+        android:title="Devis archivés"
+        android:orderInCategory="1"
+        app:showAsAction="never"/>
+        </menu>
+
+    </item>
+</menu>

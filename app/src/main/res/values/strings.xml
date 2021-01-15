@@ -41,4 +41,39 @@
     <string name="filter_produit_full_dialog_setTitle">Filtrer</string>
     <string name="filter_produit_full_dialog_fragment_MbSpnFamille_hint">Famille</string>
     <string name="filter_produit_full_dialog_fragment_MbSpnSoFamille_hint">Sous-Famille</string>
+
+    <!--item_devis-->
+    <string name="item_devis_TxtNumeroDevis">N° devis</string>
+    <string name="item_devis_TxtDateDevis">Date devis</string>
+    <string name="item_devis_TxtLieuVente">Lieu vente</string>
+    <string name="item_devis_TxtReference">Référence</string>
+    <string name="item_devis_TxtPostIt">Post-it</string>
+
+    <!--activity_fiche_produit-->
+    <string name="activity_fiche_produit_TxtReference">Référence</string>
+    <string name="activity_fiche_produit_TxtNumInterne">Numéro interne</string>
+    <string name="activity_fiche_produit_TxtMarque">Marque</string>
+    <string name="activity_fiche_produit_TxtCategorie">Catégorie</string>
+    <string name="activity_fiche_produit_TxtFamille">Famille</string>
+    <string name="activity_fiche_produit_TxtSousFamille">Sous-Famille</string>
+    <string name="activity_fiche_produit_TxtNatureComptable">Nature Comptable</string>
+    <string name="activity_fiche_produit_TxtMagasin">En Magasin</string>
+    <string name="activity_fiche_produit_TxtReserve">Réservée</string>
+    <string name="activity_fiche_produit_TxtCommande">En Commande</string>
+    <string name="activity_fiche_produit_TxtTotStock">Total en stock</string>
+    <string name="activity_fiche_produit_TxtPuMoyen">P.U. Moyen</string>
+    <string name="activity_fiche_produit_TxtDernierPu">Dernier P.U.</string>
+    <string name="activity_fiche_produit_TxtDateEntree">Date dernière entrée</string>
+    <string name="activity_fiche_produit_TxtDateSortie">Date dernière sortie</string>
+    <string name="activity_fiche_produit_TxtDateInventaire">Date dernier inventaire</string>
+    <string name="activity_fiche_produit_TxtPoidsUnitaire">Poids Unitaire</string>
+    <string name="activity_fiche_produit_TxtUniteStock">Unité de stock</string>
+    <string name="activity_fiche_produit_TxtLiMagasin">Magasin</string>
+    <string name="activity_fiche_produit_TxtStockTitle">QUANTITE</string>
+    <string name="activity_fiche_produit_TxtStockTitle02">VALEUR</string>
+    <string name="activity_fiche_produit_TxtStockTitle03">ENTREES - SORTIES</string>
+    <string name="activity_fiche_produit_TxtStockAlerte">Stock d\'alerte</string>
+
+    <!--ProduitFragment-->
+    <string name="produit_fragment_noStock">Pas de fiche de stock</string>
 </resources>

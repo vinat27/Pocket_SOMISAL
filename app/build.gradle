@@ -53,6 +53,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
     // For control over item selection of both touch and mouse driven selection
     implementation "androidx.recyclerview:recyclerview-selection:$recyclerview_version"
+    implementation "androidx.cardview:cardview:1.0.0"
 
 }
 repositories {

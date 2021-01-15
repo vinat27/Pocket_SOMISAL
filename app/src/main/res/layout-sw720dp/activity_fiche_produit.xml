@@ -36,7 +36,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:ellipsize="end"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="FARINE DE BLE COGEDAL 1er PRIX"
+                    android:text=""
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                     tools:targetApi="jelly_bean" />
@@ -52,7 +52,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:ellipsize="end"
                     android:fontFamily="@font/montserrat_regular"
-                    android:text="Code: 4112"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/activity_fiche_produit_TxtProCoPro_textSize"
                     tools:targetApi="jelly_bean" />
@@ -66,23 +66,23 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tvCodeNameDetail"
+                        android:id="@+id/TxtReference"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Référence"
+                        android:text="@string/item_devis_TxtReference"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
-                        android:id="@+id/tvCodeName"
+                        android:id="@+id/TxtPrmRfprm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="FARINE 1ER PRIX" />
+                        android:text="" />
                 </LinearLayout>
 
                 <!--Numéro Interne-->
@@ -95,21 +95,23 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/TxtNumInterne"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Numéro interne"
+                        android:text="@string/activity_fiche_produit_TxtNumInterne"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmNuprm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="243" />
+                        android:text="" />
                 </LinearLayout>
 
                 <!--Marque-->
@@ -122,20 +124,22 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/TxtMarque"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Marque"
+                        android:text="@string/activity_fiche_produit_TxtMarque"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmLimrq"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="FABRICATION COGEDAL"
+                        android:text=""
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -150,20 +154,22 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/TxtCategorie"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Catégorie"
+                        android:text="@string/activity_fiche_produit_TxtCategorie"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmDecat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Consommation"
+                        android:text=""
                         android:textColor="@color/black"/>
                 </LinearLayout>
             </LinearLayout>
@@ -197,21 +203,23 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/TxtFamille"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Famille"
+                        android:text="@string/activity_fiche_produit_TxtFamille"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmDefam"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="FARINE 1ER PRIX" />
+                        android:text="" />
                 </LinearLayout>
 
                 <!--Sous-Famille-->
@@ -228,17 +236,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Sous-famille"
+                        android:text="@string/activity_fiche_produit_TxtSousFamille"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmLisfa"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="243" />
+                        android:text="" />
                 </LinearLayout>
 
                 <!--Nature Comptable-->
@@ -261,11 +270,12 @@
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmNacpt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Production"
+                        android:text=""
                         android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
@@ -298,7 +308,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:ellipsize="end"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="QUANTITE"
+                    android:text="@string/activity_fiche_produit_TxtStockTitle"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                     tools:targetApi="jelly_bean" />
@@ -316,17 +326,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="En Magasin"
+                        android:text="@string/activity_fiche_produit_TxtMagasin"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmQtMag"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="73804" />
+                        android:text="" />
                 </LinearLayout>
 
                 <!--Réservé-->
@@ -343,17 +354,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Réservée"
+                        android:text="@string/activity_fiche_produit_TxtReserve"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmQtRes"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="0" />
+                        android:text="" />
                 </LinearLayout>
                 <!--En Commande-->
                 <LinearLayout
@@ -369,21 +381,50 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="En commande"
+                        android:text="@string/activity_fiche_produit_TxtCommande"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmQtcom"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="0" />
+                        android:text="" />
                 </LinearLayout>
 
 
                 <!--Total en stock-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/activity_fiche_produit_TxtTotStock"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtPrmQtsto"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text=""
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <!--Stock d'Alerte-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -398,16 +439,17 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Total en stock"
+                        android:text="@string/activity_fiche_produit_TxtStockAlerte"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmQtsal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="73804"
+                        android:text=""
                         android:textColor="@color/black" />
                 </LinearLayout>
                 <!--Divider-->
@@ -428,7 +470,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:ellipsize="end"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="VALEUR"
+                    android:text="@string/activity_fiche_produit_TxtStockTitle02"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                     tools:targetApi="jelly_bean" />
@@ -446,17 +488,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="P.U. Moyen"
+                        android:text="@string/activity_fiche_produit_TxtPuMoyen"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmPriun"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="0.42" />
+                        android:text="" />
                 </LinearLayout>
                 <!--Dernier P.U-->
                 <LinearLayout
@@ -472,17 +515,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Dernier P.U."
+                        android:text="@string/activity_fiche_produit_TxtDernierPu"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmDepru"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="0" />
+                        android:text="" />
                 </LinearLayout>
                 <!--Total en stock-->
                 <LinearLayout
@@ -499,18 +543,21 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Total en stock"
+                        android:text="@string/activity_fiche_produit_TxtTotStock"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmQtsto02"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="31462.52"
+                        android:text=""
                         android:textColor="@color/black" />
                 </LinearLayout>
+
+
 
             </LinearLayout>
 
@@ -542,7 +589,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:ellipsize="end"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="ENTREES - SORTIES"
+                    android:text="@string/activity_fiche_produit_TxtStockTitle03"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                     tools:targetApi="jelly_bean" />
@@ -560,17 +607,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Date Dernière entreé"
+                        android:text="@string/activity_fiche_produit_TxtDateEntree"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmDaden"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="02 Avr 2020" />
+                        android:text="" />
                 </LinearLayout>
 
                 <!--Sous-Famille-->
@@ -587,17 +635,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Date dernière sortie"
+                        android:text="@string/activity_fiche_produit_TxtDateSortie"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/PrmDadso"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="02 Avr 2020" />
+                        android:text="" />
                 </LinearLayout>
 
                 <!--Date dernier inventaire-->
@@ -615,11 +664,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Date dernier inventaire"
+                        android:text="@string/activity_fiche_produit_TxtDateInventaire"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmDadin"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -648,7 +698,7 @@
                 android:orientation="vertical">
 
 
-                <!--Famille-->
+                <!--Poids Unitaire-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -662,20 +712,21 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Poids Unitaire"
+                        android:text="@string/activity_fiche_produit_TxtPoidsUnitaire"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmPoids"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="0" />
+                        android:text="" />
                 </LinearLayout>
 
-                <!--Sous-Famille-->
+                <!--Unité de stock-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -689,17 +740,18 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Unité de stock"
+                        android:text="@string/activity_fiche_produit_TxtUniteStock"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmUnstk"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Kilo" />
+                        android:text="" />
                 </LinearLayout>
 
                 <!--Nature Comptable-->
@@ -717,16 +769,17 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Magasin"
+                        android:text="@string/activity_fiche_produit_TxtLiMagasin"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
+                        android:id="@+id/TxtPrmLimag"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Magasin Général"
+                        android:text=""
                         android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>

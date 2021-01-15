@@ -13,9 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.FicheDevisActivity"></activity>
         <activity
             android:name=".activities.FicheProduitActivity"
-            android:label="Fiche Produit"></activity>
+            android:label="Fiche Produit" />
         <activity
             android:name=".activities.DashboardActivity"
             android:label="@string/title_activity_dashboard"

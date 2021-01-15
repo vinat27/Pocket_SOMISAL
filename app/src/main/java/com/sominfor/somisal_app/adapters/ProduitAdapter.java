@@ -5,6 +5,7 @@ import android.provider.SyncStateContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -125,7 +126,41 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
             TxtProLiPro =  itemView.findViewById(R.id.TxtProLiPro);
             TxtProCoPro =  itemView.findViewById(R.id.TxtProCoPro);
             mView = itemView;
-
         }
     }
+    /**Filtre des informations avec formulaire de recherche**/
+    public Filter getFilter() {
+        return produitFilter;
+    }
+
+    private Filter produitFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Produit> filteredList = new ArrayList<>();
+            /**Contrôle valeur de recherche**/
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(produitsSearchs);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                /**Parcours de la liste des interventions**/
+                for (Produit item : produitsSearchs) {
+                    /**Comparaison des résultats et ajout dans la liste de résultats**/
+                    if (item.getProlipro().toLowerCase().contains(filterPattern) || String.valueOf(item.getProcopro()).toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+        /**Actualisation de la RecyclerView**/
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            produits.clear();
+            produits.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
