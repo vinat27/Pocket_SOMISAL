@@ -26,7 +26,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:gravity="center"
-                android:src="@drawable/ic_round_explore_24"
+                android:src="@drawable/ic_baseline_list_alt_orange_24"
                 android:layout_marginTop="22dp"
                 />
 
@@ -87,8 +87,16 @@
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="13 Jan 2021"
-                        android:paddingLeft="8sp"
+                        android:paddingLeft="19sp"
                         android:textSize="16sp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:layout_gravity="right"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        />
 
                 </LinearLayout>
                 <LinearLayout

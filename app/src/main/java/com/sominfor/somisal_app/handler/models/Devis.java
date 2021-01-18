@@ -33,6 +33,9 @@ public class Devis implements Serializable {
     private String DevMoreg;
     private String DevDereg;
 
+    private String DevTxhEnt;
+    private String DevTxhPie;
+
     //Expandables
     private boolean expandable;
 
@@ -253,6 +256,22 @@ public class Devis implements Serializable {
 
     public void setExpandable(boolean expandable) {
         this.expandable = expandable;
+    }
+
+    public String getDevTxhEnt() {
+        return DevTxhEnt;
+    }
+
+    public void setDevTxhEnt(String devTxhEnt) {
+        DevTxhEnt = devTxhEnt;
+    }
+
+    public String getDevTxhPie() {
+        return DevTxhPie;
+    }
+
+    public void setDevTxhPie(String devTxhPie) {
+        DevTxhPie = devTxhPie;
     }
 
     @Override

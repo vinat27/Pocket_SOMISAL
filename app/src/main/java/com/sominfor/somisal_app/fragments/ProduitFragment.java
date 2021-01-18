@@ -1,24 +1,22 @@
 package com.sominfor.somisal_app.fragments;
 
-import android.app.ProgressDialog;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -30,6 +28,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.FicheProduitActivity;
 import com.sominfor.somisal_app.activities.LoginActivity;
@@ -74,6 +73,7 @@ public class ProduitFragment extends Fragment implements CallbackListener {
     Utilisateur utilisateur;
     private MenuItem mSearchItem;
     private SearchView sv;
+    RelativeLayout relativeLayout;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.produit_fragment, container, false);
@@ -91,7 +91,7 @@ public class ProduitFragment extends Fragment implements CallbackListener {
 
         /**initialisation des Widgets**/
         mRecyclerView =  view.findViewById(R.id.fast_scroller_recycler_produits);
-
+        relativeLayout = view.findViewById(R.id.Rlt01);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         /**Récupération des informations serveur**/
@@ -172,7 +172,7 @@ public class ProduitFragment extends Fragment implements CallbackListener {
     }
 
     private void openDialog() {
-        /***Ajout / Mise à jour de serveur**/
+        /***Filtre sur familles et sous familles**/
         FragmentManager fragmentManager = getFragmentManager();
         FilterProduitFullDialog filterProduitFullDialog = FilterProduitFullDialog.newInstance();
         filterProduitFullDialog.setTargetFragment(this, 100);
@@ -243,6 +243,10 @@ public class ProduitFragment extends Fragment implements CallbackListener {
             }
         }, volleyError -> {
             volleyError.printStackTrace();
+            /**Erreur connexion**/
+            Snackbar snackbar =  Snackbar.make(relativeLayout,getResources().getString(R.string.login_activity_Snackbar01_NoConnexion), Snackbar.LENGTH_LONG);
+            snackbar.setBackgroundTint(ContextCompat.getColor(getActivity().getApplicationContext(),R.color.red));
+            snackbar.show();
         })
         {
             protected Map<String,String> getParams(){

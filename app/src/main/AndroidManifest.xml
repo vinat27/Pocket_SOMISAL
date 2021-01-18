@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.FicheDevisActivity"></activity>
+        <activity
+            android:name=".activities.FicheDevisActivity"
+            android:label="Details Devis"></activity>
         <activity
             android:name=".activities.FicheProduitActivity"
             android:label="Fiche Produit" />

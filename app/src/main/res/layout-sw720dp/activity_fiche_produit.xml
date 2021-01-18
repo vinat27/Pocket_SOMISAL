@@ -419,9 +419,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/montserrat_semibold"
+                        android:fontFamily="@font/montserrat_bold"
                         android:text=""
-                        android:textColor="@color/black" />
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"  />
                 </LinearLayout>
 
                 <!--Stock d'Alerte-->
@@ -552,9 +553,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/montserrat_semibold"
+                        android:fontFamily="@font/montserrat_bold"
                         android:text=""
-                        android:textColor="@color/black" />
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
 

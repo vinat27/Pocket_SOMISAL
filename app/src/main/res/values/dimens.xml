@@ -52,4 +52,9 @@
     <dimen name="activity_fiche_produit_TxtProCoPro_marginTop">5dp</dimen>
     <dimen name="activity_fiche_produit_TxtProCoPro_textSize">12dp</dimen>
     <dimen name="activity_fiche_produit_LinearLayout_marginTop">6dp</dimen>
+
+    <!--item_details_devis-->
+    <dimen name="item_details_devis_TxtDdvPodev_TextSize">17sp</dimen>
+    <dimen name="item_details_devis_TxtDdvPodev_Layout_heigth">35dp</dimen>
+    <dimen name="item_details_devis_TxtDdvPodev_MarginTop">22dp</dimen>
 </resources>

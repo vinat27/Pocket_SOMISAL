@@ -20,14 +20,15 @@
             android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/ImgIcon"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+            <TextView
+                android:id="@+id/TxtDdvPodev"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_details_devis_TxtDdvPodev_Layout_heigth"
                 android:gravity="center"
-                android:src="@drawable/ic_baseline_list_alt_orange_24"
-                android:layout_marginTop="22dp"
+                android:text="1.000"
+                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/black"
+                android:textSize="@dimen/item_details_devis_TxtDdvPodev_TextSize"
                 />
 
             <LinearLayout
@@ -45,22 +46,15 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:paddingLeft="5sp"
-                        android:text="Client:"/>
-
-                    <TextView
-                        android:id="@+id/TxtClirasoc"
+                        android:id="@+id/TxtProLipro"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorPrimary"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="BOULANGERIE PATISSERIE CARRON"
+                        android:text="AMANDE EFFILEE BLANCHIE 5 KG"
                         android:paddingLeft="8sp"
+                        android:layout_marginTop="2dp"
                         />
                 </LinearLayout>
 
@@ -72,23 +66,39 @@
                     android:layout_marginBottom="6dp"
                     android:orientation="horizontal">
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Livraison:"
+                        android:text="@string/item_detail_devis_TxtQuantite"
                         android:paddingLeft="5sp"/>
 
                     <TextView
-                        android:id="@+id/TxtDevDaliv"
-                        android:layout_width="0dp"
+                        android:id="@+id/TxtDdvQtdev"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="13 Jan 2021"
-                        android:paddingLeft="23sp"
+                        android:text="2.000 K"
+                        android:paddingLeft="8sp"
                         android:textSize="16sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/item_detail_devis_TxtPrixUnitaire"
+                        android:paddingLeft="15sp"/>
+
+                    <TextView
+                        android:id="@+id/TxtDdvPutar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="2.000 K"
+                        android:paddingLeft="8sp"
+                        android:textSize="16sp"/>
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -111,11 +121,11 @@
                         android:layout_weight="0.3"
                         android:textColor="@color/colorPrimary"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Valeur H.T."
+                        android:text="Total H.T"
                         android:paddingLeft="5sp"/>
 
                     <TextView
-                        android:id="@+id/TxtDevVadev"
+                        android:id="@+id/TxtDdvVadev"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -147,17 +157,16 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/TxtNumeroDevis"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/item_devis_TxtNumeroDevis"
+                    android:text="@string/item_detail_devis_TxtTxRemTitle"
                     android:layout_marginLeft="40dp"
                     />
 
                 <TextView
-                    android:id="@+id/TxtDevNudev"
+                    android:id="@+id/TxtDdvTxRem"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -173,101 +182,66 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="14dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/TxtDateDevis"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:layout_marginLeft="40dp"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/item_devis_TxtDateDevis"
+                    android:text="@string/item_detail_devis_TxtVaRemTitle"
                     />
 
                 <TextView
-                    android:id="@+id/TxtDevDadev"
+                    android:id="@+id/TxtDdvVarem"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="13 Jan 2021"
+                    android:text="000000"
+                    android:textSize="16sp"
                     android:paddingLeft="8sp"/>
             </LinearLayout>
 
-            <!--Lieu de vente-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:layout_marginLeft="35dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
+                <!--Détails Devis-->
 
-                <TextView
-                    android:id="@+id/LieuVente"
-                    android:layout_width="0dp"
+                <!--Détails Devis-->
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabDetPro"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/item_devis_TxtLieuVente"
-                    android:layout_marginLeft="40dp"
-                    />
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:padding="18dp"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/orange"
+                    app:icon="@drawable/ic_baseline_visibility_24"
+                    app:iconTint="@color/white" />
 
-                <TextView
-                    android:id="@+id/TxtDevLieuv"
-                    android:layout_width="0dp"
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabTxnPro"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="Saint Pierre"
-                    android:paddingLeft="8sp"/>
+                    android:layout_marginTop="9dp"
+                    android:layout_gravity="bottom|right"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_baseline_library_books_24"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/orange"/>
             </LinearLayout>
 
-            <!--Référence-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/TxtReference"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="Référence"
-                    android:layout_marginLeft="40dp"
-                    />
-
-                <TextView
-                    android:id="@+id/TxtDevRefdev"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="*"
-                    android:paddingLeft="8sp"/>
-            </LinearLayout>
-            <!--Détails Devis-->
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/FabDevisDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_gravity="bottom|right"
-                android:textColor="@color/white"
-                android:text="Détails"
-                app:icon="@drawable/ic_baseline_visibility_24"
-                app:iconTint="@color/white"
-                app:backgroundTint="@color/colorPrimary"/>
 
         </LinearLayout>
     </LinearLayout>

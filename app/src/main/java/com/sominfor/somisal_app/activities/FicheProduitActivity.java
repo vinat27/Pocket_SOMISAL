@@ -54,6 +54,7 @@ public class FicheProduitActivity extends AppCompatActivity {
     TextView TxtPrmPriun, TxtPrmDepru, TxtPrmQtval, TxtPrmDaden, TxtPrmDadso, TxtPrmDadin, TxtPrmPoids;
     TextView TxtPrmUnstk, TxtPrmLimag;
     public RequestQueue rq;
+    DelayedProgressDialog progressDialogInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,7 @@ public class FicheProduitActivity extends AppCompatActivity {
         }
         serveurNodeController = new ServeurNodeController();
         serveurNode = serveurNodeController.getServeurNodeInfos();
+        progressDialogInfo = new DelayedProgressDialog();
         /*URL Récupération de la liste des systèmes*/
         ApiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/ficheProduit";
         /**Instanciation des widgets**/
@@ -147,6 +149,7 @@ public class FicheProduitActivity extends AppCompatActivity {
     /***Récupérer les informations de stocks**/
     public void interrogerStock(String api_url, final int proNuprm) {
         RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
+        progressDialogInfo.show(getSupportFragmentManager(), "Loading...");
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
             final ProduitFini produitFini = new ProduitFini();
             try {
@@ -171,7 +174,7 @@ public class FicheProduitActivity extends AppCompatActivity {
                     produitFini.setPrmdador(jsonObjectInfo.getString("MAGDADSO"));
                     produitFini.setPrmdadin(jsonObjectInfo.getString("MAGDADIN"));
                     produitFini.setPrmpoids(jsonObjectInfo.getDouble("PRMPOIDS"));
-                    produitFini.setPrmunstk(jsonObjectInfo.getString("PRMUNSTK"));
+                    produitFini.setPrmunstk(jsonObjectInfo.getString("PRMUNSTKLIB"));
                     produitFini.setPrmlimag(jsonObjectInfo.getString("MAGCOMAG"));
 
 
@@ -181,43 +184,62 @@ public class FicheProduitActivity extends AppCompatActivity {
                 String PrmDadenFormat = "";
                 String PrmDadsoFormat = "";
                 String PrmDadinFormat = "";
+                /**Contrôle Date de dernière entrée**/
+                if (!produitFini.getPrmdaden().equals("0001-01-01")){
+                    try {
+                        PrmDadenFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(produitFini.getPrmdaden())));
+                    }catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                /**Contrôle Date de dernière sortie**/
+                if (!produitFini.getPrmdador().equals("0001-01-01")){
+                    try {
+                        PrmDadsoFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(produitFini.getPrmdador())));
+                    }catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-
-                try {
-                    PrmDadenFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(produitFini.getPrmdaden())));
-                    PrmDadsoFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(produitFini.getPrmdador())));
-                    PrmDadinFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(produitFini.getPrmdadin())));
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                /**Contrôle Date inventaire**/
+                if (!produitFini.getPrmdadin().equals("0001-01-01")){
+                    try {
+                        PrmDadinFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(produitFini.getPrmdadin())));
+                    }catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 /**Initialisation des information s de fiche de stock**/
-
                 TxtPrmRfprm.setText(produitFini.getPrmrfprm().trim());
                 TxtPrmLimrq.setText(produitFini.getPrmlimrq().trim());
                 TxtPrmDecat.setText(produitFini.getPrmdecat().trim());
                 TxtPrmDefam.setText(produitFini.getPrmdefam().trim());
                 TxtPrmLisfa.setText(produitFini.getPrmlisfa().trim());
                 TxtPrmNacpt.setText(produitFini.getPrmnacpt().trim());
-                //TxtPrmQtMag.setText(produitFini.getPrmQtmag);
-                TxtPrmQtRes.setText(String.valueOf(produitFini.getPrmqtres()));
-                TxtPrmQtcom.setText(String.valueOf(produitFini.getPrmqtcom()));
-                TxtPrmQtsto.setText(String.valueOf(produitFini.getPrmqtsto()));
-                TxtPrmQtsal.setText(String.valueOf(produitFini.getPrmqtsal()));
-                TxtPrmPriun.setText(String.valueOf(produitFini.getPrmpriun()));
-                TxtPrmDepru.setText(String.valueOf(produitFini.getPrmdepru()));
-                TxtPrmQtval.setText(String.valueOf(produitFini.getPrmqtsal()));
+                TxtPrmQtMag.setText(String.format("%.2f", produitFini.getPrmqtsto()));
+                TxtPrmQtRes.setText("");
+                TxtPrmQtcom.setText(String.format("%.2f", produitFini.getPrmqtcom()));
+                TxtPrmQtsto.setText(String.format("%.2f", produitFini.getPrmqtsto()));
+                TxtPrmQtsal.setText("");
+                TxtPrmPriun.setText(String.format("%.2f", produitFini.getPrmpriun()));
+                TxtPrmDepru.setText(String.format("%.2f", produitFini.getPrmdepru()));
+                TxtPrmQtval.setText(String.format("%.2f", produitFini.getPrmvasto()));
                 TxtPrmDaden.setText(PrmDadenFormat);
                 TxtPrmDadso.setText(PrmDadsoFormat);
                 TxtPrmDadin.setText(PrmDadinFormat);
                 TxtPrmPoids.setText(String.valueOf(produitFini.getPrmpoids()));
-                TxtPrmUnstk.setText(produitFini.getPrmunstk());
-                TxtPrmLimag.setText(produitFini.getPrmlimag());
+                TxtPrmUnstk.setText(produitFini.getPrmunstk().trim());
+                TxtPrmLimag.setText(produitFini.getPrmlimag().trim());
 
+                progressDialogInfo.cancel();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, volleyError -> volleyError.printStackTrace()) {
+        }, volleyError -> {
+                volleyError.printStackTrace();
+                progressDialogInfo.cancel();
+        }) {
             protected Map<String, String> getParams() {
                 Map<String, String> param = new HashMap<String, String>();
                 param.put("systeme",systemeAdresse);

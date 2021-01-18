@@ -17,9 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.FicheDevisActivity;
-import com.sominfor.somisal_app.activities.FicheProduitActivity;
 import com.sominfor.somisal_app.handler.models.Devis;
-import com.sominfor.somisal_app.handler.models.Produit;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

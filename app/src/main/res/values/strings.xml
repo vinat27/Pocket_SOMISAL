@@ -76,4 +76,27 @@
 
     <!--ProduitFragment-->
     <string name="produit_fragment_noStock">Pas de fiche de stock</string>
+
+    <!--FicheDevisActivity-->
+    <string name="fiche_devis_activity_TxtDevStatuTitle">Statut</string>
+    <string name="fiche_devis_activity_TxtDevLimagTitle">Magasin</string>
+    <string name="activity_fiche_produit_TxtLilivTitle">Livreur</string>
+    <string name="activity_fiche_produit_TxtMontantHtTitle">Montant H.T.</string>
+    <string name="activity_fiche_produit_FabCommentaires">Commentaires</string>
+    <string name="activity_fiche_produit_TxtProduits">PRODUITS</string>
+
+    <!--item_details_devis-->
+    <string name="item_detail_devis_TxtTxRemTitle">Tx Remise</string>
+    <string name="item_detail_devis_TxtVaRemTitle">Mt Remise</string>
+    <string name="item_detail_devis_TxtProduit">Produit</string>
+    <string name="item_detail_devis_TxtQuantite">Quantité</string>
+    <string name="item_detail_devis_TxtPrixUnitaire">P.U.</string>
+
+    <!--comment_poste_full_dialog_fragment-->
+    <string name="comment_poste_full_dialog_setTitle">Commentaires de poste</string>
+
+    <!--commentaires_devis_full_dialog_fragment-->
+    <string name="commentaires_devis_full_dialog_setTitle">Commentaires - Post-It</string>
+
+
 </resources>
