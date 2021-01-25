@@ -54,12 +54,7 @@ public class FicheDevisActivity extends AppCompatActivity {
         /**Effacer l'ombre sous l'actionBar**/
         getSupportActionBar().setElevation(0);
 
-        /**Gestion des écrans - Portrait pour les smartphones et Landscape pour les tablettes**/
-        if(!getResources().getBoolean(R.bool.isTablet)){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else{
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
+
         serveurNodeController = new ServeurNodeController();
         serveurNode = serveurNodeController.getServeurNodeInfos();
 

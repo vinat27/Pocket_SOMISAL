@@ -51,12 +51,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        /**Gestion des écrans - Portrait pour les smartphones et Landscape pour les tablettes**/
-        if(!getResources().getBoolean(R.bool.isTablet)){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else{
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
+
         /**Récupération de session utilisateur**/
         utilisateur = UserSessionManager.getInstance(getApplicationContext()).getUtilisateurDetail();
 

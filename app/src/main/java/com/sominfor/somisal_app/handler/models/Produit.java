@@ -36,7 +36,17 @@ public class Produit implements Serializable {
     private String procpast;
     private String procpitg;
 
+    private String proliunvte;
+
     public Produit() {
+    }
+
+    public Produit(int procopro, String prolipro, String prounvte, float procofvt, String proliunvte) {
+        this.procopro = procopro;
+        this.prolipro = prolipro;
+        this.prounvte = prounvte;
+        this.procofvt = procofvt;
+        this.proliunvte = proliunvte;
     }
 
     public int getProcopro() {
@@ -239,34 +249,16 @@ public class Produit implements Serializable {
         this.procpitg = procpitg;
     }
 
+    public String getProliunvte() {
+        return proliunvte;
+    }
+
+    public void setProliunvte(String proliunvte) {
+        this.proliunvte = proliunvte;
+    }
+
     @Override
     public String toString() {
-        return "Produit{" +
-                "procopro=" + procopro +
-                ", protypro='" + protypro + '\'' +
-                ", prolipro='" + prolipro + '\'' +
-                ", prolxpro='" + prolxpro + '\'' +
-                ", procofam='" + procofam + '\'' +
-                ", prosofam='" + prosofam + '\'' +
-                ", procoedi='" + procoedi + '\'' +
-                ", prostatu='" + prostatu + '\'' +
-                ", pronuprm=" + pronuprm +
-                ", prouncdt='" + prouncdt + '\'' +
-                ", procofcd=" + procofcd +
-                ", prounvte='" + prounvte + '\'' +
-                ", procofvt=" + procofvt +
-                ", procota1='" + procota1 + '\'' +
-                ", procota2='" + procota2 + '\'' +
-                ", procota3='" + procota3 + '\'' +
-                ", procota4='" + procota4 + '\'' +
-                ", procota5='" + procota5 + '\'' +
-                ", protaxca='" + protaxca + '\'' +
-                ", procpgen='" + procpgen + '\'' +
-                ", proaxevt='" + proaxevt + '\'' +
-                ", procpavt='" + procpavt + '\'' +
-                ", proaxest='" + proaxest + '\'' +
-                ", procpast='" + procpast + '\'' +
-                ", procpitg='" + procpitg + '\'' +
-                '}';
+        return getProlipro();
     }
 }

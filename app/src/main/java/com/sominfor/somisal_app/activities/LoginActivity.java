@@ -63,14 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        /**Controle orientation de l'écran
-         * Paysage pour les tablettes
-         * Portrait pour les smartphones**/
-        if(!getResources().getBoolean(R.bool.isTablet)){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else{
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
+
 
         /**Instanciation des widgets**/
         materialDesignSpinner = findViewById(R.id.MbSpnSystem);

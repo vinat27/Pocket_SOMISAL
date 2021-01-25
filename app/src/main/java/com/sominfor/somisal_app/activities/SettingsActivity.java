@@ -37,15 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (getSupportActionBar()!=null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /***Gestion d'orientation de l'application
-         * Paysage pour les tablettes
-         * Portrait pour les smartphones
-         ****/
-        if(!getResources().getBoolean(R.bool.isTablet)){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else{
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
+
         /**Instanciation des widgets**/
         TxtParametreValue = findViewById(R.id.TxtParametreValue);
         updateIcon = findViewById(R.id.updateIcon);

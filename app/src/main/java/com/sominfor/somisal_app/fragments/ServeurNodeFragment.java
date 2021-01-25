@@ -38,8 +38,8 @@ public class ServeurNodeFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.serveur_node_fragment, container);
 
         /**Instanciation des widgets**/
-        EdtServeurNodeIp = (TextInputEditText) view.findViewById(R.id.EdtServeurNodeIp);
-        BtnValider = (Button) view.findViewById(R.id.BtnValider);
+        EdtServeurNodeIp = view.findViewById(R.id.EdtServeurNodeIp);
+        BtnValider = view.findViewById(R.id.BtnValider);
         serveurNodeController = new ServeurNodeController();
         serveurNode = serveurNodeController.getServeurNodeInfos();
         EdtServeurNodeIp.setText(serveurNode.getServeurNodeIp());

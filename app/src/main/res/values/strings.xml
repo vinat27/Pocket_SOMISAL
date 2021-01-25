@@ -98,5 +98,36 @@
     <!--commentaires_devis_full_dialog_fragment-->
     <string name="commentaires_devis_full_dialog_setTitle">Commentaires - Post-It</string>
 
+    <!--activity_add_devis-->
+    <string name="activity_ass_devis_MbSpinnerClient">Client</string>
+    <string name="add_devis_activity_MbSpnLieuv">Lieu de vente</string>
+    <string name="add_devis_activity_MbSpnDevMag">Magasin</string>
+    <string name="add_devis_activity_EdtDevDadev">Date devis</string>
+    <string name="add_devis_activity_EdtDevRfdev">Référence</string>
+    <string name="add_devis_activity_MbSpnDevColiv">Livreur</string>
+    <string name="add_devis_activity_MbSpnDevDereg">Délai</string>
+    <string name="add_devis_activity_MbSpnDevMoreg">Règlement</string>
+    <string name="add_devis_activity_EdtDevDaliv">Date Livraison</string>
+    <string name="add_devis_activity_EdtDevTxrem">Remise Globale</string>
+    <string name="add_devis_activity_EdtDevTxesc">Escompte</string>
+    <string name="add_devis_activity_EdtDevEcova">Eco-Participation</string>
+    <string name="add_devis_activity_MbSpnDevUscom">Commercial</string>
+
+    <!--DevisPostItfullDialog-->
+    <string name="DexTexteHint">Post-it</string>
+    <string name="post_it_devis_full_dialog_setTitle">Post-It</string>
+    <string name="add_produit_devis_activity_TxtDevNudevTitle">Numéro devis</string>
+    <!--AddProduitDevisActivity-->
+    <string name="noProductAddedText">Aucun produit</string>
+    <string name="activity_add_produit_devis_BtnValider_hint">VALIDER</string>
+    <string name="devis_add_produit_full_dialog_SchSTextHint">Produit</string>
+    <string name="devis_add_produit_full_dialog_MbSpnUnvteTextHint">Unité de vente</string>
+    <string name="devis_add_produit_full_dialog_EdtDdvCofvt">Coefficient</string>
+    <string name="devis_add_produit_full_dialog_EdtDdvQtpro">Quantité</string>
+
+    <!--DevisAddProduitFullDialog-->
+    <string name="devis_add_produit_full_dialog_setTitle">Choix de produits</string>
+    <string name="devis_add_produit_full_dialog_fields_error">Veuillez remplir tous les champs</string>
+
 
 </resources>

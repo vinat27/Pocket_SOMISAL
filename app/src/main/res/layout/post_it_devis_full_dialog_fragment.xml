@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ic_baseline_close_24_black" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+    <!--Date Livraison-->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="56dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/EdtDexTexte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/DexTexteHint"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            android:lines="10"
+            android:focusable="true"
+            android:fontFamily="@font/montserrat_regular" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Valider-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnValider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/Lnr01"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_gravity="center"
+            android:text="@string/serveur_node_fragment_BtnValider_hint"
+            android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
+            android:padding="@dimen/login_activity_BtnConnexion_padding"
+            app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorPrimary"
+            android:textColor="@android:color/white" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

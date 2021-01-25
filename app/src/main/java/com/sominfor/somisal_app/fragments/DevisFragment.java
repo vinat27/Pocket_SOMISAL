@@ -20,7 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.activities.AddDevisActivity;
+import com.sominfor.somisal_app.activities.FicheProduitActivity;
 import com.sominfor.somisal_app.activities.LoginActivity;
 import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.handler.models.Devis;
@@ -33,6 +36,7 @@ import java.util.List;
  * Créé par vatsou le 13,janvier,2021
  * SOMINFOR
  * Paris, FRANCE
+ * Liste des devis
  */
 public class DevisFragment extends Fragment {
     FrameLayout frameLayout;
@@ -41,6 +45,7 @@ public class DevisFragment extends Fragment {
     private MenuItem mSearchItem;
     private SearchView sv;
     DevisAdapter devisAdapter;
+    FloatingActionButton fab_add_devis;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.devis_fragment, container, false);
         /***** Déclaration de barre de menu dans le fragment*******/
@@ -55,6 +60,7 @@ public class DevisFragment extends Fragment {
         /***Instanciation des widgets***/
         frameLayout = view.findViewById(R.id.frameLayout);
         recyclerViewDevis = view.findViewById(R.id.RecyclerViewDevis);
+        fab_add_devis = view.findViewById(R.id.fab_add_devis);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerViewDevis.setLayoutManager(linearLayoutManager);
 
@@ -63,6 +69,12 @@ public class DevisFragment extends Fragment {
             frameLayout.setVisibility(View.VISIBLE);
         }
         setRecyclerview();
+
+        /***Ajout de devis**/
+        fab_add_devis.setOnClickListener(v -> {
+            Intent i = new Intent(getActivity(), AddDevisActivity.class);
+            startActivity(i);
+        });
 
         return view;
     }
