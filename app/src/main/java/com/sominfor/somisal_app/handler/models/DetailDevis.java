@@ -1,6 +1,7 @@
 package com.sominfor.somisal_app.handler.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Créé par vatsou le 16,janvier,2021
@@ -173,4 +174,16 @@ public class DetailDevis implements Serializable {
     public void setDdvTxnPo(String ddvTxnPo) {
         DdvTxnPo = ddvTxnPo;
     }
+
+    @Override
+    public boolean equals(Object t){
+        if(!(t instanceof DetailDevis)){
+            return false;
+        }
+        DetailDevis c = (DetailDevis) t;
+        //Compare however you want, ie
+        return  (String.valueOf(c.getDdvPodev()).equals(String.valueOf(this.getDdvPodev())));
+    }
+
+
 }

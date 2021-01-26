@@ -114,11 +114,6 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
     }
 
 
-    public void initData(){
-        //detailDevisList = new ArrayList<>();
-        //detailDevisList.add(new DetailDevis(3154,573,"K",1000,5.000,12.47,0.00,0.00,24.94,"AMANDE EFFILEE BLANCHIE 5 KG",""));
-        //detailDevisList.add(new DetailDevis(4,483,"P",2000,5.000,1.67,0.00,0.00, 3.34, "BOITE FER SPECIAL PIZZA", ""));
-    }
 
     /**Ajout de produit**/
 
@@ -129,4 +124,12 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
         devisAddProduitFullDialog.show(fragmentManager, ServeurNode.TAG);
     }
 
+    public void doPositiveClick(DetailDevis dd) {
+        int removeIndex = detailDevisList.indexOf(dd);
+        detailDevisList.remove(removeIndex);
+        detailsDevisProduitsAdapter.notifyItemRemoved(removeIndex);
+    }
+
+    public void doNegativeClick(DetailDevis dd) {
+    }
 }

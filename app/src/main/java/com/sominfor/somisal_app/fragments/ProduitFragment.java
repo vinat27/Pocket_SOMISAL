@@ -61,6 +61,7 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
  * Créé par vatsou le 08,janvier,2021
  * SOMINFOR
  * Paris, FRANCE
+ * Répertoire de produits
  */
 public class ProduitFragment extends Fragment implements CallbackListener {
     IndexFastScrollRecyclerView mRecyclerView;

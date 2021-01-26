@@ -129,5 +129,10 @@
     <string name="devis_add_produit_full_dialog_setTitle">Choix de produits</string>
     <string name="devis_add_produit_full_dialog_fields_error">Veuillez remplir tous les champs</string>
 
+    <!--DeleteAlertDialogFragment-->
+    <string name="DeleteAlertDialogFragment_Title">Confirmation</string>
+    <string name="alert_dialog_ok">Oui</string>
+    <string name="alert_dialog_cancel">Non</string>
+    <string name="alert_dialog_message">Voulez vous supprimer ce produit?</string>
 
 </resources>

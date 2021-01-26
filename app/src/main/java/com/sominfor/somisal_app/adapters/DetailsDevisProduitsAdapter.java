@@ -19,6 +19,7 @@ import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.FicheProduitActivity;
 import com.sominfor.somisal_app.fragments.CommentPosteFullDialog;
+import com.sominfor.somisal_app.fragments.DeleteAlertDialogFragment;
 import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
@@ -87,8 +88,18 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         });
 
         /**Modification de poste**/
+        holder.FabUpdatePro.setOnClickListener(v -> {
+
+        });
 
         /**Suppression de poste**/
+        holder.FabDeletePro.setOnClickListener(v -> {
+            DeleteAlertDialogFragment deleteAlertDialog = DeleteAlertDialogFragment.newInstance();
+            Bundle args = new Bundle();
+            args.putSerializable("detailDevis", detailDevis);
+            deleteAlertDialog.setArguments(args);
+            deleteAlertDialog.show(fragmentManager, ServeurNode.TAG);
+        });
 
         /**Commentaires de poste***/
         holder.FabTxnPro.setOnClickListener(v -> {
@@ -109,6 +120,7 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
     public int getItemCount() {
         return detailDevisList == null ? 0 : detailDevisList.size();
     }
+
 
 
     public DetailDevis getItem(int position){
