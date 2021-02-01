@@ -94,6 +94,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         TxtLogin.setText(utilisateur.getUtilisateurLogin());
         TxtFiliale.setText(utilisateur.getUtilisateurFiliale());
 
+        if (savedInstanceState == null) {
+            Fragment f = new ClientFragment();
+            fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, f).commit();
+        }
 
     }
 

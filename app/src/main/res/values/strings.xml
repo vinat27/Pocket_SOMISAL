@@ -135,4 +135,77 @@
     <string name="alert_dialog_cancel">Non</string>
     <string name="alert_dialog_message">Voulez vous supprimer ce produit?</string>
 
+
+    <!--Item_commande-->
+    <string name="TxtClirasoc_text">Client:</string>
+    <string name="TxtComDalivTitle_text">Livraison</string>
+    <string name="TxtComVacomTitle_text">Valeur H.T.</string>
+    <string name="item_commande_TxtNumeroCommande">Numéro</string>
+    <string name="TxtDateCommandeTitle">Date</string>
+    <string name="TxtLieuVenteText">Lieu Vente</string>
+    <string name="TxtTourneeText">Tournée</string>
+
+    <!--commande_fragment-->
+    <string name="TxtNoCdeError">Aucune commande !</string>
+
+    <!--activity_commande_details-->
+    <string name="TxtFacturationText">ADRESSE FACTURATION</string>
+    <string name="activity_commande_details_TxtComAdre1_Text">Adresse</string>
+    <string name="activity_commande_details_TxtComAdresse_Text">Adresse</string>
+    <string name="activity_commande_details_TxtCp">C.P.</string>
+    <string name="activity_commande_details_TxtVille">Ville</string>
+    <string name="activity_commande_details_TxtBp">B.P.</string>
+    <string name="activity_commande_details_TxtPays">Pays</string>
+    <string name="TxtLivraisonText">ADRESSE LIVRAISON</string>
+    <!--item_details_commande-->
+    <string name="item_detail_commande_TxtQuantiteLivree">Qte Livrée</string>
+
+    <!--Stepper Library Custom-->
+    <string name="ms_next">Suivant</string>
+    <string name="ms_back">Précédent</string>
+    <string name="ms_complete">Terminer</string>
+
+    <!--fragment_entete-->
+    <string name="fragment_entete_MbSpinnerClient">Client</string>
+    <string name="fragment_entete_MbSpnCliLieuv">Lieu de vente</string>
+    <string name="add_commande_activity_MbSpnComComag">Magasin</string>
+    <string name="add_commande_activity_EdtComDacom">Date Commande</string>
+    <string name="add_commande_activity_EdtComNamar">Marchandises</string>
+    <string name="add_commande_activity_MbSpnComCotrn">Tournée</string>
+    <string name="add_commande_activity_EdtComDaliv">Date Livraison</string>
+    <string name="add_commande_activity_MbSpnComColiv">Livreur</string>
+    <string name="add_commande_activity_MbSpnComCotrp">Transport</string>
+    <string name="add_commande_activity_StepTitle">Données générales</string>
+    <string name="add_commande_activity_StepTitleFacturation">Facturation</string>
+
+    <!--fragment_adresse_facturation-->
+    <string name="fragment_adresse_facturation_EdtComRasoc">Raison Sociale</string>
+    <string name="fragment_adresse_facturation_EdtComAdre1">Adresse 1</string>
+    <string name="fragment_adresse_facturation_EdtComAdre2">Adresse 2</string>
+    <string name="fragment_adresse_facturation_EdtComCopos">Code Postal</string>
+    <string name="fragment_adresse_facturation_EdtComVille">Ville</string>
+    <string name="fragment_adresse_facturation_EdtComBopos">B.P.</string>
+    <string name="fragment_adresse_facturation_MbSpnComCpays">Pays</string>
+
+    <!--fragment_adresse_livraison-->
+    <string name="fragment_adresse_livraison_StepTitleLivraison">Livraison</string>
+    <string name="fragment_adresse_livraison_EdtComRasol">Raison Sociale</string>
+    <string name="fragment_adresse_livraison_EdtComAdr1l">Adresse 1</string>
+    <string name="fragment_adresse_livraison_EdtComAdr2l">Adresse 2</string>
+    <string name="fragment_adresse_livraison_EdtComCopol">Code Postal</string>
+    <string name="fragment_adresse_livraison_EdtComVilll">Ville</string>
+    <string name="fragment_adresse_livraison_EdtComBopol">B.P.</string>
+    <string name="fragment_adresse_livraison_MbSpnComCpayl">Pays</string>
+
+    <!--fragment_reglement-->
+    <string name="fragment_reglement_StepTitleReglement">Données de Règlement</string>
+    <string name="fragment_reglement_MbSpnComMoreg">Règlement</string>
+    <string name="fragment_reglement_MbSpnComDereg">Délai</string>
+    <string name="fragment_reglement_EdtComTxrem">Remise Globale</string>
+    <string name="fragment_reglement_EdtComTxesc">Escompte</string>
+    <string name="fragment_reglement_EdtComEcova">Eco-Participation</string>
+    <string name="fragment_reglement_MbSpnComUscom">Commercial</string>
+    <string name="fragment_reglement_StepTitleContact">Contact</string>
+    <string name="fragment_reglement_EdtComTelep">Téléphone</string>
+    <string name="fragment_reglement_EdtComIdcor">Correspondant</string>
 </resources>

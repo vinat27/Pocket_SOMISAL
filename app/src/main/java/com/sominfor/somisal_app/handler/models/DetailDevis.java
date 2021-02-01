@@ -24,6 +24,7 @@ public class DetailDevis implements Serializable {
     private String DdvLipro;
     private Double DdvVadev;
     private String DdvTxnPo;
+    private String DdvComon;
 
     //Expandables
     private boolean expandable;
@@ -32,7 +33,7 @@ public class DetailDevis implements Serializable {
         this.expandable = false;
     }
 
-    public DetailDevis(int ddvCopro, int ddvNuprm, String ddvUnvte, int ddvPodev, Double ddvQtdev, Double ddvPutar, Double ddvTxrem, Double ddvVarem, Double ddvVadev, String ddvLipro, String ddvTxnPo) {
+    public DetailDevis(int ddvCopro, int ddvNuprm, String ddvUnvte, int ddvPodev, Double ddvQtdev, Double ddvPutar, Double ddvTxrem, Double ddvVarem, Double ddvVadev, String ddvLipro, String ddvTxnPo, String ddvcomon) {
         DdvCopro = ddvCopro;
         DdvNuprm = ddvNuprm;
         DdvUnvte = ddvUnvte;
@@ -44,6 +45,7 @@ public class DetailDevis implements Serializable {
         DdvVadev = ddvVadev;
         DdvLipro = ddvLipro;
         DdvTxnPo = ddvTxnPo;
+        DdvComon = ddvcomon;
         this.expandable = false;
     }
 
@@ -173,6 +175,14 @@ public class DetailDevis implements Serializable {
 
     public void setDdvTxnPo(String ddvTxnPo) {
         DdvTxnPo = ddvTxnPo;
+    }
+
+    public String getDdvComon() {
+        return DdvComon;
+    }
+
+    public void setDdvComon(String ddvComon) {
+        DdvComon = ddvComon;
     }
 
     @Override

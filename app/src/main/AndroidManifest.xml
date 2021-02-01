@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.AddProduitDevisActivity"></activity>
+        <activity android:name=".activities.AddProduitCommandeActivity"></activity>
+        <activity android:name=".activities.AddCommandeActivity" />
+        <activity android:name=".activities.CommandeDetailsActivity" />
+        <activity android:name=".activities.AddProduitDevisActivity" />
         <activity
             android:name=".activities.AddDevisActivity"
             android:label="Nouveau devis" />

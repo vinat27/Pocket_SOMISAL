@@ -6,22 +6,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.adapters.DetailCommandeAdapter;
 import com.sominfor.somisal_app.adapters.DetailDevisAdapter;
-import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.fragments.CommentairesDevisFullDialog;
-import com.sominfor.somisal_app.fragments.FilterProduitFullDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
+import com.sominfor.somisal_app.handler.models.Commande;
+import com.sominfor.somisal_app.handler.models.DetailCommande;
 import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Devis;
-import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.UserSessionManager;
@@ -29,36 +26,28 @@ import com.sominfor.somisal_app.utils.UserSessionManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FicheDevisActivity extends AppCompatActivity {
+public class CommandeDetailsActivity extends AppCompatActivity {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
     String systemeAdresse, utilisateurLogin, utilisateurPassword, ApiUrl01;
-    Devis devis;
-    RecyclerView RecyclerViewDetailsDevis;
-    List<DetailDevis> detailDevisList;
-    DetailDevisAdapter detailDevisAdapter;
-    TextView TxtClirasoc, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevVadev;
-
+    Commande commande;
+    RecyclerView RecyclerViewDetailsCommandes;
+    List<DetailCommande> detailCommandeList;
+    DetailCommandeAdapter detailCommandeAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fiche_devis);
+        setContentView(R.layout.activity_commande_details);
+
         /**Contrôle de sessions utilisateur**/
         if (!UserSessionManager.getInstance(this).isLoggedIn()) {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        /**Instanciation des widgets**/
-        RecyclerViewDetailsDevis = findViewById(R.id.RecyclerViewDetailsDevis);
-        TxtClirasoc = findViewById(R.id.TxtClirasoc);
-        TxtDevStatu = findViewById(R.id.TxtDevStatu);
-        TxtDevLimag = findViewById(R.id.TxtDevLimag);
-        TxtDevLiliv = findViewById(R.id.TxtDevLiliv);
-        TxtDevVadev = findViewById(R.id.TxtDevVadev);
         /**Gestion du menu d'action**/
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle("Détails devis");
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle("Détails commande");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /**Effacer l'ombre sous l'actionBar**/
         getSupportActionBar().setElevation(0);
@@ -74,28 +63,22 @@ public class FicheDevisActivity extends AppCompatActivity {
 
         /**Récupération de l'objet devis**/
         Bundle bundle = getIntent().getExtras();
-        devis = (Devis) bundle.getSerializable("devis");
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
-        RecyclerViewDetailsDevis.setLayoutManager(linearLayoutManager);
-        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevComon().trim();
+        commande = (Commande) bundle.getSerializable("commande");
 
-        /**Set Data to Textviews**/
-        TxtClirasoc.setText(devis.getCliRasoc());
-        TxtDevStatu.setText(devis.getDevStatut());
-        TxtDevLimag.setText(devis.getDevComag());
-        TxtDevLiliv.setText(devis.getDevLieuv());
-        TxtDevVadev.setText(vadev);
+        RecyclerViewDetailsCommandes = findViewById(R.id.RecyclerViewDetailsCommandes);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
+        RecyclerViewDetailsCommandes.setLayoutManager(linearLayoutManager);
+
 
         initData();
         setRecyclerview();
     }
 
-
     // Options Menu (ActionBar Menu)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_fiche_devis_activity, menu);
+        getMenuInflater().inflate(R.menu.menu_fiche_commande_activity, menu);
         return true;
     }
 
@@ -106,15 +89,8 @@ public class FicheDevisActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.comment_devis:
-                /***Filtre sur familles et sous familles**/
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                CommentairesDevisFullDialog commentairesDevisFullDialog = CommentairesDevisFullDialog.newInstance();
-                Bundle args = new Bundle();
-                args.putString("devtxnpi", "RAS");
-                args.putString("devtxnen", "");
-                commentairesDevisFullDialog.setArguments(args);
-                commentairesDevisFullDialog.show(fragmentManager, ServeurNode.TAG);
+            case R.id.comment_commande:
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -122,15 +98,16 @@ public class FicheDevisActivity extends AppCompatActivity {
 
     public void setRecyclerview(){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        detailDevisAdapter = new DetailDevisAdapter(getApplicationContext(), detailDevisList, fragmentManager);
-        RecyclerViewDetailsDevis.setAdapter(detailDevisAdapter);
-        RecyclerViewDetailsDevis.setHasFixedSize(true);
+        detailCommandeAdapter = new DetailCommandeAdapter(getApplicationContext(), detailCommandeList, fragmentManager);
+        RecyclerViewDetailsCommandes.setAdapter(detailCommandeAdapter);
+        RecyclerViewDetailsCommandes.setHasFixedSize(true);
     }
 
     public void initData(){
-        detailDevisList = new ArrayList<>();
+        detailCommandeList = new ArrayList<>();
 
-        detailDevisList.add(new DetailDevis(3154,573,"K",1000,5.000,12.47,0.00,0.00,24.94,"AMANDE EFFILEE BLANCHIE 5 KG","", "Euros"));
-        detailDevisList.add(new DetailDevis(4,483,"P",2000,5.000,1.67,0.00,0.00, 3.34, "BOITE FER SPECIAL PIZZA", "", "Euros"));
+        detailCommandeList.add(new DetailCommande(3154, 573, "K", "00000001", 1000,5.000, 12.47, 0.00, 0.00, 0.00, 27.69, "AMANDE EFFILEE BLANCHIE 5 KG", ""));
+        detailCommandeList.add(new DetailCommande(3154, 573, "K", "00000002", 1000,5.000, 12.47, 0.00, 0.00, 0.00, 27.69, "AMANDE EFFILEE BLANCHIE 5 KG", ""));
     }
+
 }

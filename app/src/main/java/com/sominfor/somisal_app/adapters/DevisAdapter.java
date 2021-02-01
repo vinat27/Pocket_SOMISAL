@@ -56,6 +56,7 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String DevDadevFormat = "";
         String DevDalivFormat = "";
+        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevComon().trim();
 
         try {
             DevDadevFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDadev())));
@@ -64,13 +65,13 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
             e.printStackTrace();
         }
         /**Initialisation des informations devis**/
-        holder.TxtClirasoc.setText(devis.getCliRasoc());
+        holder.TxtClirasoc.setText(devis.getCliRasoc().trim());
         holder.TxtDevDaliv.setText(DevDalivFormat);
-        holder.TxtDevVadev.setText(String.valueOf(devis.getDevVadev()));
+        holder.TxtDevVadev.setText(vadev);
         holder.TxtDevNudev.setText(devis.getDevNudev());
         holder.TxtDevDadev.setText(DevDadevFormat);
-        holder.TxtDevLieuv.setText(devis.getDevLieuv());
-        holder.TxtDevRefdev.setText(devis.getDevRfdev());
+        holder.TxtDevLieuv.setText(devis.getDevLieuv().trim());
+        holder.TxtDevRefdev.setText(devis.getDevRfdev().trim());
         /**Au clic du bouton détail**/
         holder.FabDevisDetails.setOnClickListener(v -> {
             Intent i = new Intent(context, FicheDevisActivity.class);
@@ -105,7 +106,6 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
         TextView TxtClirasoc,TxtDevDaliv,TxtDevVadev, TxtDevNudev, TxtDevDadev, TxtDevLieuv, TxtDevRefdev;
         MaterialButton FabDevisDetails;
         LinearLayout Lnr01, expandableLayout;
-
 
         public DevisVh(View itemView) {
             super(itemView);

@@ -35,6 +35,7 @@ public class Devis implements Serializable {
 
     private String DevTxhEnt;
     private String DevTxhPie;
+    private String DexTexte;
 
     //Expandables
     private boolean expandable;
@@ -47,7 +48,7 @@ public class Devis implements Serializable {
         this.expandable = false;
     }
 
-    public Devis(String devNudev, String devDadev, String devRfdev, String devLieuv, Double devVadev, String devDaliv, String cliRasoc) {
+    public Devis(String devNudev, String devDadev, String devRfdev, String devLieuv, Double devVadev, String devDaliv, String cliRasoc, String devComon) {
         DevNudev = devNudev;
         DevDadev = devDadev;
         DevRfdev = devRfdev;
@@ -55,6 +56,7 @@ public class Devis implements Serializable {
         DevVadev = devVadev;
         DevDaliv = devDaliv;
         CliRasoc = cliRasoc;
+        DevComon = devComon;
         this.expandable = false;
     }
 
@@ -272,6 +274,15 @@ public class Devis implements Serializable {
 
     public void setDevTxhPie(String devTxhPie) {
         DevTxhPie = devTxhPie;
+    }
+
+
+    public String getDexTexte() {
+        return DexTexte;
+    }
+
+    public void setDexTexte(String dexTexte) {
+        DexTexte = dexTexte;
     }
 
     @Override
