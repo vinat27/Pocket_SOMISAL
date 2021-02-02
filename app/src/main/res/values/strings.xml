@@ -208,4 +208,9 @@
     <string name="fragment_reglement_StepTitleContact">Contact</string>
     <string name="fragment_reglement_EdtComTelep">Téléphone</string>
     <string name="fragment_reglement_EdtComIdcor">Correspondant</string>
+
+    <!--activity_add_produit_commande-->
+    <string name="add_produit_commande_activity_TxtComNucomTitle">N° Commande</string>
+    <string name="add_produit_commande_TxtComStatuTitle">Statut</string>
+    <string name="add_produit_commande_activity_TxtLiMagasin">Magasin</string>
 </resources>

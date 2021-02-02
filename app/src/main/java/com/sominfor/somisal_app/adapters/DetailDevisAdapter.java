@@ -64,12 +64,15 @@ public class DetailDevisAdapter extends RecyclerView.Adapter<DetailDevisAdapter.
     public void onBindViewHolder(@NonNull DetailDevisAdapter.DetailDevisVh holder, int position) {
         DetailDevis detailDevis = detailDevisList.get(position);
 
+        String Qtdev = detailDevis.getDdvQtdev()+detailDevis.getDdvUnvte();
+        Double vapos = detailDevis.getDdvQtdev() * detailDevis.getDdvPutar();
+
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailDevis.getDdvLipro());
         holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
         holder.TxtDdvPutar.setText(String.valueOf(detailDevis.getDdvPutar()));
-        holder.TxtDdvQtdev.setText(String.valueOf(detailDevis.getDdvQtdev()));
-        holder.TxtDdvVadev.setText(String.valueOf(detailDevis.getDdvVadev()));
+        holder.TxtDdvQtdev.setText(Qtdev);
+        holder.TxtDdvVadev.setText(String.format("%.2f", vapos));
         holder.TxtDdvTxRem.setText(String.valueOf(detailDevis.getDdvTxrem()));
         holder.TxtDdvVarem.setText(String.valueOf(detailDevis.getDdvVarem()));
         /**Au clic du bouton détail**/

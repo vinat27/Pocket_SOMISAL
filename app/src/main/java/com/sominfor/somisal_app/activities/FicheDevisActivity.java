@@ -1,10 +1,12 @@
 package com.sominfor.somisal_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -12,7 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.DetailDevisAdapter;
 import com.sominfor.somisal_app.adapters.DevisAdapter;
@@ -22,23 +32,37 @@ import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Produit;
+import com.sominfor.somisal_app.handler.models.ProduitFini;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 public class FicheDevisActivity extends AppCompatActivity {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, ApiUrl01;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01;
     Devis devis;
     RecyclerView RecyclerViewDetailsDevis;
     List<DetailDevis> detailDevisList;
     DetailDevisAdapter detailDevisAdapter;
     TextView TxtClirasoc, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevVadev;
+    public RequestQueue rq;
+    DelayedProgressDialog progressDialogInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +89,9 @@ public class FicheDevisActivity extends AppCompatActivity {
 
         serveurNodeController = new ServeurNodeController();
         serveurNode = serveurNodeController.getServeurNodeInfos();
-
+        progressDialogInfo = new DelayedProgressDialog();
+        /*URL Récupération de la liste des systèmes*/
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/DetailDevis";
         /**Récupération de session utilisateur**/
         utilisateur = UserSessionManager.getInstance(getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
@@ -83,11 +109,14 @@ public class FicheDevisActivity extends AppCompatActivity {
         TxtClirasoc.setText(devis.getCliRasoc());
         TxtDevStatu.setText(devis.getDevStatut());
         TxtDevLimag.setText(devis.getDevComag());
-        TxtDevLiliv.setText(devis.getDevLieuv());
+        TxtDevLiliv.setText(devis.getDevColiv());
         TxtDevVadev.setText(vadev);
 
-        initData();
-        setRecyclerview();
+        detailDevisList = new ArrayList<>();
+
+        /**Récupération details devis**/
+        recupererDetailsDevis(apiUrl01, devis.getDevNudev());
+
     }
 
 
@@ -111,8 +140,9 @@ public class FicheDevisActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 CommentairesDevisFullDialog commentairesDevisFullDialog = CommentairesDevisFullDialog.newInstance();
                 Bundle args = new Bundle();
-                args.putString("devtxnpi", "RAS");
-                args.putString("devtxnen", "");
+                args.putString("devtxnpi", devis.getDevTxhPie());
+                args.putString("devtxnen", devis.getDevTxhEnt());
+                args.putString("devdextxt", devis.getDexTexte());
                 commentairesDevisFullDialog.setArguments(args);
                 commentairesDevisFullDialog.show(fragmentManager, ServeurNode.TAG);
                 return true;
@@ -120,17 +150,61 @@ public class FicheDevisActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setRecyclerview(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        detailDevisAdapter = new DetailDevisAdapter(getApplicationContext(), detailDevisList, fragmentManager);
-        RecyclerViewDetailsDevis.setAdapter(detailDevisAdapter);
-        RecyclerViewDetailsDevis.setHasFixedSize(true);
-    }
+    /***Récupérer les détails devis**/
+    public void recupererDetailsDevis(String api_url, final String devNudev) {
+        RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
+        progressDialogInfo.show(getSupportFragmentManager(), "Loading...");
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
 
-    public void initData(){
-        detailDevisList = new ArrayList<>();
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                    /**Commentaires et Post-it***/
+                    devis.setDevTxhEnt(jsonObject.getString("DEVTXHEN"));
+                    devis.setDevTxhPie(jsonObject.getString("DEVTXHPI"));
+                    devis.setDexTexte(jsonObject.getString("DEXTEXTE"));
+                    /**Formatage de l'array produit**/
+                    JSONArray array= jsonObject.getJSONArray("Produits");
+                    for(int i=0;i<array.length();i++) {
+                        JSONObject object1 = array.getJSONObject(i);
+                        DetailDevis detailDevis = new DetailDevis();
+                        detailDevis.setDdvPodev(object1.getInt("DDVPODEV"));
+                        detailDevis.setDdvQtdev(object1.getDouble("DDVQTDEV"));
+                        detailDevis.setDdvPutar(object1.getDouble("DDVPUTAR"));
+                        detailDevis.setDdvTxrem(object1.getDouble("DDVTXREM"));
+                        detailDevis.setDdvVarem(object1.getDouble("DDVVAREM"));
+                        detailDevis.setDdvCopro(object1.getInt("DDVCOPRO"));
+                        detailDevis.setDdvUnvte(object1.getString("DDVUNVTE"));
+                        detailDevis.setDdvLipro(object1.getString("PROLIPRO"));
+                        detailDevis.setDdvTxnPo(object1.getString("TXNTEXTE"));
 
-        detailDevisList.add(new DetailDevis(3154,573,"K",1000,5.000,12.47,0.00,0.00,24.94,"AMANDE EFFILEE BLANCHIE 5 KG","", "Euros"));
-        detailDevisList.add(new DetailDevis(4,483,"P",2000,5.000,1.67,0.00,0.00, 3.34, "BOITE FER SPECIAL PIZZA", "", "Euros"));
+                        detailDevisList.add(detailDevis);
+
+                        progressDialogInfo.cancel();
+                    }
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                detailDevisAdapter = new DetailDevisAdapter(getApplicationContext(), detailDevisList, fragmentManager);
+                RecyclerViewDetailsDevis.setAdapter(detailDevisAdapter);
+                RecyclerViewDetailsDevis.setHasFixedSize(true);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }, volleyError -> {
+            volleyError.printStackTrace();
+            progressDialogInfo.cancel();
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("nudev", devNudev);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
     }
 }
