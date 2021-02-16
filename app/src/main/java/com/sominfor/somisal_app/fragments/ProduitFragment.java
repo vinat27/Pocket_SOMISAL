@@ -227,10 +227,13 @@ public class ProduitFragment extends Fragment implements CallbackListener {
                         Produit produit = new Produit();
 
                         produit.setProcopro(jsonObject.getInt("PROCOPRO"));
-                        produit.setProlipro(jsonObject.getString("PROLIPRO"));
+                        produit.setProlipro(jsonObject.getString("PROLIPRO").trim());
                         produit.setProcofam(jsonObject.getString("PROCOFAM"));
                         produit.setProsofam(jsonObject.getString("PROSOFAM"));
                         produit.setPronuprm(jsonObject.getInt("PRONUPRM"));
+                        produit.setProunvte(jsonObject.getString("PROUNVTE").trim());
+                        produit.setProcofvt(jsonObject.getInt("PROCOFVT"));
+                        produit.setProliunvte(jsonObject.getString("DATA1").trim());
                         //Populariser la liste des produits
                         produits.add(produit);
                     }catch(JSONException e){

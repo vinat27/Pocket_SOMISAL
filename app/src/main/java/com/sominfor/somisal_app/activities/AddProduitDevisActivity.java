@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
@@ -43,11 +45,20 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
     DetailsDevisProduitsAdapter detailsDevisProduitsAdapter;
     List<DetailDevis> detailDevisList = new ArrayList<>();
 
+
+
     @Override
     public void onDataReceived(DetailDevis detailDevis) {
         Lnr01.setVisibility(View.GONE);
-        detailDevisList.add(detailDevis);
-        detailsDevisProduitsAdapter.notifyItemInserted(detailDevisList.size());
+        int spinnerPosition = detailDevisList.indexOf(detailDevis);
+        /**Actualisation si produit existe ou ajout si produit absent dans la liste**/
+        if (spinnerPosition != -1){
+            detailDevisList.set(spinnerPosition, detailDevis);
+            detailsDevisProduitsAdapter.notifyItemChanged(spinnerPosition);
+        }else{
+            detailDevisList.add(detailDevis);
+            detailsDevisProduitsAdapter.notifyItemInserted(detailDevisList.size());
+        }
     }
 
     @Override
@@ -132,4 +143,8 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
 
     public void doNegativeClick(DetailDevis dd) {
     }
+
+
+
+
 }

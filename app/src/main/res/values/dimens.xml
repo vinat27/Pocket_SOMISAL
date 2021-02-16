@@ -57,4 +57,9 @@
     <dimen name="item_details_devis_TxtDdvPodev_TextSize">17sp</dimen>
     <dimen name="item_details_devis_TxtDdvPodev_Layout_heigth">35dp</dimen>
     <dimen name="item_details_devis_TxtDdvPodev_MarginTop">22dp</dimen>
+
+    <!--Dimensions activity_client_details-->
+    <dimen name="activity_client_details_htab_collapse_toolbar_heigth">156dp</dimen>
+    <dimen name="activity_client_details_htab_header_marginTop">25dp</dimen>
+    <dimen name="activity_client_details_htab_toolbar_marginBottom">48dp</dimen>
 </resources>

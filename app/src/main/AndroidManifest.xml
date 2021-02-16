@@ -13,8 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.AddProduitCommandeActivity"></activity>
-        <activity android:name=".activities.AddCommandeActivity" />
+        <activity android:name=".activities.ReglementActivity"></activity>
+        <activity android:name=".activities.AdresseLivraisonActivity" />
+        <activity android:name=".activities.AdresseFacturationActivity" />
+        <activity
+            android:name=".activities.ClientDetailsActivity"
+            android:theme="@style/SomisalTheme.NoActionBar" />
+        <activity android:name=".activities.AddProduitCommandeActivity" />
+        <activity
+            android:name=".activities.AddCommandeActivity"
+            android:windowSoftInputMode="stateVisible" />
         <activity android:name=".activities.CommandeDetailsActivity" />
         <activity android:name=".activities.AddProduitDevisActivity" />
         <activity

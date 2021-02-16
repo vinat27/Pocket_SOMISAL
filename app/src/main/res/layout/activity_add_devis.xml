@@ -32,7 +32,7 @@
 
                     <!--Choix de clients-->
                     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                        android:id="@+id/MbSpnFamille"
+                        android:id="@+id/MbSpnCliRasoc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"

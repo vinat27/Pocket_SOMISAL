@@ -59,7 +59,7 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientVh> 
         holder.TxtIcon.setText(initials);
         holder.TxtCliRasoc.setText(client.getCliRasoc().trim().toUpperCase());
         holder.TxtCliNucli.setText("Numéro: "+client.getCliNucli());
-        holder.TxtCliNacli.setText("Nature: "+client.getCliNacli());
+        holder.TxtCliNacli.setText("Nature: "+client.getCliLiNacli());
 
         /***Changement de couleurs**/
         Random mRandom = new Random();
@@ -151,7 +151,7 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientVh> 
                 /**Parcours de la liste des interventions**/
                 for (Client item : clientSearch) {
                     /**Comparaison des résultats et ajout dans la liste de résultats**/
-                    if (item.getCliRasoc().toLowerCase().contains(filterPattern) || String.valueOf(item.getCliNacli()).toLowerCase().contains(filterPattern)) {
+                    if (item.getCliRasoc().toLowerCase().contains(filterPattern) || String.valueOf(item.getCliLiNacli()).toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }

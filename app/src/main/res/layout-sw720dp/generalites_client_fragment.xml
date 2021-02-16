@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back_produit">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView2"
+            style="@style/CustomCardViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/TxtCliRasoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text=""
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+                    tools:targetApi="jelly_bean" />
+
+                <TextView
+                    android:id="@+id/TxtCliNucli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/TxtCliRasoc"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/TxtIcon"
+                    android:layout_toRightOf="@+id/TxtIcon"
+                    android:text="TextView"
+                    android:textStyle="bold" />
+                <!--Nature client 1-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/TxtCliNacliTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/generalites_client_fragment_TxtCliNacliTitle_Text"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+                    <TextView
+                        android:id="@+id/TxtCliNacli"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+                <!--Nature client 1-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/TxtCliLivthTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/generalites_client_fragment_TxtCliLivthTitle_Text"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+                    <TextView
+                        android:id="@+id/TxtCliLivth"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+
+                 <!--Adresse 1-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/TxtComAdresse"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/activity_commande_details_TxtComAdresse_Text"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtComadre1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+                <!--Adresse 2-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtCliAdre2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+                <!--Code Postal - Ville-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/TxtCp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="@string/activity_commande_details_TxtCp"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtCliCopos"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+                    <TextView
+                        android:id="@+id/TxtVille"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/activity_commande_details_TxtVille"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/TxtCliville"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.35"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+                <!--Code Postal - Ville-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="14dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/TxtBp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="@string/activity_commande_details_TxtBp"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtCliBopos"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+                    <TextView
+                        android:id="@+id/TxtPays"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/activity_commande_details_TxtPays"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/TxtCliCpays"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.35"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!--Livraison-->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView4"
+            style="@style/CustomCardViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <!--Adresse de livraison-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/TxtLivraisonText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
+                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                            android:layout_marginRight="@dimen/activity_horizontal_margin"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="@string/TxtLivraisonText"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+                            tools:targetApi="jelly_bean" />
+
+                        <TextView
+                            android:id="@+id/TxtCliRasol"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
+                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                            android:layout_marginRight="@dimen/activity_horizontal_margin"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+                            tools:targetApi="jelly_bean" />
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+                <!--Adresse 1-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/activity_commande_details_TxtComAdresse_Text"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtCliAdr1l"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+                <!--Adresse 2-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtCliAdr2l"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+                <!--Code Postal - Ville-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="@string/activity_commande_details_TxtCp"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtCliCopol"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/activity_commande_details_TxtVille"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/TxtCliVilll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.35"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+                <!--Code Postal - Ville-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="14dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="@string/activity_commande_details_TxtBp"
+                        />
+
+                    <TextView
+                        android:id="@+id/TxtCliBopol"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="@string/activity_commande_details_TxtPays"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/TxtCliCpayl"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.35"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:text="" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</RelativeLayout>

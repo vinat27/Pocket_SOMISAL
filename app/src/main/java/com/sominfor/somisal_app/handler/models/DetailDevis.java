@@ -192,7 +192,7 @@ public class DetailDevis implements Serializable {
         }
         DetailDevis c = (DetailDevis) t;
         //Compare however you want, ie
-        return  (String.valueOf(c.getDdvPodev()).equals(String.valueOf(this.getDdvPodev())));
+        return  (String.valueOf(c.getDdvCopro()).equals(String.valueOf(this.getDdvCopro())));
     }
 
 

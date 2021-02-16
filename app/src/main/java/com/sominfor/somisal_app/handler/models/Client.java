@@ -133,12 +133,24 @@ public class Client implements Serializable {
     private Double CliMtcau;
     private String CliDatlc;
 
+    /**Libellés**/
+    private String CliLiNacli;
+    private String CliLiCpays;
+
     public Client(){}
 
     public Client(String cliNucli, String cliNacli, String cliRasoc) {
         CliNucli = cliNucli;
         CliNacli = cliNacli;
         CliRasoc = cliRasoc;
+    }
+
+    public String getCliLiCpays() {
+        return CliLiCpays;
+    }
+
+    public void setCliLiCpays(String cliLiCpays) {
+        CliLiCpays = cliLiCpays;
     }
 
     public String getCliCosoc() {
@@ -955,5 +967,18 @@ public class Client implements Serializable {
 
     public void setCliDatlc(String cliDatlc) {
         CliDatlc = cliDatlc;
+    }
+
+    public String getCliLiNacli() {
+        return CliLiNacli;
+    }
+
+    public void setCliLiNacli(String cliLiNacli) {
+        CliLiNacli = cliLiNacli;
+    }
+
+    @Override
+    public String toString() {
+        return getCliRasoc();
     }
 }

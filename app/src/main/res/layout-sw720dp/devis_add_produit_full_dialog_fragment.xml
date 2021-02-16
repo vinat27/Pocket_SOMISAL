@@ -105,7 +105,9 @@
                         android:id="@+id/EdtDdvCofvt"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:textIsSelectable="true"
+                        android:inputType="none"
+                        android:focusable="false"
                         android:fontFamily="@font/montserrat_regular" />
                 </com.google.android.material.textfield.TextInputLayout>
 

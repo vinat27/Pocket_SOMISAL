@@ -213,4 +213,26 @@
     <string name="add_produit_commande_activity_TxtComNucomTitle">N° Commande</string>
     <string name="add_produit_commande_TxtComStatuTitle">Statut</string>
     <string name="add_produit_commande_activity_TxtLiMagasin">Magasin</string>
+
+    <!--ClientDetailsActivity-->
+    <string name="activity_client_details_TabMenu1_Title">GENERALITES</string>
+    <string name="activity_client_details_TabMenu2_Title">COMMERCIAL</string>
+    <string name="activity_client_details_TabMenu3_Title">COMPTABILITE</string>
+
+    <!--generalites_client_fragment-->
+    <string name="generalites_client_fragment_TxtCliNacliTitle_Text">Nature Client</string>
+    <string name="generalites_client_fragment_TxtCliLivthTitle_Text">Lieu Vente</string>
+    <string name="activity_commande_details_TxtCliColivTitle_Text">Livreur</string>
+
+    <!--commercial_client_fragment-->
+    <string name="commercial_client_fragment_TxtCliCotrpTitle_Text">Transport</string>
+    <string name="commercial_client_fragment_TxtCliCotrnTitle_Text">Tournée</string>
+    <string name="commercial_client_fragment_TxtContactTextTitle_Text">CONTACT</string>
+    <string name="commercial_client_fragment_ContactCom_Text">Commercial</string>
+    <string name="commercial_client_fragment_TxtCliFonctionTitle_Text">Fonction</string>
+    <string name="commercial_client_fragment_TxtCliTelTitle_Text">Téléphone</string>
+    <string name="commercial_client_fragment_TxtCliMailTitle_Text">E-mail</string>
+    <string name="serveur_node_fragment_BtnSuivant_hint">Suivant</string>
+    <string name="serveur_node_fragment_BtnPrec_hint">Précédent</string>
+    <string name="serveur_node_fragment_BtnTerminer_hint">Terminer</string>
 </resources>

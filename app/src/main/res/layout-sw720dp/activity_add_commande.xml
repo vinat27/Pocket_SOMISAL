@@ -1,13 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.stepstone.stepper.StepperLayout
-        android:id="@+id/stepperLayout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:ms_stepperType="dots"></com.stepstone.stepper.StepperLayout>
-</LinearLayout>
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/StepTitle"
+            android:layout_width="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@color/colorPrimary"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/add_commande_activity_StepTitle"
+            android:textSize="17sp"
+            android:layout_height="wrap_content"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/spinner_style"
+            android:orientation="vertical">
+
+            <!--Choix de clients-->
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/MbSpnComRasoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/montserrat_regular"
+                app:hintText="@string/fragment_entete_MbSpinnerClient"
+                app:met_floatingLabel="normal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/spinner_style"
+            android:orientation="vertical">
+
+            <!--Lieu de vente-->
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/MbSpnCliLieuv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/fragment_entete_MbSpnCliLieuv"
+                app:met_floatingLabel="normal"
+                app:met_hideUnderline="true"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/black" />
+        </LinearLayout>
+
+        <!--Magasin-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/spinner_style"
+            android:orientation="vertical">
+
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/MbSpnComComag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/add_commande_activity_MbSpnComComag"
+                app:met_floatingLabel="normal"
+                app:met_hideUnderline="true"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/black" />
+        </LinearLayout>
+
+        <!--Date Commande-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="@string/add_commande_activity_EdtComDacom"
+            android:inputType="date"
+            app:errorEnabled="true"
+            android:singleLine="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/EdtComDacom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:fontFamily="@font/montserrat_regular" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Référence-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="@string/add_commande_activity_EdtComNamar"
+            android:inputType="text"
+            app:errorEnabled="true"
+            android:singleLine="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/EdtComNamar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Tournée-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/spinner_style"
+            android:orientation="vertical">
+
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/MbSpnComCotrn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/add_commande_activity_MbSpnComCotrn"
+                app:met_floatingLabel="normal"
+                app:met_hideUnderline="true"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/black" />
+        </LinearLayout>
+        <!--Date Livraison-->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="@string/add_commande_activity_EdtComDaliv"
+            android:inputType="date"
+            app:errorEnabled="true"
+            android:singleLine="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/EdtComDaliv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:fontFamily="@font/montserrat_regular" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Livreur-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/spinner_style"
+            android:orientation="vertical">
+
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/MbSpnComColiv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/add_commande_activity_MbSpnComColiv"
+                app:met_floatingLabel="normal"
+                app:met_hideUnderline="true"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/black" />
+        </LinearLayout>
+        <!--Transport-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/spinner_style"
+            android:orientation="vertical">
+
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/MbSpnComCotrp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/add_commande_activity_MbSpnComCotrp"
+                app:met_floatingLabel="normal"
+                app:met_hideUnderline="true"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/black" />
+        </LinearLayout>
+        <!--Valider-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Lnr01"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_gravity="right"
+            android:text="@string/serveur_node_fragment_BtnSuivant_hint"
+            android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
+            android:padding="@dimen/login_activity_BtnConnexion_padding"
+            app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:textColor="@color/colorPrimary" />
+    </LinearLayout>
+</ScrollView>

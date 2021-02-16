@@ -87,6 +87,7 @@ public class DetailDevisAdapter extends RecyclerView.Adapter<DetailDevisAdapter.
                 Intent i = new Intent(context, FicheProduitActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("produit", produit);
+                i.putExtras(bundle);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }else{

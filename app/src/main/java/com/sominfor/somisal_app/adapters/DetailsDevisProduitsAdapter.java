@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Créé par vatsou le 22,janvier,2021
- * SOMINFOR
+x * Créé par vatsou le 22,janvier,2021
+ x* SOMINFOR
  * Paris, FRANCE
  */
 public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDevisProduitsAdapter.DetailDevisProduitVh> {
@@ -64,7 +64,7 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
         holder.TxtDdvPutar.setText(String.valueOf(detailDevis.getDdvPutar()));
         holder.TxtDdvQtdev.setText(String.valueOf(detailDevis.getDdvQtdev()));
-        holder.TxtDdvVadev.setText(String.valueOf(detailDevis.getDdvVadev()));
+        holder.TxtDdvVadev.setText(String.format("%.2f", detailDevis.getDdvVadev()));
         holder.TxtDdvTxRem.setText(String.valueOf(detailDevis.getDdvTxrem()));
         holder.TxtDdvVarem.setText(String.valueOf(detailDevis.getDdvVarem()));
         /**Au clic du bouton détail**/

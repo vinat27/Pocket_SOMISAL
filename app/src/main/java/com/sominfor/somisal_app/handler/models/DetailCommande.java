@@ -186,4 +186,14 @@ public class DetailCommande implements Serializable {
     public void setDcotxn(String dcotxn) {
         this.dcotxn = dcotxn;
     }
+
+    @Override
+    public boolean equals(Object t){
+        if(!(t instanceof DetailCommande)){
+            return false;
+        }
+        DetailCommande c = (DetailCommande) t;
+        //Compare however you want, ie
+        return  (String.valueOf(c.getDcocopro()).equals(String.valueOf(this.getDcocopro())));
+    }
 }

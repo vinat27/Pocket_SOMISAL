@@ -6,21 +6,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.sominfor.somisal_app.handler.models.Produit;
+import com.sominfor.somisal_app.handler.models.Client;
 
 import java.util.List;
 
 /**
- * Créé par vatsou le 23,janvier,2021
+ * Créé par vatsou le 13,février,2021
  * SOMINFOR
  * Paris, FRANCE
- * Adapter pour les combobox
+ * Adapter Client Combobox
  */
-public class ProduitsSearchableAdapter extends ArrayAdapter<Produit> {
+public class ClientSpinnerAdapter extends ArrayAdapter<Client> {
     private final Context context;
-    private final List<Produit> values;
+    private final List<Client> values;
 
-    public ProduitsSearchableAdapter(Context context, int textViewResourceId, List<Produit> values) {
+    public ClientSpinnerAdapter(Context context, int textViewResourceId, List<Client> values) {
         super(context, textViewResourceId, values);
         this.context = context;
         this.values = values;
@@ -32,7 +32,7 @@ public class ProduitsSearchableAdapter extends ArrayAdapter<Produit> {
     }
 
     @Override
-    public Produit getItem(int position) {
+    public Client getItem(int position) {
         return values.get(position);
     }
 

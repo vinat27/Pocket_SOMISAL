@@ -181,7 +181,7 @@ public class DevisFragment extends Fragment {
                         devis.setDevDadev(jsonObject.getString("DEVDADEV"));
                         devis.setDevLieuv(jsonObject.getString("DEVLIEUVLIB"));
                         devis.setDevRfdev(jsonObject.getString("DEVRFDEV"));
-                        devis.setDevStatut(jsonObject.getString("DEVSTATU"));
+                        devis.setDevStatut(jsonObject.getString("DEVSTATULIB"));
                         devis.setDevComag(jsonObject.getString("DEVCOMAGLIB"));
                         devis.setDevColiv(jsonObject.getString("DEVCOLIVLIB"));
 

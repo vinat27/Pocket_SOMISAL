@@ -52,8 +52,16 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
     @Override
     public void onDataReceived(DetailCommande detailCommande) {
         Lnr01.setVisibility(View.GONE);
-        detailCommandeList.add(detailCommande);
-        commandeProduitAdapter.notifyItemInserted(detailCommandeList.size());
+        int spinnerPosition = detailCommandeList.indexOf(detailCommande);
+        if (spinnerPosition != -1){
+            detailCommandeList.set(spinnerPosition, detailCommande);
+            commandeProduitAdapter.notifyItemChanged(spinnerPosition);
+        }else{
+            detailCommandeList.add(detailCommande);
+            commandeProduitAdapter.notifyItemInserted(detailCommandeList.size());
+        }
+
+
     }
 
     @Override

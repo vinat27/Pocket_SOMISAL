@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.fragments.DevisPostItFullDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ProduitFini;
@@ -55,6 +56,7 @@ public class FicheProduitActivity extends AppCompatActivity {
     TextView TxtPrmUnstk, TxtPrmLimag;
     public RequestQueue rq;
     DelayedProgressDialog progressDialogInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

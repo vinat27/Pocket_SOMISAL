@@ -55,6 +55,6 @@ public class Unite {
         }
         Unite c = (Unite) t;
         //Compare however you want, ie
-        return (c.getUniteLibelle() == this.getUniteLibelle()) & (c.getUniteCode().equals(this.getUniteCode()));
+        return (c.getUniteLibelle().equals(this.getUniteLibelle())) & (c.getUniteCode().equals(this.getUniteCode()));
     }
 }

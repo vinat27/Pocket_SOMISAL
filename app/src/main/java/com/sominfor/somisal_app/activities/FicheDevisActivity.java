@@ -176,6 +176,7 @@ public class FicheDevisActivity extends AppCompatActivity {
                         detailDevis.setDdvUnvte(object1.getString("DDVUNVTE"));
                         detailDevis.setDdvLipro(object1.getString("PROLIPRO"));
                         detailDevis.setDdvTxnPo(object1.getString("TXNTEXTE"));
+                        detailDevis.setDdvNuprm(object1.getInt("DDVNUPRM"));
 
                         detailDevisList.add(detailDevis);
 
