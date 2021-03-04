@@ -52,7 +52,7 @@ public class EnteteFragment extends Fragment implements BlockingStep {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage;
     public RequestQueue rq;
     SearchableSpinner SsnComCliRasoc;
     @Override
@@ -65,6 +65,8 @@ public class EnteteFragment extends Fragment implements BlockingStep {
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
         utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
 
         serveurNodeController = new ServeurNodeController();
         /**Récupération du serveur node**/
@@ -164,6 +166,8 @@ public class EnteteFragment extends Fragment implements BlockingStep {
                 param.put("systeme",systemeAdresse);
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };

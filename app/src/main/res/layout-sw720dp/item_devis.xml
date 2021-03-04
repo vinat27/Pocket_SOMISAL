@@ -256,19 +256,79 @@
                     android:text="*"
                     android:paddingLeft="8sp"/>
             </LinearLayout>
-            <!--Détails Devis-->
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/FabDevisDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_gravity="bottom|right"
-                android:textColor="@color/white"
-                android:text="Détails"
-                app:icon="@drawable/ic_baseline_visibility_24"
-                app:iconTint="@color/white"
-                app:backgroundTint="@color/colorPrimary"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+
+                <!--Détails Devis-->
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabUpdateDevis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:padding="18dp"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:icon="@drawable/ic_baseline_edit_24_white"
+                    app:iconTint="@color/white" />
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabValiderDevis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_gravity="bottom|right"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_baseline_receipt_24_orange"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/colorPrimary"/>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabArchiverDevis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_gravity="bottom|right"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_baseline_archive_24"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/colorPrimary"/>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabDeleteDevis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_gravity="bottom|right"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_baseline_delete_24_white"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/red"/>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabDevisDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_gravity="bottom|right"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_baseline_visibility_24"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/colorPrimary"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

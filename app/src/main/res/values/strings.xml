@@ -84,6 +84,7 @@
     <string name="activity_fiche_produit_TxtMontantHtTitle">Montant H.T.</string>
     <string name="activity_fiche_produit_FabCommentaires">Commentaires</string>
     <string name="activity_fiche_produit_TxtProduits">PRODUITS</string>
+    <string name="activity_fiche_devis_TxtDevNudev">N° devis</string>
 
     <!--item_details_devis-->
     <string name="item_detail_devis_TxtTxRemTitle">Tx Remise</string>
@@ -112,11 +113,15 @@
     <string name="add_devis_activity_EdtDevTxesc">Escompte</string>
     <string name="add_devis_activity_EdtDevEcova">Eco-Participation</string>
     <string name="add_devis_activity_MbSpnDevUscom">Commercial</string>
+    <string name="activity_add_devis_BtnValider_hint">SUIVANT</string>
 
     <!--DevisPostItfullDialog-->
     <string name="DexTexteHint">Post-it</string>
-    <string name="post_it_devis_full_dialog_setTitle">Post-It</string>
+    <string name="post_it_devis_full_dialog_setTitle">Post-It - Commentaires</string>
     <string name="add_produit_devis_activity_TxtDevNudevTitle">Numéro devis</string>
+    <string name="EdtDevTxnEn">Commentaires En-tête</string>
+    <string name="EdtDevTxnPd">Commentaires Pied</string>
+
     <!--AddProduitDevisActivity-->
     <string name="noProductAddedText">Aucun produit</string>
     <string name="activity_add_produit_devis_BtnValider_hint">VALIDER</string>
@@ -156,7 +161,7 @@
     <string name="activity_commande_details_TxtVille">Ville</string>
     <string name="activity_commande_details_TxtBp">B.P.</string>
     <string name="activity_commande_details_TxtPays">Pays</string>
-    <string name="TxtLivraisonText">ADRESSE LIVRAISON</string>
+    <string name="TxtLivraisonText">SOLDE COMPTE</string>
     <!--item_details_commande-->
     <string name="item_detail_commande_TxtQuantiteLivree">Qte Livrée</string>
 
@@ -216,8 +221,8 @@
 
     <!--ClientDetailsActivity-->
     <string name="activity_client_details_TabMenu1_Title">GENERALITES</string>
-    <string name="activity_client_details_TabMenu2_Title">COMMERCIAL</string>
-    <string name="activity_client_details_TabMenu3_Title">COMPTABILITE</string>
+    <string name="activity_client_details_TabMenu2_Title">COMMANDES</string>
+    <string name="activity_client_details_TabMenu3_Title">DEVIS</string>
 
     <!--generalites_client_fragment-->
     <string name="generalites_client_fragment_TxtCliNacliTitle_Text">Nature Client</string>
@@ -235,4 +240,29 @@
     <string name="serveur_node_fragment_BtnSuivant_hint">Suivant</string>
     <string name="serveur_node_fragment_BtnPrec_hint">Précédent</string>
     <string name="serveur_node_fragment_BtnTerminer_hint">Terminer</string>
+
+
+    <!--addDevisactivity Controle de formulaire - Erreurs de formulation-->
+    <string name="error_SAL01">Date de livraison non référencée</string>
+    <string name="error_SAL02">Magasin non référencé</string>
+    <string name="error_SAL03">Lieu de vente non référencé</string>
+    <string name="error_SAL04">Client non référencé</string>
+    <string name="error_SAL05">Tournée non référencée</string>
+    <string name="error_SAL06">Delai de règlement non référencé</string>
+    <string name="error_SAL07">Mode Règlement non référencé</string>
+    <string name="error_SAL08">Date devis incorrecte</string>
+    <string name="error_SAL09">Date de livraison incorrecte</string>
+    <string name="serveur_node_fragment_BtnTerminerDevis_hint">TERMINER</string>
+    <string name="AddProduitDevisStatu">En cours</string>
+    <string name="error_SAL10">Votre panier est vide</string>
+    <string name="post_it_devis_full_dialog_Enregistre">VALIDER</string>
+    <string name="DdvTexteHint">Commentaire de poste</string>
+    <string name="error_SAL11">Livreur non référencé</string>
+    <string name="item_produit_TxtLieuVente">Unité</string>
+    <string name="fiche_devis_activity_TxtDdvCoefTitle">Coefficient</string>
+    <string name="update_ddv_full_dialog_setTitle">Actualisation de poste</string>
+    <string name="item_devis_soldes_NumeroCde">Commande:</string>
+    <string name="TxtSoldeAuxiliairesText">SOLDE COMPTE AUXILIAIRE</string>
+    <string name="TxtAdrLivraisonText">ADRESSE DE LIVRAISON</string>
+
 </resources>

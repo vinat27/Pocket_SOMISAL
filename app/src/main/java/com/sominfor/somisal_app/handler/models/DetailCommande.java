@@ -16,6 +16,8 @@ public class DetailCommande implements Serializable {
     private String dcounvte;
     private long dcocofvt;
 
+    private String dcoTexte;
+
     /**Données commande**/
     private String dconucom;
     private int dcopocom;
@@ -49,6 +51,14 @@ public class DetailCommande implements Serializable {
         Dcovacom = dcovacom;
         this.dcolipro = dcolipro;
         this.dcotxn = dcotxn;
+    }
+
+    public String getDcoTexte() {
+        return dcoTexte;
+    }
+
+    public void setDcoTexte(String dcoTexte) {
+        this.dcoTexte = dcoTexte;
     }
 
     public String getDcocosoc() {

@@ -65,14 +65,26 @@ public class DetailDevisAdapter extends RecyclerView.Adapter<DetailDevisAdapter.
         DetailDevis detailDevis = detailDevisList.get(position);
 
         String Qtdev = detailDevis.getDdvQtdev()+detailDevis.getDdvUnvte();
-        Double vapos = detailDevis.getDdvQtdev() * detailDevis.getDdvPutar();
+        Double wvarem = 0.00;
+        Double wvapos = 0.00;
+
+        /**Calcul de la valeur de poste**/
+        if (detailDevis.getDdvTxrem() > 0){
+            wvarem = (detailDevis.getDdvQtdev() * detailDevis.getDdvPutar()) * (detailDevis.getDdvTxrem()/100);
+        }
+        if (detailDevis.getDdvVarem() > 0){
+            wvarem   = wvarem + (detailDevis.getDdvQtdev() * detailDevis.getDdvVarem());
+        }
+        /***Calcul de la valeur de poste**/
+        wvapos = detailDevis.getDdvPutar() * detailDevis.getDdvQtdev();
+        wvapos = wvapos - wvarem;
 
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailDevis.getDdvLipro());
         holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
         holder.TxtDdvPutar.setText(String.valueOf(detailDevis.getDdvPutar()));
         holder.TxtDdvQtdev.setText(Qtdev);
-        holder.TxtDdvVadev.setText(String.format("%.2f", vapos));
+        holder.TxtDdvVadev.setText(String.format("%.2f", wvapos));
         holder.TxtDdvTxRem.setText(String.valueOf(detailDevis.getDdvTxrem()));
         holder.TxtDdvVarem.setText(String.valueOf(detailDevis.getDdvVarem()));
         /**Au clic du bouton détail**/

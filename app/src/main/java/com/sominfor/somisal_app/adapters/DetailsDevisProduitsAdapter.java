@@ -2,6 +2,7 @@ package com.sominfor.somisal_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.lang.UProperty;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.FicheProduitActivity;
+import com.sominfor.somisal_app.fragments.CommentPosteAddFullDialog;
 import com.sominfor.somisal_app.fragments.CommentPosteFullDialog;
 import com.sominfor.somisal_app.fragments.DeleteAlertDialogFragment;
+import com.sominfor.somisal_app.fragments.UpdateDdvFullDialog;
 import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
@@ -66,7 +69,7 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         holder.TxtDdvQtdev.setText(String.valueOf(detailDevis.getDdvQtdev()));
         holder.TxtDdvVadev.setText(String.format("%.2f", detailDevis.getDdvVadev()));
         holder.TxtDdvTxRem.setText(String.valueOf(detailDevis.getDdvTxrem()));
-        holder.TxtDdvVarem.setText(String.valueOf(detailDevis.getDdvVarem()));
+        holder.TxtDdvVarem.setText(String.format("%.2f", detailDevis.getDdvVarem()));
         /**Au clic du bouton détail**/
         holder.FabDetPro.setOnClickListener(v -> {
             Produit produit = new Produit();
@@ -89,7 +92,11 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
 
         /**Modification de poste**/
         holder.FabUpdatePro.setOnClickListener(v -> {
-
+            UpdateDdvFullDialog updateDdvFullDialog = UpdateDdvFullDialog.newInstance();
+            Bundle args = new Bundle();
+            args.putSerializable("detailDevis", detailDevis);
+            updateDdvFullDialog.setArguments(args);
+            updateDdvFullDialog.show(fragmentManager, ServeurNode.TAG);
         });
 
         /**Suppression de poste**/
@@ -105,11 +112,12 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         holder.FabTxnPro.setOnClickListener(v -> {
             /***Ajout / Mise à jour de serveur**/
 
-            CommentPosteFullDialog commentPosteFullDialog = CommentPosteFullDialog.newInstance();
+
+            CommentPosteAddFullDialog commentPosteAddFullDialog = CommentPosteAddFullDialog.newInstance();
             Bundle args = new Bundle();
-            args.putString("txnpodev", detailDevis.getDdvTxnPo());
-            commentPosteFullDialog.setArguments(args);
-            commentPosteFullDialog.show(fragmentManager, ServeurNode.TAG);
+            args.putSerializable("detailDevis", detailDevis);
+            commentPosteAddFullDialog.setArguments(args);
+            commentPosteAddFullDialog.show(fragmentManager, ServeurNode.TAG);
         });
 
         boolean isExpandable = detailDevisList.get(position).isExpandable();

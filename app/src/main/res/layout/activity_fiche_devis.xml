@@ -167,9 +167,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/montserrat_semibold"
+                        android:textSize="17sp"
                         android:text=""
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/montserrat_bold"/>
                 </LinearLayout>
 
             </LinearLayout>

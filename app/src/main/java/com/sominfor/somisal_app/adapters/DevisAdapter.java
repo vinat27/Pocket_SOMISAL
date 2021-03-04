@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.FicheDevisActivity;
+import com.sominfor.somisal_app.activities.UpdateDevisActivity;
 import com.sominfor.somisal_app.handler.models.Devis;
 
 import java.text.ParseException;
@@ -30,6 +31,10 @@ import java.util.Objects;
  * SOMINFOR
  * Paris, FRANCE
  */
+
+//TODO: 27-02-2021 Gestion des boutons archiver - supprimer - valider
+
+
 public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
     private static List<Devis> devisList;
     private List<Devis> devisSearchs;
@@ -82,6 +87,16 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
             context.startActivity(i);
         });
 
+        /**Button de modification**/
+        holder.FabUpdateDevis.setOnClickListener(v -> {
+            Intent i = new Intent(context, UpdateDevisActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("devis", devis);
+            i.putExtras(bundle);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        });
+
         boolean isExpandable = devisList.get(position).isExpandable();
         holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
     }
@@ -104,7 +119,7 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
     public class DevisVh extends RecyclerView.ViewHolder {
 
         TextView TxtClirasoc,TxtDevDaliv,TxtDevVadev, TxtDevNudev, TxtDevDadev, TxtDevLieuv, TxtDevRefdev;
-        MaterialButton FabDevisDetails;
+        MaterialButton FabDevisDetails, FabUpdateDevis, FabValiderDevis, FabArchiverDevis, FabDeleteDevis;
         LinearLayout Lnr01, expandableLayout;
 
         public DevisVh(View itemView) {
@@ -119,6 +134,10 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
             TxtDevLieuv = itemView.findViewById(R.id.TxtDevLieuv);
             TxtDevRefdev = itemView.findViewById(R.id.TxtDevRefdev);
             FabDevisDetails = itemView.findViewById(R.id.FabDevisDetails);
+            FabUpdateDevis = itemView.findViewById(R.id.FabUpdateDevis);
+            FabValiderDevis = itemView.findViewById(R.id.FabValiderDevis);
+            FabDeleteDevis = itemView.findViewById(R.id.FabDeleteDevis);
+            FabArchiverDevis = itemView.findViewById(R.id.FabArchiverDevis);
             Lnr01 = itemView.findViewById(R.id.Lnr01);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
 

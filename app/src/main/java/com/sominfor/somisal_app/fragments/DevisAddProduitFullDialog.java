@@ -31,6 +31,7 @@ import com.sominfor.somisal_app.handler.models.Unite;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.handler.models.Valrem;
 import com.sominfor.somisal_app.interfaces.DevisProduitsListener;
+import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -46,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.sominfor.somisal_app.activities.AddProduitDevisActivity.produitsDevisList;
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 /**
@@ -70,9 +72,10 @@ public class DevisAddProduitFullDialog extends DialogFragment {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, cliNucli, cliNacli, clilieuv, utilisateurCosoc, utilisateurCoage;
     public RequestQueue rq;
     Double wvarem, wvapos;
+    ApiReceiverMethods apiReceiverMethods;
 
 
     public static DevisAddProduitFullDialog newInstance(){ return new DevisAddProduitFullDialog(); }
@@ -106,6 +109,8 @@ public class DevisAddProduitFullDialog extends DialogFragment {
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
         utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
         /**Initialisation de listes et de la requestQueue**/
         rq = Volley.newRequestQueue(getActivity());
         produitList = new ArrayList<>();
@@ -115,12 +120,26 @@ public class DevisAddProduitFullDialog extends DialogFragment {
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit";
         apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/TarifProduitById";
         apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allUnvte";
+
+        apiReceiverMethods = new ApiReceiverMethods(getActivity().getApplicationContext());
+
+        /**Récupération des commentaires de poste**/
+        assert getArguments() != null;
+        cliNucli = getArguments().getString("clinucli");
+        cliNacli = getArguments().getString("clinacli");
+        clilieuv = getArguments().getString("clilieuv");
         /**Format de date de commande**/
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         dacom = sdf.format(new Date());
 
-        /*** Récupération de liste de produits***/
-        recupererListeProduits(apiUrl01);
+        /**Récupération de la liste des livreurs**/
+        if (produitsDevisList  == null){
+            produitList = apiReceiverMethods.recupererProduits(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+        }else{
+            produitList = produitsDevisList;
+        }
+        produitsSearchableAdapter = new ProduitsSearchableAdapter(getContext(), android.R.layout.simple_spinner_item, produitList);
+        SsnDdvCopro.setAdapter(produitsSearchableAdapter);
 
         /**Récupération de la liste des unités**/
         recupererListeUnites(apiUrl03);
@@ -151,19 +170,16 @@ public class DevisAddProduitFullDialog extends DialogFragment {
             }
         });
 
-
-
         /**Validation**/
         BtnValider.setOnClickListener(v -> {
             if (SsnDdvCopro.getSelectedItem()!=null && MbSpnDdvUnvte.length()!=0 && EdtDdvCofvt.getText().length() != 0 && EdtDdvQtpro.getText().length() != 0){
                 /**Calcul du tarif**/
-                calculTarifRemise(apiUrl02, produit.getProcopro(), produit.getProunvte(), "STP       ", "BID       ", dacom, "000102", Double.parseDouble(EdtDdvQtpro.getText().toString()));
+                calculTarifRemise(apiUrl02, produit.getProcopro(), produit.getProunvte(), clilieuv, cliNacli, dacom, cliNucli, Double.parseDouble(EdtDdvQtpro.getText().toString()));
 
             }else{
                 Toast.makeText(getActivity(), getResources().getString(R.string.devis_add_produit_full_dialog_fields_error), Toast.LENGTH_LONG).show();
             }
         });
-
 
         return view;
     }
@@ -189,53 +205,6 @@ public class DevisAddProduitFullDialog extends DialogFragment {
             dialog.getWindow().setLayout(width, height);
             dialog.getWindow().setWindowAnimations(R.style.SomisalTheme_Slide);
         }
-    }
-
-    /**Récupération de la liste de produits**/
-    public void recupererListeProduits(String api_url){
-        RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
-
-            try{
-                JSONArray array = new JSONArray(s);
-                for (int i=0; i<array.length(); i++){
-                    try{
-                        JSONObject jsonObject = array.getJSONObject(i);
-                        Produit produit = new Produit();
-
-                        produit.setProcopro(jsonObject.getInt("PROCOPRO"));
-                        produit.setProlipro(jsonObject.getString("PROLIPRO").trim());
-                        produit.setProcofam(jsonObject.getString("PROCOFAM"));
-                        produit.setProsofam(jsonObject.getString("PROSOFAM"));
-                        produit.setPronuprm(jsonObject.getInt("PRONUPRM"));
-                        produit.setProunvte(jsonObject.getString("PROUNVTE").trim());
-                        produit.setProcofvt(jsonObject.getInt("PROCOFVT"));
-                        produit.setProliunvte(jsonObject.getString("DATA1").trim());
-                        //Populariser la liste des produits
-                        produitList.add(produit);
-                    }catch(JSONException e){
-                        e.printStackTrace();
-                    }
-                }
-                produitsSearchableAdapter = new ProduitsSearchableAdapter(getContext(), android.R.layout.simple_spinner_item, produitList);
-                SsnDdvCopro.setAdapter(produitsSearchableAdapter);
-            }catch(JSONException e){
-                e.printStackTrace();
-            }
-        }, Throwable::printStackTrace)
-        {
-            protected Map<String,String> getParams(){
-                Map<String, String> param = new HashMap<String, String>();
-                param.put("systeme",systemeAdresse);
-                param.put("login",utilisateurLogin);
-                param.put("password",utilisateurPassword);
-                return param;
-            }
-        };
-        int socketTimeout = 30000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        postRequest.setRetryPolicy(policy);
-        requestQueue.add(postRequest);
     }
 
     /**Récupération des tarifs et remises**/
@@ -264,18 +233,25 @@ public class DevisAddProduitFullDialog extends DialogFragment {
                     /***Calcul de la valeur de poste**/
                     wvapos = valrem.getTarPriun() * Double.parseDouble(EdtDdvQtpro.getText().toString());
                     wvapos = wvapos - wvarem;
-
+                    /**Initialisation de détails devis***/
                     DetailDevis detailDevis = new DetailDevis();
-                    detailDevis.setDdvPodev(1);
                     detailDevis.setDdvCopro(produit.getProcopro());
                     detailDevis.setDdvLipro(produit.getProlipro());
                     detailDevis.setDdvNuprm(produit.getPronuprm());
+                    detailDevis.setDdvUnvte(produit.getProunvte());
                     detailDevis.setDdvPutar(valrem.getTarPriun());
                     detailDevis.setDdvQtdev(Double.parseDouble(EdtDdvQtpro.getText().toString()));
                     detailDevis.setDdvVadev(wvapos);
                     detailDevis.setDdvTxrem(valrem.getRemTxrem());
-                    detailDevis.setDdvVarem(valrem.getRemVarem());
-
+                    detailDevis.setDdvVarem(wvarem);
+                    detailDevis.setDdvTxnPo("");
+                    detailDevis.setDdvDadev(dadev);
+                    /***Extras**/
+                    detailDevis.setDdvCofvt(Integer.parseInt(EdtDdvCofvt.getText().toString()));
+                    detailDevis.setDdvNucli(cliNucli);
+                    detailDevis.setDdvNacli(cliNacli);
+                    detailDevis.setDdvLieuv(clilieuv);
+                    /***Appel de callBack**/
                     devisProduitsListener = (DevisProduitsListener) getActivity();
                     devisProduitsListener.onDataReceived(detailDevis);
                     dismiss();
@@ -300,6 +276,8 @@ public class DevisAddProduitFullDialog extends DialogFragment {
                 param.put("nucli", cliNucli);
                 param.put("dacom", dadev);
                 param.put("qtcom", String.valueOf(qtcom));
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };
@@ -340,6 +318,8 @@ public class DevisAddProduitFullDialog extends DialogFragment {
                 param.put("systeme",systemeAdresse);
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };

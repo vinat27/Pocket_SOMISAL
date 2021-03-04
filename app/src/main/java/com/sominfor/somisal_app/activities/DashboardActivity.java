@@ -1,7 +1,6 @@
 package com.sominfor.somisal_app.activities;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -12,8 +11,6 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.fragments.ClientFragment;
@@ -29,10 +26,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -42,6 +35,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     TextView TxtLogin, TxtFiliale;
     Utilisateur utilisateur;
     FragmentManager fragmentManager;
+    String intentFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +46,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+
 
 
         /**Récupération de session utilisateur**/
@@ -94,10 +89,23 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         TxtLogin.setText(utilisateur.getUtilisateurLogin());
         TxtFiliale.setText(utilisateur.getUtilisateurFiliale());
 
-        if (savedInstanceState == null) {
-            Fragment f = new ClientFragment();
-            fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, f).commit();
+        if( getIntent().getExtras() != null) {
+            intentFragment = getIntent().getExtras().getString("frgToLoad");
+
+            switch (intentFragment) {
+                case "2":
+                    Fragment f = new DevisFragment();
+                    fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, f).commit();
+                    break;
+
+            }
+        }else{
+            if (savedInstanceState == null) {
+                Fragment f = new ClientFragment();
+                fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, f).commit();
+            }
         }
 
     }
@@ -141,6 +149,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     public boolean onNavigationItemSelected(MenuItem item) {
         // Gestion de la navigation
         int id = item.getItemId();
+
         Fragment f = new Fragment();
         /**Gestion des fragments***/
         if (id == R.id.nav_client){

@@ -146,10 +146,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/EdtComBopos"
-                    android:inputType="number"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular" />
+                    android:fontFamily="@font/montserrat_regular"
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--Tournée-->

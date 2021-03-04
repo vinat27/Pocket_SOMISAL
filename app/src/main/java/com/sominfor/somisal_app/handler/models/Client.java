@@ -136,6 +136,11 @@ public class Client implements Serializable {
     /**Libellés**/
     private String CliLiNacli;
     private String CliLiCpays;
+    private String CliLiComon;
+    private String CliLiliv;
+    private String CliLitrn;
+    private String CliLitrp;
+    private String Clililivth;
 
     public Client(){}
 
@@ -143,6 +148,30 @@ public class Client implements Serializable {
         CliNucli = cliNucli;
         CliNacli = cliNacli;
         CliRasoc = cliRasoc;
+    }
+
+    public String getClililivth() {
+        return Clililivth;
+    }
+
+    public void setClililivth(String clililivth) {
+        Clililivth = clililivth;
+    }
+
+    public String getCliLitrp() {
+        return CliLitrp;
+    }
+
+    public void setCliLitrp(String cliLitrp) {
+        CliLitrp = cliLitrp;
+    }
+
+    public String getCliLitrn() {
+        return CliLitrn;
+    }
+
+    public void setCliLitrn(String cliLitrn) {
+        CliLitrn = cliLitrn;
     }
 
     public String getCliLiCpays() {
@@ -975,6 +1004,22 @@ public class Client implements Serializable {
 
     public void setCliLiNacli(String cliLiNacli) {
         CliLiNacli = cliLiNacli;
+    }
+
+    public String getCliLiComon() {
+        return CliLiComon;
+    }
+
+    public void setCliLiComon(String cliLiComon) {
+        CliLiComon = cliLiComon;
+    }
+
+    public String getCliLiliv() {
+        return CliLiliv;
+    }
+
+    public void setCliLiliv(String cliLiliv) {
+        CliLiliv = cliLiliv;
     }
 
     @Override

@@ -36,6 +36,7 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientVh> 
     private String mSections = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#", prolipro;
     private HashMap<Integer, Integer> sectionsTranslator = new HashMap<>();
     private ArrayList<Integer> mSectionPositions;
+    String initials;
 
     /**Constructeur**/
     public ClientAdapter(Context context, List<Client> clientList){
@@ -54,7 +55,12 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientVh> 
     @Override
     public void onBindViewHolder(ClientAdapter.ClientVh holder, int position) {
         Client client = clientList.get(position);
-        String initials = client.getCliRasoc().trim().substring(0,1).toUpperCase() +""+ client.getCliRasoc().trim().substring(1,2).toLowerCase();
+        if (client.getCliRasoc().length() >= 2){
+            initials = client.getCliRasoc().trim().substring(0,1).toUpperCase() +""+ client.getCliRasoc().trim().substring(1,2).toLowerCase();
+        }else{
+            initials = client.getCliRasoc().trim().substring(0,1).toUpperCase();
+        }
+
 
         holder.TxtIcon.setText(initials);
         holder.TxtCliRasoc.setText(client.getCliRasoc().trim().toUpperCase());

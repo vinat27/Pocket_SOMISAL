@@ -75,7 +75,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/TxtDevStatu"
+                        android:id="@+id/TxtComStatu"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -104,7 +104,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/TxtDevLimag"
+                        android:id="@+id/TxtComLimag"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -133,7 +133,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/TxtDevLiliv"
+                        android:id="@+id/TxtComLiliv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -163,7 +163,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/TxtDevVadev"
+                        android:id="@+id/TxtComVacom"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -213,7 +213,7 @@
                             android:ellipsize="end"
                             android:fontFamily="@font/montserrat_semibold"
                             android:text="@string/TxtFacturationText"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@color/orange"
                             android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                             tools:targetApi="jelly_bean" />
 
@@ -227,7 +227,7 @@
                             android:layout_marginEnd="@dimen/activity_horizontal_margin"
                             android:layout_marginRight="@dimen/activity_horizontal_margin"
                             android:ellipsize="end"
-                            android:fontFamily="@font/montserrat_bold"
+                            android:fontFamily="@font/montserrat_semibold"
                             android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                             tools:targetApi="jelly_bean" />
 
@@ -430,8 +430,8 @@
                             android:layout_marginRight="@dimen/activity_horizontal_margin"
                             android:ellipsize="end"
                             android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/TxtLivraisonText"
-                            android:textColor="@color/colorPrimary"
+                            android:text="@string/TxtAdrLivraisonText"
+                            android:textColor="@color/orange"
                             android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                             tools:targetApi="jelly_bean" />
 
@@ -445,7 +445,7 @@
                             android:layout_marginEnd="@dimen/activity_horizontal_margin"
                             android:layout_marginRight="@dimen/activity_horizontal_margin"
                             android:ellipsize="end"
-                            android:fontFamily="@font/montserrat_bold"
+                            android:fontFamily="@font/montserrat_semibold"
                             android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                             tools:targetApi="jelly_bean" />
 

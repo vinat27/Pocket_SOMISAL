@@ -9,4 +9,5 @@ import com.sominfor.somisal_app.handler.models.DetailDevis;
  */
 public interface DevisProduitsListener {
     void onDataReceived(DetailDevis detailDevis);
+    void onDataReceivedPostIt(String DexTexte, String DevTxnEn, String DevTxnPd);
 }

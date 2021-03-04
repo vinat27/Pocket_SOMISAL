@@ -72,7 +72,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, utilisateurCosoc, utilisateurCoage;
     public RequestQueue rq;
     Double wvarem, wvapos;
     public static CommandeAddProduitFullDialog newInstance(){ return new CommandeAddProduitFullDialog(); }
@@ -107,6 +107,8 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
         utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
         /**Initialisation de listes et de la requestQueue**/
         rq = Volley.newRequestQueue(getActivity());
         produitList = new ArrayList<>();
@@ -224,6 +226,8 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
                 param.put("systeme",systemeAdresse);
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };
@@ -295,6 +299,8 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
                 param.put("nucli", cliNucli);
                 param.put("dacom", dadev);
                 param.put("qtcom", String.valueOf(qtcom));
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };
@@ -335,6 +341,8 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
                 param.put("systeme",systemeAdresse);
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };

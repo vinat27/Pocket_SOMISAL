@@ -58,6 +58,19 @@ public class Commande implements Serializable {
     private String commoreg;
     private String comdereg;
 
+    /**Extras**/
+    private String comliliv;
+    private String comlilieuv;
+    private String comlitrn;
+    private String comlimon;
+    private String comlicpays;
+    private String comlicpayr;
+    private String comlimag;
+    private String comlista;
+    private String comtxhen;
+    private String comtxhpd;
+    private String coxtexte;
+
     //Expandables
     private boolean expandable;
 
@@ -74,6 +87,94 @@ public class Commande implements Serializable {
         this.comdaliv = comdaliv;
         this.comcotrn = comcotrn;
         this.comcoliv = comcoliv;
+    }
+
+    public String getCoxtexte() {
+        return coxtexte;
+    }
+
+    public void setCoxtexte(String coxtexte) {
+        this.coxtexte = coxtexte;
+    }
+
+    public String getComtxhen() {
+        return comtxhen;
+    }
+
+    public void setComtxhen(String comtxhen) {
+        this.comtxhen = comtxhen;
+    }
+
+    public String getComtxhpd() {
+        return comtxhpd;
+    }
+
+    public void setComtxhpd(String comtxhpd) {
+        this.comtxhpd = comtxhpd;
+    }
+
+    public String getComlista() {
+        return comlista;
+    }
+
+    public void setComlista(String comlista) {
+        this.comlista = comlista;
+    }
+
+    public String getComlimag() {
+        return comlimag;
+    }
+
+    public void setComlimag(String comlimag) {
+        this.comlimag = comlimag;
+    }
+
+    public String getComlicpayr() {
+        return comlicpayr;
+    }
+
+    public void setComlicpayr(String comlicpayr) {
+        this.comlicpayr = comlicpayr;
+    }
+
+    public String getComlicpays() {
+        return comlicpays;
+    }
+
+    public void setComlicpays(String comlicpays) {
+        this.comlicpays = comlicpays;
+    }
+
+    public String getComlitrn() {
+        return comlitrn;
+    }
+
+    public void setComlitrn(String comlitrn) {
+        this.comlitrn = comlitrn;
+    }
+
+    public String getComlilieuv() {
+        return comlilieuv;
+    }
+
+    public void setComlilieuv(String comlilieuv) {
+        this.comlilieuv = comlilieuv;
+    }
+
+    public String getComliliv() {
+        return comliliv;
+    }
+
+    public void setComliliv(String comliliv) {
+        this.comliliv = comliliv;
+    }
+
+    public String getComlimon() {
+        return comlimon;
+    }
+
+    public void setComlimon(String comlimon) {
+        this.comlimon = comlimon;
     }
 
     public String getComcosoc() {

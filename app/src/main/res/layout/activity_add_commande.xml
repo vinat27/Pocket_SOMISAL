@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/StepTitle"
             android:layout_width="wrap_content"
@@ -16,7 +17,7 @@
             android:fontFamily="@font/montserrat_bold"
             android:text="@string/add_commande_activity_StepTitle"
             android:textSize="17sp"
-            android:layout_height="wrap_content"></TextView>
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,11 +81,10 @@
                 android:hint="@string/add_commande_activity_MbSpnComComag"
                 app:met_floatingLabel="normal"
                 app:met_hideUnderline="true"
-                app:met_textColor="@color/black"
-                app:met_textColorHint="@color/black" />
+                app:met_textColor="@color/black" />
         </LinearLayout>
 
-        <!--Date Commande-->
+        <!--Date commande-->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"

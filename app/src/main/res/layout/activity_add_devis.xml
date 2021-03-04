@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:local="http://schemas.android.com/tools"
     android:background="@drawable/back_produit">
 
     <LinearLayout
@@ -60,10 +61,11 @@
                         android:focusableInTouchMode="false"
                         android:fontFamily="@font/montserrat_regular"
                         android:hint="@string/add_devis_activity_MbSpnLieuv"
+                        android:background="@drawable/selector_gray_white_spinner"
                         app:met_floatingLabel="normal"
                         app:met_hideUnderline="true"
                         app:met_textColor="@color/black"
-                        app:met_textColorHint="@color/black" />
+                        />
                 </LinearLayout>
 
 
@@ -86,8 +88,7 @@
                         android:hint="@string/add_devis_activity_MbSpnDevMag"
                         app:met_floatingLabel="normal"
                         app:met_hideUnderline="true"
-                        app:met_textColor="@color/black"
-                        app:met_textColorHint="@color/black" />
+                        app:met_textColor="@color/black"/>
                 </LinearLayout>
 
                 <!--Date Devis-->
@@ -148,8 +149,7 @@
                     android:hint="@string/add_devis_activity_MbSpnDevColiv"
                     app:met_floatingLabel="normal"
                     app:met_hideUnderline="true"
-                    app:met_textColor="@color/black"
-                    app:met_textColorHint="@color/black" />
+                    app:met_textColor="@color/black" />
             </LinearLayout>
 
                 <!--Date Livraison-->
@@ -173,11 +173,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!--Règlement - Délai-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+
 
                     <!--Règlement-->
                     <LinearLayout
@@ -185,7 +181,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:background="@drawable/spinner_style"
-                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -209,7 +204,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:background="@drawable/spinner_style"
-                        android:layout_weight="1"
                         android:orientation="vertical">
                         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                             android:id="@+id/MbSpnDevDereg"
@@ -226,7 +220,6 @@
                             app:met_textColorHint="@color/black" />
                     </LinearLayout>
 
-                </LinearLayout>
                 <!--Remise Globale - Escompte-->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -340,7 +333,7 @@
                     android:layout_below="@id/Lnr01"
                     android:fontFamily="@font/montserrat_medium"
                     android:layout_gravity="center"
-                    android:text="@string/serveur_node_fragment_BtnValider_hint"
+                    android:text="@string/activity_add_devis_BtnValider_hint"
                     android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
                     android:padding="@dimen/login_activity_BtnConnexion_padding"
                     app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"

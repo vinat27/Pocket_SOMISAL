@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -13,6 +14,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.interfaces.CallBackPostIt;
+import com.sominfor.somisal_app.interfaces.DevisProduitsListener;
 
 /**
  * Créé par vatsou le 21,janvier,2021
@@ -22,10 +24,10 @@ import com.sominfor.somisal_app.interfaces.CallBackPostIt;
 public class DevisPostItFullDialog extends DialogFragment {
     public static final String TAG = DevisPostItFullDialog.class.getSimpleName();
     private Toolbar toolbar;
-    CallBackPostIt callBackPostIt;
-    TextInputEditText EdtDexTexte;
+    DevisProduitsListener devisProduitsListener;
+    TextInputEditText EdtDexTexte, EdtDevTxnEn, EdtDevTxnPd;
     MaterialButton BtnValider;
-    String dexTexte;
+    String dexTexte, devTxnEn, devTxnPd;
 
     public static DevisPostItFullDialog newInstance(){ return new DevisPostItFullDialog(); }
 
@@ -42,8 +44,20 @@ public class DevisPostItFullDialog extends DialogFragment {
         /***Instanciation des widgets***/
         toolbar = view.findViewById(R.id.toolbar);
         EdtDexTexte = view.findViewById(R.id.EdtDexTexte);
+        EdtDevTxnEn = view.findViewById(R.id.EdtDevTxnEn);
+        EdtDevTxnPd = view.findViewById(R.id.EdtDevTxnPd);
         BtnValider = view.findViewById(R.id.BtnValider);
 
+        /**Initialisation des Strings**/
+        assert getArguments() != null;
+        dexTexte = getArguments().getString("dextexte");
+        devTxnEn = getArguments().getString("devtxten");
+        devTxnPd = getArguments().getString("devtxtpd");
+
+        /*Set values to Edittexts**/
+        EdtDexTexte.setText(dexTexte);
+        EdtDevTxnEn.setText(devTxnEn);
+        EdtDevTxnPd.setText(devTxnPd);
 
         return view;
     }
@@ -54,11 +68,21 @@ public class DevisPostItFullDialog extends DialogFragment {
 
         toolbar.setNavigationOnClickListener(v -> dismiss());
         toolbar.setTitle(getResources().getString(R.string.post_it_devis_full_dialog_setTitle));
-        //toolbar.inflateMenu(R.menu.menu_filter_produit_full_dialog);
         BtnValider.setOnClickListener(v -> {
+            /**Récupération Post-it**/
+            if (EdtDexTexte.getText().length() != 0)
             dexTexte = EdtDexTexte.getText().toString();
-            callBackPostIt = (CallBackPostIt) getActivity();
-            callBackPostIt.onDataReceived(dexTexte);
+            /**Récupération de commentaire En-tête**/
+            if (EdtDevTxnEn.getText().length() != 0)
+            devTxnEn = EdtDevTxnEn.getText().toString();
+
+            /**Récupération de commentaire Pied**/
+            if (EdtDevTxnPd.getText().length() != 0)
+                devTxnPd = EdtDevTxnPd.getText().toString();
+
+            devisProduitsListener = (DevisProduitsListener) getActivity();
+            devisProduitsListener.onDataReceivedPostIt(dexTexte, devTxnEn, devTxnPd);
+            Toast.makeText(getActivity(), "Informations enregistrées", Toast.LENGTH_LONG).show();
             dismiss();
         });
     }

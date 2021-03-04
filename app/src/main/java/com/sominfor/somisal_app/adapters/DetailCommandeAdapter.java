@@ -56,15 +56,29 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
     @Override
     public void onBindViewHolder(@NonNull DetailCommandeAdapter.DetailCommandeVh holder, int position) {
         DetailCommande detailCommande = detailCommandeList.get(position);
+        String qtliv = String.format("%.3f", detailCommande.getDcoqtcom()) +" "+detailCommande.getDcounvte();
+        Double wvarem = 0.00;
+        Double wvapos = 0.00;
 
+        /**Calcul de la valeur de poste**/
+        if (detailCommande.getDcotxrem() > 0){
+            wvarem = (detailCommande.getDcoqtcom() * detailCommande.getDcoputar()) * (detailCommande.getDcotxrem()/100);
+        }
+        if (detailCommande.getDcovarem() > 0){
+            wvarem   = wvarem + (detailCommande.getDcoqtcom() * detailCommande.getDcovarem());
+        }
+        /***Calcul de la valeur de poste**/
+        wvapos = detailCommande.getDcoputar() * detailCommande.getDcoqtcom();
+        wvapos = wvapos - wvarem;
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailCommande.getDcolipro());
         holder.TxtDcopocom.setText(String.valueOf(detailCommande.getDcopocom()));
         holder.TxtDcoputar.setText(String.format("%.2f", detailCommande.getDcoputar()));
         holder.TxtDcoqtcom.setText(String.format("%.3f", detailCommande.getDcoqtcom()));
-        holder.TxtDcovacom.setText(String.format("%.2f", detailCommande.getDcovacom()));
+        holder.TxtDcovacom.setText(String.format("%.2f", wvapos));
         holder.TxtDcoTxRem.setText(String.valueOf(detailCommande.getDcotxrem()));
         holder.TxtDcoVarem.setText(String.valueOf(detailCommande.getDcovarem()));
+        holder.TxtDcoqtliv.setText(qtliv);
         /**Au clic du bouton détail**/
         holder.FabDetPro.setOnClickListener(v -> {
             Produit produit = new Produit();
@@ -117,7 +131,7 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
 
     public class DetailCommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtProLipro,TxtDcopocom,TxtDcoqtcom, TxtDcoputar, TxtDcovacom, TxtDcoTxRem, TxtDcoVarem;
+        TextView TxtProLipro,TxtDcopocom,TxtDcoqtcom, TxtDcoputar, TxtDcovacom, TxtDcoTxRem, TxtDcoVarem, TxtDcoqtliv;
         MaterialButton FabDetPro, FabTxnPro;
         LinearLayout Lnr01, expandableLayout;
 
@@ -135,6 +149,7 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
             TxtDcoVarem = itemView.findViewById(R.id.TxtDcoVarem);
             FabDetPro = itemView.findViewById(R.id.FabDetPro);
             FabTxnPro = itemView.findViewById(R.id.FabTxnPro);
+            TxtDcoqtliv = itemView.findViewById(R.id.TxtDcoqtliv);
             Lnr01 = itemView.findViewById(R.id.Lnr01);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
 

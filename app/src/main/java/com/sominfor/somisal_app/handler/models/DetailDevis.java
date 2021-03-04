@@ -8,7 +8,7 @@ import java.util.Objects;
  * SOMINFOR
  * Paris, FRANCE
  */
-public class DetailDevis implements Serializable {
+public class DetailDevis implements Serializable, Comparable<DetailDevis> {
     private String DdvCosoc;
     private String DdvCoage;
     private int DdvCopro;
@@ -25,6 +25,11 @@ public class DetailDevis implements Serializable {
     private Double DdvVadev;
     private String DdvTxnPo;
     private String DdvComon;
+    private String DdvDadev;
+
+    private String DdvNucli;
+    private String DdvNacli;
+    private String DdvLieuv;
 
     //Expandables
     private boolean expandable;
@@ -47,6 +52,39 @@ public class DetailDevis implements Serializable {
         DdvTxnPo = ddvTxnPo;
         DdvComon = ddvcomon;
         this.expandable = false;
+    }
+
+
+    public String getDdvNucli() {
+        return DdvNucli;
+    }
+
+    public void setDdvNucli(String ddvNucli) {
+        DdvNucli = ddvNucli;
+    }
+
+    public String getDdvNacli() {
+        return DdvNacli;
+    }
+
+    public void setDdvNacli(String ddvNacli) {
+        DdvNacli = ddvNacli;
+    }
+
+    public String getDdvLieuv() {
+        return DdvLieuv;
+    }
+
+    public void setDdvLieuv(String ddvLieuv) {
+        DdvLieuv = ddvLieuv;
+    }
+
+    public String getDdvDadev() {
+        return DdvDadev;
+    }
+
+    public void setDdvDadev(String ddvDadev) {
+        DdvDadev = ddvDadev;
     }
 
     public String getDdvCosoc() {
@@ -195,5 +233,14 @@ public class DetailDevis implements Serializable {
         return  (String.valueOf(c.getDdvCopro()).equals(String.valueOf(this.getDdvCopro())));
     }
 
+    @Override
+    public int compareTo(DetailDevis o) {
+        if (this.getDdvPodev() > o.getDdvPodev()) {
+            return 1;
+        } else if (this.getDdvPodev() < o.getDdvPodev()) {
+            return -1;
+        }
+        return 0;
+    }
 
 }

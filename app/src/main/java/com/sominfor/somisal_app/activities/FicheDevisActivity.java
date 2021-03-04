@@ -55,7 +55,7 @@ public class FicheDevisActivity extends AppCompatActivity {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage;
     Devis devis;
     RecyclerView RecyclerViewDetailsDevis;
     List<DetailDevis> detailDevisList;
@@ -97,6 +97,8 @@ public class FicheDevisActivity extends AppCompatActivity {
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
         utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
 
         /**Récupération de l'objet devis**/
         Bundle bundle = getIntent().getExtras();
@@ -108,8 +110,8 @@ public class FicheDevisActivity extends AppCompatActivity {
         /**Set Data to Textviews**/
         TxtClirasoc.setText(devis.getCliRasoc());
         TxtDevStatu.setText(devis.getDevStatut());
-        TxtDevLimag.setText(devis.getDevComag());
-        TxtDevLiliv.setText(devis.getDevColiv());
+        TxtDevLimag.setText(devis.getDevLimag());
+        TxtDevLiliv.setText(devis.getDevliliv());
         TxtDevVadev.setText(vadev);
 
         detailDevisList = new ArrayList<>();
@@ -200,6 +202,8 @@ public class FicheDevisActivity extends AppCompatActivity {
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("nudev", devNudev);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };
@@ -208,4 +212,6 @@ public class FicheDevisActivity extends AppCompatActivity {
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
     }
+
+
 }

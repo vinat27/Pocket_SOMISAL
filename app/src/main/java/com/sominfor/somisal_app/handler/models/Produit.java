@@ -22,7 +22,7 @@ public class Produit implements Serializable {
     private String prouncdt;
     private float procofcd;
     private String prounvte;
-    private float procofvt;
+    private int procofvt;
     private String procota1;
     private String procota2;
     private String procota3;
@@ -41,7 +41,7 @@ public class Produit implements Serializable {
     public Produit() {
     }
 
-    public Produit(int procopro, String prolipro, String prounvte, float procofvt, String proliunvte) {
+    public Produit(int procopro, String prolipro, String prounvte, int procofvt, String proliunvte) {
         this.procopro = procopro;
         this.prolipro = prolipro;
         this.prounvte = prounvte;
@@ -145,11 +145,11 @@ public class Produit implements Serializable {
         this.prounvte = prounvte;
     }
 
-    public float getProcofvt() {
+    public int getProcofvt() {
         return procofvt;
     }
 
-    public void setProcofvt(float procofvt) {
+    public void setProcofvt(int procofvt) {
         this.procofvt = procofvt;
     }
 

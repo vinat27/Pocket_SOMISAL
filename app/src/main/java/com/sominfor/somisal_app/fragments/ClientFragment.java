@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,13 +33,16 @@ import com.sominfor.somisal_app.activities.ClientDetailsActivity;
 import com.sominfor.somisal_app.activities.DelayedProgressDialog;
 import com.sominfor.somisal_app.activities.LoginActivity;
 import com.sominfor.somisal_app.adapters.ClientAdapter;
+import com.sominfor.somisal_app.adapters.ClientSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.ProduitAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
+import com.sominfor.somisal_app.handler.models.Pays;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.interfaces.RecyclerViewClickListener;
+import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.RecyclerViewTouchListener;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -55,6 +59,7 @@ import java.util.Objects;
 import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
+import static com.sominfor.somisal_app.fragments.FilterProduitFullDialog.TAG;
 
 /**
  * Créé par vatsou le 25,janvier,2021
@@ -64,9 +69,9 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
  */
 public class ClientFragment extends Fragment {
     IndexFastScrollRecyclerView mRecyclerView;
-    List<Client> clients;
+    public static List<Client> clients;
     ClientAdapter clientAdapter;
-    String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword;
+    String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
@@ -74,6 +79,7 @@ public class ClientFragment extends Fragment {
     private MenuItem mSearchItem;
     private SearchView sv;
     DelayedProgressDialog progressDialogInfo;
+    ApiReceiverMethods apiReceiverMethods;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.client_fragment, container, false);
         /***** Déclaration de barre de menu dans le fragment*******/
@@ -91,12 +97,15 @@ public class ClientFragment extends Fragment {
         rq = Volley.newRequestQueue(getActivity());
         progressDialogInfo = new DelayedProgressDialog();
         clients = new ArrayList<>();
+        apiReceiverMethods = new ApiReceiverMethods(getActivity().getApplicationContext());
 
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/allClient";
         utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
         utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
 
         /**initialisation des Widgets**/
         mRecyclerView =  view.findViewById(R.id.fast_scroller_recycler_client);
@@ -104,6 +113,7 @@ public class ClientFragment extends Fragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
         recupererListeClients(apiUrl01);
+
 
         initialiseUI();
 
@@ -118,7 +128,6 @@ public class ClientFragment extends Fragment {
                     bundle.putSerializable("client", client);
                     i.putExtras(bundle);
                     startActivity(i);
-
             }
 
             @Override
@@ -197,7 +206,6 @@ public class ClientFragment extends Fragment {
         progressDialogInfo.show(getActivity().getSupportFragmentManager(), "Loading...");
         progressDialogInfo.setCancelable(false);
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
-
             try{
                 JSONArray array = new JSONArray(s);
                 for (int i=0; i<array.length(); i++){
@@ -213,15 +221,18 @@ public class ClientFragment extends Fragment {
                         client.setCliBopos(jsonObject.getString("CLIBOPOS").trim());
                         client.setCliCopos(jsonObject.getString("CLICOPOS").trim());
                         client.setCliVille(jsonObject.getString("CLIVILLE").trim());
+                        client.setCliCpays(jsonObject.getString("CLICPAYS").trim());
                         client.setCliLiNacli(jsonObject.getString("LIBNACLI").trim());
-                        //client.setCliLiCpays(jsonObject.getString(""));
-                        client.setCliRasol(jsonObject.getString("CLIRASOL").trim());
-                        client.setCliAdr1l(jsonObject.getString("CLIADR1L").trim());
-                        client.setCliAdr2l(jsonObject.getString("CLIADR2L").trim());
-                        client.setCliBopol(jsonObject.getString("CLIBOPOL").trim());
-                        client.setCliCopol(jsonObject.getString("CLICOPOL").trim());
-                        client.setCliVilll(jsonObject.getString("CLIVILLL").trim());
-                        client.setCliCpayl(jsonObject.getString("LIBCPAYL").trim());
+                        client.setCliLiComon(jsonObject.getString("LIBCOMON").trim());
+                        client.setCliColiv(jsonObject.getString("CLICOLIV").trim());
+                        client.setCliLiliv(jsonObject.getString("LIBCOLIV").trim());
+                        client.setCliDereg(jsonObject.getString("CLIDEREG").trim());
+                        client.setCliMoreg(jsonObject.getString("CLIMOREG").trim());
+                        client.setCliCotrn(jsonObject.getString("CLICOTRN").trim());
+                        client.setCliLitrn(jsonObject.getString("LIBCOTRN").trim());
+                        client.setCliCotrp(jsonObject.getString("CLICOTRP").trim());
+                        client.setCliLitrp(jsonObject.getString("LIBCOTRP").trim());
+                        client.setClililivth(jsonObject.getString("LIBLIVTH").trim());
 
                         //Populariser la liste des clients
                         clients.add(client);
@@ -248,10 +259,12 @@ public class ClientFragment extends Fragment {
                 param.put("systeme",systemeAdresse);
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };
-        int socketTimeout = 30000;
+        int socketTimeout = 10000;
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);

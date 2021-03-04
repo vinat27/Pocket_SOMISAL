@@ -13,7 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ReglementActivity"></activity>
+        <activity android:name=".activities.DevisArchivesActivity"></activity>
+        <activity android:name=".activities.DevisSoldesActivity" />
+        <activity android:name=".activities.UpdateProduitDevisActivity" />
+        <activity android:name=".activities.UpdateDevisActivity" />
+        <activity android:name=".activities.ReglementActivity" />
         <activity android:name=".activities.AdresseLivraisonActivity" />
         <activity android:name=".activities.AdresseFacturationActivity" />
         <activity

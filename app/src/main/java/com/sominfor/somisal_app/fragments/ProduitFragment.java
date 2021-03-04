@@ -68,7 +68,7 @@ public class ProduitFragment extends Fragment implements CallbackListener {
     List<Produit> produits;
     ProduitAdapter produitAdapter;
     public RequestQueue rq;
-    String ApiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword;
+    String ApiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
@@ -103,6 +103,8 @@ public class ProduitFragment extends Fragment implements CallbackListener {
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
         utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
         /**Récupération des produits**/
         recupererListeProduits(ApiUrl01);
         /**Configuration de la barre de scroll**/
@@ -258,6 +260,8 @@ public class ProduitFragment extends Fragment implements CallbackListener {
                 param.put("systeme",systemeAdresse);
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };

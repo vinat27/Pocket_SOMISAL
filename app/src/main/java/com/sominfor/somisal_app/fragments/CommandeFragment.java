@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -19,19 +20,37 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.AddCommandeActivity;
 import com.sominfor.somisal_app.activities.AddDevisActivity;
+import com.sominfor.somisal_app.activities.DelayedProgressDialog;
 import com.sominfor.somisal_app.activities.LoginActivity;
 import com.sominfor.somisal_app.adapters.CommandeAdapter;
 import com.sominfor.somisal_app.adapters.DevisAdapter;
+import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.Devis;
+import com.sominfor.somisal_app.handler.models.ServeurNode;
+import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 /**
  * Créé par vatsou le 26,janvier,2021
@@ -42,11 +61,18 @@ import java.util.List;
 public class CommandeFragment extends Fragment {
     FrameLayout frameLayout, container;
     RecyclerView recyclerViewCde;
+    ServeurNodeController serveurNodeController;
+    ServeurNode serveurNode;
+    String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, comStatu, apiUrl02, apiUrl03, apiUrl04, apiUrl05, utilisateurCosoc, utilisateurCoage;
+    Utilisateur utilisateur;
+    public RequestQueue rq;
+    DelayedProgressDialog progressDialogInfo;
     List<Commande> commandeList;
     private MenuItem mSearchItem;
     private SearchView sv;
     CommandeAdapter commandeAdapter;
     FloatingActionButton fab_add_commande;
+    //TODO Libellé Statut - Libellé Monnaie - Commentaire commande - Post-it - CadZon sur les montants
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.commande_fragment, container, false);
         /***** Déclaration de barre de menu dans le fragment*******/
@@ -65,11 +91,23 @@ public class CommandeFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerViewCde.setLayoutManager(linearLayoutManager);
 
-        initData();
-        if (commandeList.isEmpty()){
-            frameLayout.setVisibility(View.VISIBLE);
-        }
-        setRecyclerview();
+        progressDialogInfo = new DelayedProgressDialog();
+        serveurNodeController = new ServeurNodeController();
+        commandeList = new ArrayList<>();
+        /**Récupération des informations serveur**/
+        serveurNode = serveurNodeController.getServeurNodeInfos();
+        /*URL Récupération de la liste des systèmes*/
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/commandeByStatu";
+        utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
+        systemeAdresse = utilisateur.getUtilisateurSysteme();
+        utilisateurLogin = utilisateur.getUtilisateurLogin();
+        utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
+
+        comStatu = "E";
+        /**Liste de commandes**/
+        listeCommandesEnCours(apiUrl01);
         /**Ajout de commande**/
         fab_add_commande.setOnClickListener(v -> {
             Intent i = new Intent(getActivity(), AddCommandeActivity.class);
@@ -113,16 +151,87 @@ public class CommandeFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void setRecyclerview(){
-        commandeAdapter = new CommandeAdapter(getActivity().getApplicationContext(), commandeList);
-        recyclerViewCde.setAdapter(commandeAdapter);
-        recyclerViewCde.setHasFixedSize(true);
-    }
 
-    public void initData(){
-        commandeList = new ArrayList<>();
-        commandeList.add(new Commande("0000002", "2021-01-26", "Saint Pierre", 28.28, "BOULANGERIE PATISSERIE CARRON",  "2021-01-29", "TOURNEE SUD", "RLS COTRAM"));
-        commandeList.add(new Commande("0000003", "2021-01-27", "Saint Pierre", 30.28, "BOULANGERIE PATISSERIE AFC",  "2021-01-31", "TOURNEE NORD", "RLS COTRAM"));
 
+    /**Récupération de la liste de devis en cours**/
+    public void listeCommandesEnCours(String api_url){
+        RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+        progressDialogInfo.show(getActivity().getSupportFragmentManager(), "Loading...");
+        progressDialogInfo.setCancelable(false);
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+
+            try{
+                JSONArray array = new JSONArray(s);
+                if (array.length() == 0){
+                    progressDialogInfo.cancel();
+                    frameLayout.setVisibility(View.VISIBLE);
+                }
+                for (int i=0; i<array.length(); i++){
+                    try{
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        Commande commande = new Commande();
+                        commande.setComrasoc(jsonObject.getString("COMRASOC"));
+                        commande.setComdaliv(jsonObject.getString("COMDALIV"));
+                        commande.setComliliv(jsonObject.getString("LIBCOLIV").trim());
+                        commande.setComvacom(jsonObject.getDouble("DIVVACOM"));
+                        commande.setComnucom(jsonObject.getString("COMNUCOM"));
+                        commande.setComdacom(jsonObject.getString("COMDACOM"));
+                        commande.setComlilieuv(jsonObject.getString("LIBLIEUV").trim());
+                        commande.setComlitrn(jsonObject.getString("LIBCOTRN").trim());
+                        commande.setComstatu(jsonObject.getString("COMSTATU"));
+                        commande.setComlista(jsonObject.getString("LIBSTATU"));
+                        commande.setComlimag(jsonObject.getString("LIBCOMAG"));
+                        commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
+                        commande.setComadre1(jsonObject.getString("COMADRE1").trim());
+                        commande.setComadre2(jsonObject.getString("COMADRE2").trim());
+                        commande.setComcopos(jsonObject.getString("COMCOPOS").trim());
+                        commande.setComville(jsonObject.getString("COMVILLE").trim());
+                        commande.setCombopos(jsonObject.getString("COMBOPOS").trim());
+                        commande.setComlicpays(jsonObject.getString("LIBCPAYS").trim());
+                        commande.setComrasol(jsonObject.getString("COMRASOL").trim());
+                        commande.setComadr1l(jsonObject.getString("COMADR1L").trim());
+                        commande.setComadr2l(jsonObject.getString("COMADR2L").trim());
+                        commande.setComcopol(jsonObject.getString("COMCOPOL").trim());
+                        commande.setComvilll(jsonObject.getString("COMVILLL").trim());
+                        commande.setComlicpayr(jsonObject.getString("LIBCPAYL").trim());
+                        commande.setCombopol(jsonObject.getString("COMBOPOL").trim());
+
+                        //Populariser la liste des commandes
+                        commandeList.add(commande);
+                        progressDialogInfo.cancel();
+                    }catch(JSONException e){
+                        e.printStackTrace();
+                        progressDialogInfo.cancel();
+
+                    }
+                }
+                commandeAdapter = new CommandeAdapter(getActivity(),commandeList);
+                recyclerViewCde.setAdapter(commandeAdapter);
+            }catch(JSONException e){
+                e.printStackTrace();
+
+            }
+        }, volleyError -> {
+            volleyError.printStackTrace();
+            progressDialogInfo.cancel();
+            /**Erreur connexion**/
+            Toast.makeText(getActivity(), getResources().getString(R.string.login_activity_Snackbar01_NoConnexion), Toast.LENGTH_LONG).show();
+        })
+        {
+            protected Map<String,String> getParams(){
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                param.put("statu", comStatu);
+                return param;
+            }
+        };
+        int socketTimeout = 10000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
     }
 }

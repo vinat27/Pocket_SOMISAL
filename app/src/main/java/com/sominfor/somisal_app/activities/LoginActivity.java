@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     ServeurNode serveurNode;
     TextInputEditText EdtLogin, EdtPassword;
     Button BtnConnexion;
-    String ApiUrl01, ApiUrl02, systemeFiliale, systemeAdresse;
+    String ApiUrl01, ApiUrl02, systemeFiliale, systemeAdresse, systemeCosoc, systemeCoage;
     RequestQueue requestQueue;
     boolean statutServeur;
     ConstraintLayout constraintLayout;
@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         /**Instanciation des widgets**/
         materialDesignSpinner = findViewById(R.id.MbSpnSystem);
@@ -109,6 +108,8 @@ public class LoginActivity extends AppCompatActivity {
                 assert systeme != null;
                 systemeFiliale = systeme.getSystemeFiliale();
                 systemeAdresse = systeme.getSystemeAdresse();
+                systemeCosoc = systeme.getSystemeCosoc();
+                systemeCoage = systeme.getSystemeCoage();
             });
             /**Validation par l'utilisateur**/
             BtnConnexion.setOnClickListener(view -> {
@@ -116,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                     String login = EdtLogin.getText().toString();
                     String password = EdtPassword.getText().toString();
                     /**Envoie d'informations au serveur Node**/
-                    authentifier(ApiUrl02,systemeAdresse,login,password);
+                    authentifier(ApiUrl02,systemeAdresse,login,password,systemeCosoc,systemeCoage);
                 }else{
                     Toast.makeText(getApplicationContext(),"Remplissez tous les champs!",Toast.LENGTH_SHORT).show();
                 }
@@ -159,6 +160,8 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     systeme.setSystemeFiliale(jsonObject.getString("filiale"));
                     systeme.setSystemeAdresse(jsonObject.getString("systeme"));
+                    systeme.setSystemeCosoc(jsonObject.getString("cosoc"));
+                    systeme.setSystemeCoage(jsonObject.getString("coage"));
                     //Ajout dans la liste d'objets
                     systemes.add(systeme);
 
@@ -186,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param password le mot de passe de l'utilisateur
      *
      */
-    public void authentifier(String api_url, final String systeme, final String login, final String password){
+    public void authentifier(String api_url, final String systeme, final String login, final String password, final String systemeCosoc, final String systemeCoage){
         RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, api_url, s -> {
             Utilisateur utilisateur = new Utilisateur();
@@ -226,6 +229,8 @@ public class LoginActivity extends AppCompatActivity {
                 param.put("login", login);
                 param.put("systeme",systeme);
                 param.put("password", password);
+                param.put("cosoc", systemeCosoc);
+                param.put("coage", systemeCoage);
 
                 return param;
             }

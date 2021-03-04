@@ -17,9 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.CommandeDetailsActivity;
-import com.sominfor.somisal_app.activities.FicheDevisActivity;
 import com.sominfor.somisal_app.handler.models.Commande;
-import com.sominfor.somisal_app.handler.models.Devis;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,33 +57,34 @@ public void onBindViewHolder(@NonNull CommandeAdapter.CommandeVh holder, int pos
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String ComDacomFormat = "";
         String ComDalivFormat = "";
+    String vacom = String.format("%.2f", commande.getComvacom()) + " " + commande.getComlimon();
 
-        try {
-            ComDacomFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdacom())));
+    try {
+        ComDacomFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdacom())));
         ComDalivFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdaliv())));
-        } catch (ParseException e) {
+    } catch (ParseException e) {
         e.printStackTrace();
-        }
-        /**Initialisation des informations devis**/
-        holder.TxtComrasoc.setText(commande.getComrasoc());
-        holder.TxtComdaliv.setText(ComDalivFormat);
-        holder.TxtComcoliv.setText(commande.getComcoliv());
-        holder.TxtComVacom.setText(String.format("%.2f", commande.getComvacom()));
-        holder.TxtComNucom.setText(commande.getComnucom());
-        holder.TxtComDacom.setText(ComDacomFormat);
-        holder.TxtComLieuv.setText(commande.getComlieuv());
-        holder.TxtComCotrn.setText(commande.getComcotrn());
-        /**Au clic du bouton détail**/
-        holder.FabComDetails.setOnClickListener(v -> {
+    }
+    /**Initialisation des informations devis**/
+    holder.TxtComrasoc.setText(commande.getComrasoc());
+    holder.TxtComdaliv.setText(ComDalivFormat);
+    holder.TxtComcoliv.setText(commande.getComliliv());
+    holder.TxtComVacom.setText(vacom);
+    holder.TxtComNucom.setText(commande.getComnucom());
+    holder.TxtComDacom.setText(ComDacomFormat);
+    holder.TxtComLieuv.setText(commande.getComlilieuv());
+    holder.TxtComCotrn.setText(commande.getComlitrn());
+    /**Au clic du bouton détail**/
+    holder.FabComDetails.setOnClickListener(v -> {
         Intent i = new Intent(context, CommandeDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("commande", commande);
         i.putExtras(bundle);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
-        });
+    });
 
-        boolean isExpandable = commandeList.get(position).isExpandable();
+    boolean isExpandable = commandeList.get(position).isExpandable();
         holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
         }
 
@@ -109,7 +108,6 @@ public class CommandeVh extends RecyclerView.ViewHolder {
     TextView TxtComrasoc,TxtComdaliv,TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv;
     MaterialButton FabComDetails;
     LinearLayout Lnr01, expandableLayout;
-
 
     public CommandeVh(View itemView) {
         super(itemView);

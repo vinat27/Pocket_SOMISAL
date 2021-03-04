@@ -48,7 +48,7 @@ public class FicheProduitActivity extends AppCompatActivity {
     Utilisateur utilisateur;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, ApiUrl01;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage, ApiUrl01;
     Produit produit;
     TextView TxtProLiPro, TxtProCoPro, TxtPrmRfprm, TxtPrmNuprm, TxtPrmLimrq, TxtPrmDecat, TxtPrmDefam;
     TextView TxtPrmLisfa, TxtPrmNacpt, TxtPrmQtMag, TxtPrmQtRes, TxtPrmQtcom, TxtPrmQtsto, TxtPrmQtsal;
@@ -111,6 +111,8 @@ public class FicheProduitActivity extends AppCompatActivity {
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
         utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
 
         /**Récupération de l'objet produit**/
         Bundle bundle = getIntent().getExtras();
@@ -243,6 +245,8 @@ public class FicheProduitActivity extends AppCompatActivity {
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("nuprm", String.valueOf(proNuprm));
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 return param;
             }
         };

@@ -26,16 +26,20 @@ public class Devis implements Serializable {
     private String DevUscom;
     private Float DevTxrem;
     private Float DevTxesc;
-    private String DevEcova;
+    private Double DevEcova;
     private String DevMoexp;
     private String DevDaliv;
     private String DevColiv;
     private String DevMoreg;
     private String DevDereg;
+    private String DevNacli;
+    private String DevColieuv;
 
     private String DevTxhEnt;
     private String DevTxhPie;
     private String DexTexte;
+    private String Devliliv;
+    private String DevLimag;
 
     //Expandables
     private boolean expandable;
@@ -58,6 +62,30 @@ public class Devis implements Serializable {
         CliRasoc = cliRasoc;
         DevComon = devComon;
         this.expandable = false;
+    }
+
+    public String getDevColieuv() {
+        return DevColieuv;
+    }
+
+    public void setDevColieuv(String devColieuv) {
+        DevColieuv = devColieuv;
+    }
+
+    public String getDevNacli() {
+        return DevNacli;
+    }
+
+    public void setDevNacli(String devNacli) {
+        DevNacli = devNacli;
+    }
+
+    public String getDevLimag() {
+        return DevLimag;
+    }
+
+    public void setDevLimag(String devLimag) {
+        DevLimag = devLimag;
     }
 
     public String getDevCosoc() {
@@ -204,11 +232,11 @@ public class Devis implements Serializable {
         DevTxesc = devTxesc;
     }
 
-    public String getDevEcova() {
+    public Double getDevEcova() {
         return DevEcova;
     }
 
-    public void setDevEcova(String devEcova) {
+    public void setDevEcova(Double devEcova) {
         DevEcova = devEcova;
     }
 
@@ -283,6 +311,14 @@ public class Devis implements Serializable {
 
     public void setDexTexte(String dexTexte) {
         DexTexte = dexTexte;
+    }
+
+    public String getDevliliv() {
+        return Devliliv;
+    }
+
+    public void setDevliliv(String devliliv) {
+        Devliliv = devliliv;
     }
 
     @Override

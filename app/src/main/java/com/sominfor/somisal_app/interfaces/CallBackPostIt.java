@@ -6,5 +6,5 @@ package com.sominfor.somisal_app.interfaces;
  * Paris, FRANCE
  */
 public interface CallBackPostIt {
-    void onDataReceived(String DexTexte);
+    void onDataReceived(String DexTexte, String DevTxnEn, String DevTxnPd);
 }

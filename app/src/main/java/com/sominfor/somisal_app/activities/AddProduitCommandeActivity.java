@@ -43,7 +43,7 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage;
     TextView TxtComNucom, TxtComRasoc, TxtComLieuv, TxtComStatu, TxtComComag, TxtComColiv, TxtComDaliv, TxtComVacom;
     RecyclerView recyclerViewDetailsCommande;
     CommandeProduitAdapter commandeProduitAdapter;
@@ -106,6 +106,8 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
         utilisateurPassword = utilisateur.getUtilisateurPassword();
+        utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+        utilisateurCoage = utilisateur.getUtilisateurCoage();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         commandeProduitAdapter = new CommandeProduitAdapter(getApplicationContext(), detailCommandeList, fragmentManager);
