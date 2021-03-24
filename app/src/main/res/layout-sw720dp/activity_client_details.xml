@@ -54,6 +54,7 @@
                 app:tabSelectedTextColor="@android:color/white"
                 app:tabMode="fixed"
                 app:tabGravity="fill"
+                app:tabMaxWidth="0dp"
                 app:tabBackground="@color/colorPrimary"
                 app:tabTextColor="#ffffff"/>
 

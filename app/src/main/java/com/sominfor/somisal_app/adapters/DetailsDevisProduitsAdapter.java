@@ -61,7 +61,6 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
     @Override
     public void onBindViewHolder(@NonNull DetailsDevisProduitsAdapter.DetailDevisProduitVh holder, int position) {
         DetailDevis detailDevis = detailDevisList.get(position);
-
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailDevis.getDdvLipro());
         holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
@@ -76,20 +75,18 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
             produit.setProcopro(detailDevis.getDdvCopro());
             produit.setPronuprm(detailDevis.getDdvNuprm());
             produit.setProlipro(detailDevis.getDdvLipro());
-
             if (produit.getPronuprm() != 0) {
                 //Produits
                 Intent i = new Intent(context, FicheProduitActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("produit", produit);
+                i.putExtras(bundle);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }else{
                 Toast.makeText(context, context.getResources().getString(R.string.produit_fragment_noStock), Toast.LENGTH_LONG).show();
             }
-
         });
-
         /**Modification de poste**/
         holder.FabUpdatePro.setOnClickListener(v -> {
             UpdateDdvFullDialog updateDdvFullDialog = UpdateDdvFullDialog.newInstance();
@@ -111,8 +108,6 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         /**Commentaires de poste***/
         holder.FabTxnPro.setOnClickListener(v -> {
             /***Ajout / Mise à jour de serveur**/
-
-
             CommentPosteAddFullDialog commentPosteAddFullDialog = CommentPosteAddFullDialog.newInstance();
             Bundle args = new Bundle();
             args.putSerializable("detailDevis", detailDevis);
@@ -129,8 +124,6 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         return detailDevisList == null ? 0 : detailDevisList.size();
     }
 
-
-
     public DetailDevis getItem(int position){
         return detailDevisList.get(position);
     }
@@ -145,7 +138,6 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         TextView TxtProLipro,TxtDdvPodev,TxtDdvQtdev, TxtDdvPutar, TxtDdvVadev, TxtDdvTxRem, TxtDdvVarem;
         MaterialButton FabDetPro, FabTxnPro, FabUpdatePro, FabDeletePro;
         LinearLayout Lnr01, expandableLayout;
-
 
         public DetailDevisProduitVh(View itemView) {
             super(itemView);

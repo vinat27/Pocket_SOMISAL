@@ -91,7 +91,7 @@ public class UpdateDdvFullDialog extends DialogFragment {
         utilisateurCosoc = utilisateur.getUtilisateurCosoc();
         utilisateurCoage = utilisateur.getUtilisateurCoage();
 
-        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/TarifProduitById";
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit/TarifProduitById";
         /*Set values to Edittexts**/
         TxtProLiPro.setText(detailDevis.getDdvLipro());
         TxtProUnvte.setText(detailDevis.getDdvUnvte());
@@ -111,9 +111,12 @@ public class UpdateDdvFullDialog extends DialogFragment {
         BtnValider.setOnClickListener(v -> {
 
             if (EdtDdvQtpro.getText().length() != 0){
-                /**Calcul du tarif**/
-                calculTarifRemise(apiUrl01, detailDevis.getDdvCopro(), detailDevis.getDdvUnvte(), detailDevis.getDdvLieuv(), detailDevis.getDdvNacli(), detailDevis.getDdvDadev(), detailDevis.getDdvNucli(), Double.parseDouble(EdtDdvQtpro.getText().toString()));
-
+                if (Double.parseDouble(EdtDdvQtpro.getText().toString()) != 0){
+                    /**Calcul du tarif**/
+                    calculTarifRemise(apiUrl01, detailDevis.getDdvCopro(), detailDevis.getDdvUnvte(), detailDevis.getDdvLieuv(), detailDevis.getDdvNacli(), detailDevis.getDdvDadev(), detailDevis.getDdvNucli(), Double.parseDouble(EdtDdvQtpro.getText().toString()));
+                }else{
+                    Toast.makeText(getActivity(), "Quantité invalide - Minimum 1", Toast.LENGTH_LONG).show();
+                }
             }else{
                 Toast.makeText(getActivity(), "Aucune quantité saisie", Toast.LENGTH_LONG).show();
             }
@@ -165,6 +168,7 @@ public class UpdateDdvFullDialog extends DialogFragment {
                     detailDevis.setDdvTxrem(valrem.getRemTxrem());
                     detailDevis.setDdvVarem(wvarem);
                     detailDevis.setDdvDadev(dadev);
+
 
                     devisProduitsListener = (DevisProduitsListener) getActivity();
                     devisProduitsListener.onDataReceived(detailDevis);

@@ -40,15 +40,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.6"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/add_produit_commande_activity_TxtComNucomTitle"
-                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            />
-
-                        <TextView
                             android:id="@+id/TxtComNucom"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -314,8 +305,6 @@
 
                 </LinearLayout>
 
-
-
                 <LinearLayout
                     android:id="@+id/Lnr01"
                     android:layout_width="fill_parent"
@@ -341,7 +330,22 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
-
+            <!--Valider-->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/BtnTerminer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/Lnr01"
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_gravity="center"
+                android:text="@string/serveur_node_fragment_BtnTerminerDevis_hint"
+                android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
+                android:padding="@dimen/login_activity_BtnConnexion_padding"
+                app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/orange"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
 

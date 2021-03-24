@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -58,6 +61,7 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 public class UpdateProduitDevisActivity extends AppCompatActivity implements DevisProduitsListener {
     public static String FRAGMENT_DEVIS = "2";
+    private static final int SPLASH_TIME = 4000;
 
     TextView TxtClirasoc, TxtDevLieuv, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevDaliv, TxtDevVadev;
     MaterialButton BtnValider;
@@ -70,6 +74,8 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
     RecyclerView RecyclerViewDetailsDevis;
     DdvUpdateProduitsAdapter ddvUpdateProduitsAdapter;
     List<DetailDevis> detailDevisList = new ArrayList<>();
+    List<DetailDevis> detailDelDevisList = new ArrayList<>();
+    List<DetailDevis> detailDevisListSav = new ArrayList<>();
     Client client;
     LieuVente lieuVente;
     Magasin magasin;
@@ -80,7 +86,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
     String DevTxnEnSend = "";
     String DevTxnPdSend = "";
     double vadev;
-    JSONArray podevJson, coproArray, nuprmArray, unvteArray, cofvtArray, qtdevArray, putarArray, txremArray, varemArray, texteArray;
+    JSONArray coactJson, podevJson, coproArray, nuprmArray, unvteArray, cofvtArray, qtdevArray, putarArray, txremArray, varemArray, texteArray;
     List<Produit> produitsUpdateDevisList;
     ApiReceiverMethods apiReceiverMethods;
     FragmentManager fragmentManager;
@@ -101,6 +107,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         }else{
             DetailDevis max = Collections.max(detailDevisList);
             detailDevis.setDdvPodev((max.getDdvPodev()+1000));
+            detailDevis.setDdvCoact("UPD");
             detailDevisList.add(detailDevis);
             ddvUpdateProduitsAdapter.notifyItemInserted(detailDevisList.size());
         }
@@ -117,6 +124,11 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_produit_devis);
 
@@ -170,8 +182,8 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
 
         /**URL Insertion**/
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/create/devis/Onedevis";
-        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit";
-        apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/DetailDevis";
+        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit/allProduit";
+        apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/detailDevis";
 
         recupererDetailsDevis(apiUrl03, devis.getDevNudev());
 
@@ -207,7 +219,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         DevTxnPdSend = devis.getDevTxhPie();
 
         /**Terminer Devis**/
-        /*BtnTerminer.setOnClickListener(v -> {
+        BtnTerminer.setOnClickListener(v -> {
             if (!detailDevisList.isEmpty()){
                 podevJson = new JSONArray();
                 coproArray = new JSONArray();
@@ -219,8 +231,14 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                 txremArray = new JSONArray();
                 varemArray = new JSONArray();
                 texteArray = new JSONArray();
+                coactJson = new JSONArray();
+                /****/
+                if (!detailDelDevisList.isEmpty()){
+                    detailDevisList.addAll(detailDelDevisList);
+                }
 
                 for(int i=0;i<detailDevisList.size();i++){
+                    coactJson.put(detailDevisList.get(i).getDdvCoact());
                     podevJson.put(detailDevisList.get(i).getDdvPodev());
                     coproArray.put(detailDevisList.get(i).getDdvCopro());
                     nuprmArray.put(detailDevisList.get(i).getDdvNuprm());
@@ -229,22 +247,38 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                     qtdevArray.put(detailDevisList.get(i).getDdvQtdev());
                     putarArray.put(detailDevisList.get(i).getDdvPutar());
                     txremArray.put(detailDevisList.get(i).getDdvTxrem());
-                    varemArray.put(detailDevisList.get(i).getDdvVarem());
+                    varemArray.put(0);
                     texteArray.put(detailDevisList.get(i).getDdvTxnPo());
                 }
-                AddDevisActivity.getInstance().finish();
-                Intent i = new Intent(this, DashboardActivity.class);
-                i.putExtra("frgToLoad", FRAGMENT_DEVIS);
-                // Now start your activity
-                startActivity(i);
-                finish();
 
-                //insertDevisToAs400(apiUrl01);
+                updateDevisToAs400(apiUrl01);
+
+                /**Attendre 4 secondes, le temps que l'insertion se fasse**/
+                DelayedProgressDialog pgDialog = new DelayedProgressDialog();
+                pgDialog.show(getSupportFragmentManager(), "Load");
+                pgDialog.setCancelable(false);
+                new Thread(() -> {
+
+                    try {
+                        Thread.sleep(SPLASH_TIME);
+                        UpdateDevisActivity.getInstance().finish();
+                        Intent intent = new Intent(UpdateProduitDevisActivity.this, DashboardActivity.class);
+                        intent.putExtra("frgToLoad", FRAGMENT_DEVIS);
+                        // Now start your activity
+                        pgDialog.cancel();
+                        startActivity(intent);
+                        finish();
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        pgDialog.cancel();
+                    }
+                }).start();
             }else{
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL10), Toast.LENGTH_LONG).show();
             }
         });
-        */
+
         /**Ajout de produits**/
         fab_add_devis_details.setOnClickListener(v -> {
             openAddProduitDialog();
@@ -252,8 +286,17 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add_devis_activity, menu);
         return true;
     }
@@ -285,7 +328,6 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         args.putString("devtxten", DevTxnEnSend);
         args.putString("devtxtpd", DevTxnPdSend);
         devisPostItFullDialog.setArguments(args);
-        //devisPostItFullDialog.setTargetFragment(devisPostItFullDialog, 100);
         devisPostItFullDialog.show(fragmentManager, ServeurNode.TAG);
     }
 
@@ -299,12 +341,20 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         args.putString("clinacli", client.getCliNacli());
         args.putString("clilieuv", lieuVente.getColieuv());
         devisAddProduitFullDialog.setArguments(args);
-        //devisPostItFullDialog.setTargetFragment(devisPostItFullDialog, 100);
         devisAddProduitFullDialog.show(fragmentManager, ServeurNode.TAG);
     }
 
     public void doPositiveClick(DetailDevis dd) {
         int removeIndex = detailDevisList.indexOf(dd);
+
+        int spinnerPos = detailDevisListSav.indexOf(dd);
+        /**Actualisation si produit existe ou ajout si produit absent dans la liste**/
+        if (spinnerPos != -1){
+            dd.setDdvCoact("UPD");
+            dd.setDdvQtdev(0.0);
+            /**Sauvegarder avant de supprimer**/
+            detailDelDevisList.add(dd);
+        }
         detailDevisList.remove(removeIndex);
         ddvUpdateProduitsAdapter.notifyItemRemoved(removeIndex);
         /**Recalcul de la valeur de devis**/
@@ -320,7 +370,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
             vadev += dd.getDdvVadev();
         }
         @SuppressLint("DefaultLocale")
-        String wvadev = String.format("%.2f", vadev)+" "+client.getCliLiComon();
+        String wvadev = String.format("%.2f", vadev)+" "+devis.getDevlimon();
         TxtDevVadev.setText(wvadev);
     }
 
@@ -354,6 +404,11 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                     detailDevis.setDdvLipro(object1.getString("PROLIPRO"));
                     detailDevis.setDdvTxnPo(object1.getString("TXNTEXTE"));
                     detailDevis.setDdvNuprm(object1.getInt("DDVNUPRM"));
+                    detailDevis.setDdvCoact("UPD");
+                    detailDevis.setDdvNucli(client.getCliNucli());
+                    detailDevis.setDdvNacli(client.getCliNacli());
+                    detailDevis.setDdvLieuv(lieuVente.getColieuv());
+                    detailDevis.setDdvDadev(devis.getDevDadev());
 
                     /**Calcul de la valeur de remise**/
                     if (object1.getDouble("DDVTXREM") > 0){
@@ -370,6 +425,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                     detailDevis.setDdvVadev(wvapos);
 
                     detailDevisList.add(detailDevis);
+                    detailDevisListSav.add(detailDevis);
                     progressDialogInfo.cancel();
                 }
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -389,6 +445,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("nudev", devNudev);
+                param.put("comon", devis.getDevComon());
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
                 return param;
@@ -400,7 +457,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         requestQueue.add(postRequest);
     }
 
-    /*public void updateDevisToAs400(String api_url){
+    public void updateDevisToAs400(String api_url){
         RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
         progressDialog.show(getSupportFragmentManager(), "Loading...");
         progressDialog.setCancelable(false);
@@ -426,18 +483,27 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         {
             protected Map<String,String> getParams(){
                 Map<String, String> param = new HashMap<String, String>();
+                param.put("coact", coactJson.toString());
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("systeme",systemeAdresse);
-                param.put("nudev","");
+                param.put("nudev", devis.getDevNudev());
                 param.put("dadev",devis.getDevDadev());
                 param.put("nucli",client.getCliNucli());
-                param.put("rfdev", devis.getDevRfdev());
+                param.put("rfdev", devis.getDevRfdev().trim().replaceAll("'","\\u0027"));
                 param.put("daval", devis.getDevDadev());
                 param.put("lieuv", lieuVente.getColieuv());
                 param.put("comag", magasin.getMagcomag());
-                param.put("notes", DexTexteSend);
-                param.put("uscom", devis.getDevUscom());
+                if (DexTexteSend!=null){
+                    param.put("notes", DexTexteSend);
+                }else{
+                    param.put("notes", "");
+                }
+                if (devis.getDevUscom()!=null){
+                    param.put("uscom", devis.getDevUscom());
+                }else{
+                    param.put("uscom", "");
+                }
                 param.put("txesc", String.valueOf(devis.getDevTxesc()));
                 param.put("ecova", String.valueOf(devis.getDevEcova()));
                 param.put("moexp", "");
@@ -456,7 +522,6 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                 param.put("varem", varemArray.toString());
                 param.put("texte", texteArray.toString());
 
-
                 return param;
             }
         };
@@ -465,6 +530,6 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
     }
-*/
+
 
 }

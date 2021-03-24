@@ -4,15 +4,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:theme="@style/MontserratTextViewStyle"
     tools:showIn="navigation_view">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_baseline_dashboard_24"
+        android:title="@string/menu_dashboard" />
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_client"
-            android:icon="@drawable/ic_baseline_people_24_black"
+            android:icon="@drawable/ic_baseline_people_24"
             android:title="@string/menu_client" />
         <item
             android:id="@+id/nav_produit"
-            android:icon="@drawable/ic_baseline_widgets_24_black"
+            android:icon="@drawable/ic_baseline_widgets_24"
             android:title="@string/menu_produit" />
 
     </group>
@@ -22,11 +26,11 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_devis"
-            android:icon="@drawable/ic_baseline_list_alt_24_black"
+            android:icon="@drawable/ic_baseline_list_alt_24"
             android:title="@string/menu_devis" />
         <item
             android:id="@+id/nav_commande"
-            android:icon="@drawable/ic_baseline_shopping_cart_24_black"
+            android:icon="@drawable/ic_baseline_shopping_cart_24"
             android:title="@string/menu_commande" >
         </item>
     </group>

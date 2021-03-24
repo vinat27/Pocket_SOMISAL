@@ -74,7 +74,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.33"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="Livraison:"
                         android:paddingLeft="5sp"/>
@@ -87,8 +87,7 @@
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="13 Jan 2021"
-                        android:paddingLeft="23sp"
-                        android:textSize="16sp"/>
+                        android:paddingLeft="8sp"/>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -293,7 +292,7 @@
                     app:iconTint="@color/white"
                     app:backgroundTint="@color/colorPrimary"/>
 
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+               <!-- <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/FabArchiverDevis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -303,7 +302,7 @@
                     android:textColor="@color/white"
                     app:icon="@drawable/ic_baseline_archive_24"
                     app:iconTint="@color/white"
-                    app:backgroundTint="@color/colorPrimary"/>
+                    app:backgroundTint="@color/colorPrimary"/>-->
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/FabDeleteDevis"

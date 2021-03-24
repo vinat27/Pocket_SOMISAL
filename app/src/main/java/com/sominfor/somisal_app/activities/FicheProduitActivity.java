@@ -44,7 +44,6 @@ import java.util.Objects;
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 public class FicheProduitActivity extends AppCompatActivity {
-
     Utilisateur utilisateur;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
@@ -57,9 +56,13 @@ public class FicheProduitActivity extends AppCompatActivity {
     public RequestQueue rq;
     DelayedProgressDialog progressDialogInfo;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fiche_produit);
 
@@ -75,12 +78,11 @@ public class FicheProduitActivity extends AppCompatActivity {
         /**Effacer l'ombre sous l'actionBar**/
         getSupportActionBar().setElevation(0);
 
-
         serveurNodeController = new ServeurNodeController();
         serveurNode = serveurNodeController.getServeurNodeInfos();
         progressDialogInfo = new DelayedProgressDialog();
         /*URL Récupération de la liste des systèmes*/
-        ApiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/ficheProduit";
+        ApiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit/ficheProduit";
         /**Instanciation des widgets**/
         TxtProLiPro = findViewById(R.id.TxtProLiPro);
         TxtProCoPro = findViewById(R.id.TxtProCoPro);
@@ -125,6 +127,16 @@ public class FicheProduitActivity extends AppCompatActivity {
         /**Récupération de la fiche produit**/
         interrogerStock(ApiUrl01, produit.getPronuprm());
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     // Options Menu (ActionBar Menu)
@@ -175,7 +187,6 @@ public class FicheProduitActivity extends AppCompatActivity {
                     produitFini.setPrmpoids(jsonObjectInfo.getDouble("PRMPOIDS"));
                     produitFini.setPrmunstk(jsonObjectInfo.getString("PRMUNSTKLIB"));
                     produitFini.setPrmlimag(jsonObjectInfo.getString("MAGCOMAG"));
-
 
                 /**Conversion date**/
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");

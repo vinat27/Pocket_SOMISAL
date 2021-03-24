@@ -12,12 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.CommandeDetailsActivity;
+import com.sominfor.somisal_app.activities.UpdateCommandeActivity;
+import com.sominfor.somisal_app.fragments.DeleteComAlertDialogFragment;
+import com.sominfor.somisal_app.fragments.DeleteDevisAlertDialogFragment;
 import com.sominfor.somisal_app.handler.models.Commande;
+import com.sominfor.somisal_app.handler.models.ServeurNode;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,20 +39,26 @@ import java.util.Objects;
 public class CommandeAdapter extends RecyclerView.Adapter<CommandeAdapter.CommandeVh>{
 private static List<Commande> commandeList;
 private List<Commande> commandeSearchs;
-private Context context;
-/**Constructeur**/
-public CommandeAdapter(Context context, List<Commande> commandeList){
+    FragmentManager fragmentManager;
+    private final Context context;
+
+    /**
+     * Constructeur
+     **/
+    public CommandeAdapter(Context context, List<Commande> commandeList, FragmentManager fragmentManager) {
         this.context = context;
         this.commandeList = commandeList;
         commandeSearchs = new ArrayList<>(commandeList);
-        }
-@NonNull
-@Override
-public CommandeAdapter.CommandeVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        this.fragmentManager = fragmentManager;
+    }
+
+    @NonNull
+    @Override
+    public CommandeAdapter.CommandeVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_commande, parent, false);
         return new CommandeAdapter.CommandeVh(view);
-        }
+    }
 
 @Override
 public void onBindViewHolder(@NonNull CommandeAdapter.CommandeVh holder, int position) {
@@ -74,6 +85,16 @@ public void onBindViewHolder(@NonNull CommandeAdapter.CommandeVh holder, int pos
     holder.TxtComDacom.setText(ComDacomFormat);
     holder.TxtComLieuv.setText(commande.getComlilieuv());
     holder.TxtComCotrn.setText(commande.getComlitrn());
+    /**Modification**/
+    holder.FabUpdateCom.setOnClickListener(v -> {
+        Intent i = new Intent(context, UpdateCommandeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("commande", commande);
+        i.putExtras(bundle);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    });
+
     /**Au clic du bouton détail**/
     holder.FabComDetails.setOnClickListener(v -> {
         Intent i = new Intent(context, CommandeDetailsActivity.class);
@@ -84,8 +105,17 @@ public void onBindViewHolder(@NonNull CommandeAdapter.CommandeVh holder, int pos
         context.startActivity(i);
     });
 
+    /**Suppression**/
+    holder.FabDeleteCom.setOnClickListener(v -> {
+        DeleteComAlertDialogFragment deleteComAlertDialogFragment = DeleteComAlertDialogFragment.newInstance();
+        Bundle args = new Bundle();
+        args.putSerializable("commande", commande);
+        deleteComAlertDialogFragment.setArguments(args);
+        deleteComAlertDialogFragment.show(fragmentManager, ServeurNode.TAG);
+    });
+
     boolean isExpandable = commandeList.get(position).isExpandable();
-        holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
+    holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
         }
 
 @Override
@@ -101,35 +131,37 @@ public Commande getItem(int position){
 @Override
 public long getItemId(int position){
         return position;
-        }
+}
 
-public class CommandeVh extends RecyclerView.ViewHolder {
+    public class CommandeVh extends RecyclerView.ViewHolder {
 
-    TextView TxtComrasoc,TxtComdaliv,TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv;
-    MaterialButton FabComDetails;
-    LinearLayout Lnr01, expandableLayout;
+        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv;
+        MaterialButton FabComDetails, FabDeleteCom, FabUpdateCom;
+        LinearLayout Lnr01, expandableLayout;
 
-    public CommandeVh(View itemView) {
-        super(itemView);
+        public CommandeVh(View itemView) {
+            super(itemView);
 
-        /**Instanciation des widgets**/
-        TxtComrasoc = itemView.findViewById(R.id.TxtComrasoc);
-        TxtComdaliv = itemView.findViewById(R.id.TxtComdaliv);
-        TxtComVacom = itemView.findViewById(R.id.TxtComVacom);
-        TxtComNucom = itemView.findViewById(R.id.TxtComNucom);
-        TxtComDacom = itemView.findViewById(R.id.TxtComDacom);
-        TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
-        TxtComCotrn = itemView.findViewById(R.id.TxtComCotrn);
-        TxtComcoliv = itemView.findViewById(R.id.TxtComcoliv);
-        FabComDetails = itemView.findViewById(R.id.FabComDetails);
-        Lnr01 = itemView.findViewById(R.id.Lnr01);
-        expandableLayout = itemView.findViewById(R.id.expandable_layout);
+            /**Instanciation des widgets**/
+            TxtComrasoc = itemView.findViewById(R.id.TxtComrasoc);
+            TxtComdaliv = itemView.findViewById(R.id.TxtComdaliv);
+            TxtComVacom = itemView.findViewById(R.id.TxtComVacom);
+            TxtComNucom = itemView.findViewById(R.id.TxtComNucom);
+            TxtComDacom = itemView.findViewById(R.id.TxtComDacom);
+            TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
+            TxtComCotrn = itemView.findViewById(R.id.TxtComCotrn);
+            TxtComcoliv = itemView.findViewById(R.id.TxtComcoliv);
+            FabComDetails = itemView.findViewById(R.id.FabComDetails);
+            FabDeleteCom = itemView.findViewById(R.id.FabDeleteCom);
+            FabUpdateCom = itemView.findViewById(R.id.FabUpdateCom);
+            Lnr01 = itemView.findViewById(R.id.Lnr01);
+            expandableLayout = itemView.findViewById(R.id.expandable_layout);
 
-        Lnr01.setOnClickListener(v -> {
-            Commande commande = commandeList.get(getAdapterPosition());
-            commande.setExpandable(!commande.isExpandable());
-            notifyItemChanged(getAdapterPosition());
-        });
+            Lnr01.setOnClickListener(v -> {
+                Commande commande = commandeList.get(getAdapterPosition());
+                commande.setExpandable(!commande.isExpandable());
+                notifyItemChanged(getAdapterPosition());
+            });
 
     }
 }

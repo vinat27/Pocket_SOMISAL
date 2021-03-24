@@ -66,6 +66,11 @@ public class FicheDevisActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fiche_devis);
         /**Contrôle de sessions utilisateur**/
@@ -91,7 +96,7 @@ public class FicheDevisActivity extends AppCompatActivity {
         serveurNode = serveurNodeController.getServeurNodeInfos();
         progressDialogInfo = new DelayedProgressDialog();
         /*URL Récupération de la liste des systèmes*/
-        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/DetailDevis";
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/detailDevis";
         /**Récupération de session utilisateur**/
         utilisateur = UserSessionManager.getInstance(getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
@@ -105,7 +110,7 @@ public class FicheDevisActivity extends AppCompatActivity {
         devis = (Devis) bundle.getSerializable("devis");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
         RecyclerViewDetailsDevis.setLayoutManager(linearLayoutManager);
-        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevComon().trim();
+        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevlimon().trim();
 
         /**Set Data to Textviews**/
         TxtClirasoc.setText(devis.getCliRasoc());
@@ -117,7 +122,7 @@ public class FicheDevisActivity extends AppCompatActivity {
         detailDevisList = new ArrayList<>();
 
         /**Récupération details devis**/
-        recupererDetailsDevis(apiUrl01, devis.getDevNudev());
+        recupererDetailsDevis(apiUrl01, devis.getDevNudev(), devis.getDevComon());
 
     }
 
@@ -128,6 +133,16 @@ public class FicheDevisActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_fiche_devis_activity, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     @Override
@@ -153,11 +168,10 @@ public class FicheDevisActivity extends AppCompatActivity {
     }
 
     /***Récupérer les détails devis**/
-    public void recupererDetailsDevis(String api_url, final String devNudev) {
+    public void recupererDetailsDevis(String api_url, final String devNudev, final String devcomon) {
         RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
         progressDialogInfo.show(getSupportFragmentManager(), "Loading...");
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
-
             try {
                 JSONObject jsonObject = new JSONObject(s);
                     /**Commentaires et Post-it***/
@@ -179,12 +193,9 @@ public class FicheDevisActivity extends AppCompatActivity {
                         detailDevis.setDdvLipro(object1.getString("PROLIPRO"));
                         detailDevis.setDdvTxnPo(object1.getString("TXNTEXTE"));
                         detailDevis.setDdvNuprm(object1.getInt("DDVNUPRM"));
-
                         detailDevisList.add(detailDevis);
-
                         progressDialogInfo.cancel();
                     }
-
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 detailDevisAdapter = new DetailDevisAdapter(getApplicationContext(), detailDevisList, fragmentManager);
                 RecyclerViewDetailsDevis.setAdapter(detailDevisAdapter);
@@ -202,6 +213,7 @@ public class FicheDevisActivity extends AppCompatActivity {
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("nudev", devNudev);
+                param.put("comon", devcomon);
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
                 return param;
@@ -212,6 +224,4 @@ public class FicheDevisActivity extends AppCompatActivity {
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
     }
-
-
 }

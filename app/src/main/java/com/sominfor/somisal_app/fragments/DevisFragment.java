@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +34,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.AddDevisActivity;
+import com.sominfor.somisal_app.activities.AddProduitDevisActivity;
+import com.sominfor.somisal_app.activities.DashboardActivity;
 import com.sominfor.somisal_app.activities.DelayedProgressDialog;
 import com.sominfor.somisal_app.activities.DevisArchivesActivity;
 import com.sominfor.somisal_app.activities.DevisSoldesActivity;
@@ -45,6 +49,7 @@ import com.sominfor.somisal_app.adapters.ProduitAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
+import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.ModeReglement;
@@ -58,11 +63,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import static com.sominfor.somisal_app.activities.AddProduitDevisActivity.FRAGMENT_DEVIS;
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 /**
@@ -72,6 +82,7 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
  * Liste des devis
  */
 public class DevisFragment extends Fragment {
+    private static final int SPLASH_TIME = 4000;
     FrameLayout frameLayout;
     RecyclerView recyclerViewDevis;
     List<Devis> devisList;
@@ -79,15 +90,15 @@ public class DevisFragment extends Fragment {
     public static List<Livreur> livreurListDevis;
     public static List<DelaiReglement> delaiReglementListDevis;
     public static List<ModeReglement> modeReglementListDevis;
-
-
+    private static DevisFragment instance = null;
+    JSONArray coactJson, coactJsonDel, podevJson, coproArray, nuprmArray, unvteArray, cofvtArray, qtdevArray, putarArray, txremArray, varemArray, texteArray;
     private MenuItem mSearchItem;
     private SearchView sv;
     DevisAdapter devisAdapter;
     FloatingActionButton fab_add_devis;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
-    String ApiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, devStatu, apiUrl02, apiUrl03, apiUrl04, apiUrl05, utilisateurCosoc, utilisateurCoage;
+    String ApiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, devStatu, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, utilisateurCosoc, utilisateurCoage, coactVal, coactDel, coactArc;
     Utilisateur utilisateur;
     public RequestQueue rq;
     DelayedProgressDialog progressDialogInfo;
@@ -109,10 +120,13 @@ public class DevisFragment extends Fragment {
         livreurListDevis = new ArrayList<>();
         delaiReglementListDevis = new ArrayList<>();
         modeReglementListDevis = new ArrayList<>();
-
+        /**Initialisation instance**/
+        instance = this;
         progressDialogInfo = new DelayedProgressDialog();
         serveurNodeController = new ServeurNodeController();
         apiReceiverMethods = new ApiReceiverMethods(getActivity().getApplicationContext());
+        coactVal = "VAL";
+        coactDel = "DEL";
 
         /***Instanciation des widgets***/
         frameLayout = view.findViewById(R.id.frameLayout);
@@ -124,11 +138,12 @@ public class DevisFragment extends Fragment {
         /**Récupération des informations serveur**/
         serveurNode = serveurNodeController.getServeurNodeInfos();
         /*URL Récupération de la liste des systèmes*/
-        ApiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/DevisByStatu";
-        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/allClient";
+        ApiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/devisByStatu";
+        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/allClient";
         apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allColiv";
         apiUrl04 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allDereg";
         apiUrl05 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
+        apiUrl06 = protocole+"://"+serveurNode.getServeurNodeIp()+"/create/devis/Onedevis";
         utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
@@ -141,13 +156,23 @@ public class DevisFragment extends Fragment {
         /**Récupération des devis en cours**/
         listeDevisEnCours(ApiUrl01);
 
-        /**Vérifier si liste client est vide sinon récupérer***/
-        if(ClientFragment.clients ==null){
-            /**Récupération de la liste de clients**/
-            clientListDevis = apiReceiverMethods.recupererListeClients(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-        }else{
-            clientListDevis = ClientFragment.clients;
-        }
+        /**Initialisation - ParseJson**/
+        /**Parse Json - Récupération des arrays**/
+        podevJson = new JSONArray();
+        coproArray = new JSONArray();
+        nuprmArray = new JSONArray();
+        unvteArray = new JSONArray();
+        cofvtArray = new JSONArray();
+        qtdevArray = new JSONArray();
+        putarArray = new JSONArray();
+        txremArray = new JSONArray();
+        varemArray = new JSONArray();
+        texteArray = new JSONArray();
+        coactJson = new JSONArray();
+        coactJsonDel = new JSONArray();
+
+
+        clientListDevis = apiReceiverMethods.recupererListeClients(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
 
         /**Récupération de la liste des livreurs**/
         livreurListDevis = apiReceiverMethods.recupererListeLivreurs(apiUrl03, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
@@ -175,10 +200,12 @@ public class DevisFragment extends Fragment {
         switch (id) {
             case R.id.action_soldes:
                 Intent intent = new Intent(getActivity(), DevisSoldesActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;
             case R.id.action_archives:
                 Intent it = new Intent(getActivity(), DevisArchivesActivity.class);
+                it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(it);
                 return true;
         }
@@ -212,6 +239,94 @@ public class DevisFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**Instance de fragment**/
+    public static DevisFragment getInstance(){
+
+        return instance;
+    }
+
+    /***Validation approuvée**/
+    public void doValidatePositiveClick(Devis devisValidate) {
+        try {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date currentDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+        Date dateDevisLivraison = simpleDateFormat.parse(devisValidate.getDevDaliv());
+
+            if (dateDevisLivraison.compareTo(currentDate) >= 0){
+                for(int i=0;i<1;i++){
+                    coactJson.put(coactVal);
+
+                }
+
+                /**Validation*/
+                validerDevisToAs400(apiUrl06, devisValidate);
+
+                DelayedProgressDialog pgDialog = new DelayedProgressDialog();
+                pgDialog.show(getActivity().getSupportFragmentManager(), "Load");
+                pgDialog.setCancelable(false);
+                new Thread(() -> {
+
+                    try {
+                        Thread.sleep(SPLASH_TIME);
+                        Intent i = new Intent(getActivity(), DashboardActivity.class);
+                        i.putExtra("frgToLoad", FRAGMENT_DEVIS);
+                        // Now start your activity
+                        pgDialog.cancel();
+                        startActivity(i);
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        pgDialog.cancel();
+                    }
+                }).start();
+            }else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.error_SAL09), Toast.LENGTH_LONG).show();
+            }
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    /**Validation non approuvée**/
+    public void doValidateNegativeClick(Devis dd) {
+    }
+
+
+    /***Suppression approuvée**/
+    public void doDeleteDevisPositiveClick(Devis devisValidate) {
+
+                for(int i=0;i<1;i++){
+                    coactJsonDel.put(coactDel);
+                }
+                deleteDevis400(apiUrl06, devisValidate);
+                /***Attente de 4s**/
+                DelayedProgressDialog pgDialog = new DelayedProgressDialog();
+                pgDialog.show(getActivity().getSupportFragmentManager(), "Load");
+                pgDialog.setCancelable(false);
+                new Thread(() -> {
+
+                    try {
+                        Thread.sleep(SPLASH_TIME);
+                        Intent i = new Intent(getActivity(), DashboardActivity.class);
+                        i.putExtra("frgToLoad", FRAGMENT_DEVIS);
+                        // Now start your activity
+                        pgDialog.cancel();
+                        startActivity(i);
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        pgDialog.cancel();
+                    }
+                }).start();
+
+
+    }
+
+    /**Validation non approuvée**/
+    public void doDeleteDevisNegativeClick(Devis dd) {
+    }
+
     /**Récupération de la liste de devis en cours**/
     public void listeDevisEnCours(String api_url){
         RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
@@ -232,12 +347,12 @@ public class DevisFragment extends Fragment {
                         devis.setCliRasoc(jsonObject.getString("CLIRASOC"));
                         devis.setDevDaliv(jsonObject.getString("DEVDALIV"));
                         devis.setDevVadev(jsonObject.getDouble("DEVVADEV"));
-                        devis.setDevComon(jsonObject.getString("DEVCOMONLIB"));
+                        devis.setDevlimon(jsonObject.getString("DEVCOMONLIB").trim());
                         devis.setDevNudev(jsonObject.getString("DEVNUDEV"));
                         devis.setDevDadev(jsonObject.getString("DEVDADEV"));
                         devis.setDevLieuv(jsonObject.getString("DEVLIEUVLIB"));
                         devis.setDevColieuv(jsonObject.getString("DEVLIEUV"));
-                        devis.setDevRfdev(jsonObject.getString("DEVRFDEV"));
+                        devis.setDevRfdev(jsonObject.getString("DEVRFDEV").trim());
                         devis.setDevStatut(jsonObject.getString("DEVSTATULIB"));
                         devis.setDevComag(jsonObject.getString("DEVCOMAG"));
                         devis.setDevLimag(jsonObject.getString("DEVCOMAGLIB"));
@@ -247,6 +362,10 @@ public class DevisFragment extends Fragment {
                         devis.setDevNucli(jsonObject.getString("DEVNUCLI"));
                         devis.setDevMoreg(jsonObject.getString("DEVMOREG"));
                         devis.setDevDereg(jsonObject.getString("DEVDEREG"));
+                        devis.setDevEcova(jsonObject.getDouble("DEVECOVA"));
+                        devis.setDevTxesc(jsonObject.getDouble("DEVTXESC"));
+                        devis.setDevUscom(jsonObject.getString("DEVUSCOM").trim());
+                        devis.setDevComon(jsonObject.getString("DEVCOMON"));
 
                         //Populariser la liste des produits
                         devisList.add(devis);
@@ -257,11 +376,11 @@ public class DevisFragment extends Fragment {
 
                     }
                 }
-                devisAdapter = new DevisAdapter(getActivity(),devisList);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                devisAdapter = new DevisAdapter(getActivity(),devisList,fragmentManager);
                 recyclerViewDevis.setAdapter(devisAdapter);
             }catch(JSONException e){
                 e.printStackTrace();
-
             }
         }, volleyError -> {
             volleyError.printStackTrace();
@@ -278,6 +397,123 @@ public class DevisFragment extends Fragment {
                 param.put("devstatu", devStatu);
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
+                return param;
+            }
+        };
+        int socketTimeout = 10000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+    }
+
+    /**Validate devis**/
+    public void validerDevisToAs400(String api_url, Devis dev){
+        DelayedProgressDialog progressDialog = new DelayedProgressDialog();
+        RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+        progressDialog.show(getActivity().getSupportFragmentManager(), "Loading...");
+        progressDialog.setCancelable(false);
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+
+            try{
+                JSONObject jsonObject = new JSONObject(s);
+                if (jsonObject.getString("succes") == "true"){
+                    progressDialog.cancel();
+                }else{
+                    progressDialog.cancel();
+                    Toast.makeText(getActivity().getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                }
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+
+        }, volleyError -> {
+            volleyError.printStackTrace();
+            progressDialog.cancel();
+        })
+        {
+            protected Map<String,String> getParams(){
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("coact", coactJson.toString());
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("systeme",systemeAdresse);
+                param.put("nudev",dev.getDevNudev());
+                param.put("dadev",dev.getDevDadev());
+                param.put("nucli",dev.getDevNucli());
+                param.put("rfdev", dev.getDevRfdev());
+                param.put("daval", dev.getDevDadev());
+                param.put("lieuv", "");
+                param.put("comag",dev.getDevComag());
+                param.put("notes", "");
+                param.put("uscom", dev.getDevUscom());
+                param.put("txesc", String.valueOf(dev.getDevTxesc()));
+                param.put("ecova", String.valueOf(dev.getDevEcova()));
+                param.put("moexp", "");
+                param.put("daliv", dev.getDevDaliv());
+                param.put("coliv", dev.getDevColiv());
+                param.put("moreg", dev.getDevMoreg());
+                param.put("dereg", dev.getDevDereg());
+
+                Log.v("Coact", coactJson.toString());
+
+                return param;
+            }
+        };
+        int socketTimeout = 10000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+    }
+
+    /**Delete devis**/
+    public void deleteDevis400(String api_url, Devis dev){
+        DelayedProgressDialog progressDialog = new DelayedProgressDialog();
+        RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+        progressDialog.show(getActivity().getSupportFragmentManager(), "Loading...");
+        progressDialog.setCancelable(false);
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+
+            try{
+                JSONObject jsonObject = new JSONObject(s);
+                if (jsonObject.getString("succes") == "true"){
+                    progressDialog.cancel();
+                }else{
+                    progressDialog.cancel();
+                    Toast.makeText(getActivity().getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                }
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+
+        }, volleyError -> {
+            volleyError.printStackTrace();
+            progressDialog.cancel();
+        })
+        {
+            protected Map<String,String> getParams(){
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("coact", coactJsonDel.toString());
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("systeme",systemeAdresse);
+                param.put("nudev",dev.getDevNudev());
+                param.put("dadev",dev.getDevDadev());
+                param.put("nucli",dev.getDevNucli());
+                param.put("rfdev", dev.getDevRfdev());
+                param.put("daval", dev.getDevDadev());
+                param.put("lieuv", "");
+                param.put("comag",dev.getDevComag());
+                param.put("notes", "");
+                param.put("uscom", dev.getDevUscom());
+                param.put("txesc", String.valueOf(dev.getDevTxesc()));
+                param.put("ecova", String.valueOf(dev.getDevEcova()));
+                param.put("moexp", "");
+                param.put("daliv", dev.getDevDaliv());
+                param.put("coliv", dev.getDevColiv());
+                param.put("moreg", dev.getDevMoreg());
+                param.put("dereg", dev.getDevDereg());
+
+
                 return param;
             }
         };

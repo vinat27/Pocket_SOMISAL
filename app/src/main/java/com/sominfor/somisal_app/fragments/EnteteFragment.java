@@ -77,7 +77,7 @@ public class EnteteFragment extends Fragment implements BlockingStep {
         clients = new ArrayList<>();
 
         /**URL Récupération de la liste des clients**/
-        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/allClient";
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/allClient";
 
         /**Instanciation des widgets**/
         SsnComCliRasoc = view.findViewById(R.id.MbSpnComRasoc);

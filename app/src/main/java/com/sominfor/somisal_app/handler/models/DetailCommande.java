@@ -7,14 +7,14 @@ import java.io.Serializable;
  * SOMINFOR
  * Paris, FRANCE
  */
-public class DetailCommande implements Serializable {
+public class DetailCommande implements Serializable,Comparable<DetailCommande> {
     /**Données générales**/
     private String dcocosoc;
     private String dcocoage;
     private int dcocopro;
     private int dconuprm;
     private String dcounvte;
-    private long dcocofvt;
+    private int dcocofvt;
 
     private String dcoTexte;
 
@@ -27,6 +27,11 @@ public class DetailCommande implements Serializable {
     private Double dcovarem;
     private Double dcoqtliv;
     private Double Dcovacom;
+    private String dcoDacom;
+    private String dcoNucli;
+    private String dcoNacli;
+    private String dcoLieuv;
+    private String dcoCoact;
 
     /**Libelles**/
     private boolean expandable;
@@ -51,6 +56,46 @@ public class DetailCommande implements Serializable {
         Dcovacom = dcovacom;
         this.dcolipro = dcolipro;
         this.dcotxn = dcotxn;
+    }
+
+    public String getDcoDacom() {
+        return dcoDacom;
+    }
+
+    public void setDcoDacom(String dcoDacom) {
+        this.dcoDacom = dcoDacom;
+    }
+
+    public String getDcoNucli() {
+        return dcoNucli;
+    }
+
+    public void setDcoNucli(String dcoNucli) {
+        this.dcoNucli = dcoNucli;
+    }
+
+    public String getDcoNacli() {
+        return dcoNacli;
+    }
+
+    public void setDcoNacli(String dcoNacli) {
+        this.dcoNacli = dcoNacli;
+    }
+
+    public String getDcoLieuv() {
+        return dcoLieuv;
+    }
+
+    public void setDcoLieuv(String dcoLieuv) {
+        this.dcoLieuv = dcoLieuv;
+    }
+
+    public String getDcoCoact() {
+        return dcoCoact;
+    }
+
+    public void setDcoCoact(String dcoCoact) {
+        this.dcoCoact = dcoCoact;
     }
 
     public String getDcoTexte() {
@@ -101,11 +146,11 @@ public class DetailCommande implements Serializable {
         this.dcounvte = dcounvte;
     }
 
-    public long getDcocofvt() {
+    public int getDcocofvt() {
         return dcocofvt;
     }
 
-    public void setDcocofvt(long dcocofvt) {
+    public void setDcocofvt(int dcocofvt) {
         this.dcocofvt = dcocofvt;
     }
 
@@ -205,5 +250,14 @@ public class DetailCommande implements Serializable {
         DetailCommande c = (DetailCommande) t;
         //Compare however you want, ie
         return  (String.valueOf(c.getDcocopro()).equals(String.valueOf(this.getDcocopro())));
+    }
+    @Override
+    public int compareTo(DetailCommande o) {
+        if (this.getDcopocom() > o.getDcopocom()) {
+            return 1;
+        } else if (this.getDcopocom() < o.getDcopocom()) {
+            return -1;
+        }
+        return 0;
     }
 }

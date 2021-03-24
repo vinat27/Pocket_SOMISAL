@@ -422,7 +422,7 @@
                         android:fontFamily="@font/montserrat_bold"
                         android:text=""
                         android:textColor="@color/colorPrimary"
-                        android:textSize="18sp"  />
+                        android:textSize="17sp"/>
                 </LinearLayout>
 
                 <!--Stock d'Alerte-->
@@ -549,14 +549,14 @@
                         />
 
                     <TextView
-                        android:id="@+id/TxtPrmQtsto02"
+                        android:id="@+id/TxtPrmQtval"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_bold"
                         android:text=""
                         android:textColor="@color/colorPrimary"
-                        android:textSize="18sp" />
+                        android:textSize="17sp" />
                 </LinearLayout>
 
 
@@ -642,7 +642,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/PrmDadso"
+                        android:id="@+id/TxtPrmDadso"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

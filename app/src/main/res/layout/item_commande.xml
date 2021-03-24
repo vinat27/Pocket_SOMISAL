@@ -267,18 +267,57 @@
                     android:fontFamily="@font/montserrat_semibold"
                     android:paddingLeft="8sp"/>
             </LinearLayout>
-            <!--Détails Devis-->
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/FabComDetails"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_gravity="bottom|right"
-                android:textColor="@color/white"
-                android:text="Détails"
-                app:icon="@drawable/ic_baseline_visibility_24"
-                app:iconTint="@color/white"
-                app:backgroundTint="@color/colorPrimary"/>
+                android:layout_marginLeft="35dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+
+                <!--Détails Devis-->
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabUpdateCom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:padding="18dp"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:icon="@drawable/ic_baseline_edit_24_white"
+                    app:iconTint="@color/white" />
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabDeleteCom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_gravity="bottom|right"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_baseline_delete_24_white"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/red"/>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/FabComDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_gravity="bottom|right"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_baseline_visibility_24"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/colorPrimary"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </LinearLayout>

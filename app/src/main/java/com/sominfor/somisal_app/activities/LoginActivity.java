@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,6 +62,12 @@ public class LoginActivity extends AppCompatActivity {
     public static String protocole = "http";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**Controle orientation***/
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -73,6 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         serveurNodeController = new ServeurNodeController();
         systemes = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
+
+
         /**controle connexion au serveur Node**/
         statutServeur = serveurNodeController.checkIfIsExist();
         if (!statutServeur){
@@ -133,6 +142,16 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
+
     // A la selection du menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -146,6 +165,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     /**
      * @param apiUrl

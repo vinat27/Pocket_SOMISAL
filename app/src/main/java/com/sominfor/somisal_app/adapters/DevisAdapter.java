@@ -12,13 +12,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.FicheDevisActivity;
 import com.sominfor.somisal_app.activities.UpdateDevisActivity;
+import com.sominfor.somisal_app.fragments.DeleteAlertDialogFragment;
+import com.sominfor.somisal_app.fragments.DeleteDevisAlertDialogFragment;
+import com.sominfor.somisal_app.fragments.ValiderAlertDialogFragment;
 import com.sominfor.somisal_app.handler.models.Devis;
+import com.sominfor.somisal_app.handler.models.ServeurNode;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,11 +44,13 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
     private static List<Devis> devisList;
     private List<Devis> devisSearchs;
     private Context context;
+    FragmentManager fragmentManager;
     /**Constructeur**/
-    public DevisAdapter(Context context, List<Devis> devisList){
+    public DevisAdapter(Context context, List<Devis> devisList, FragmentManager fragmentManager){
         this.context = context;
         this.devisList = devisList;
         devisSearchs = new ArrayList<>(devisList);
+        this.fragmentManager = fragmentManager;
     }
     @NonNull
     @Override
@@ -61,7 +68,7 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String DevDadevFormat = "";
         String DevDalivFormat = "";
-        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevComon().trim();
+        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevlimon().trim();
 
         try {
             DevDadevFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDadev())));
@@ -95,6 +102,25 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
             i.putExtras(bundle);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
+        });
+
+        holder.FabValiderDevis.setOnClickListener(v -> {
+            ValiderAlertDialogFragment validerAlertDialogFragment = ValiderAlertDialogFragment.newInstance();
+            Bundle args = new Bundle();
+            args.putSerializable("devis", devis);
+            validerAlertDialogFragment.setArguments(args);
+            validerAlertDialogFragment.show(fragmentManager, ServeurNode.TAG);
+        });
+
+        holder.FabDeleteDevis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeleteDevisAlertDialogFragment deleteDevisAlertDialogFragment = DeleteDevisAlertDialogFragment.newInstance();
+                Bundle args = new Bundle();
+                args.putSerializable("devis", devis);
+                deleteDevisAlertDialogFragment.setArguments(args);
+                deleteDevisAlertDialogFragment.show(fragmentManager, ServeurNode.TAG);
+            }
         });
 
         boolean isExpandable = devisList.get(position).isExpandable();
@@ -137,7 +163,7 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
             FabUpdateDevis = itemView.findViewById(R.id.FabUpdateDevis);
             FabValiderDevis = itemView.findViewById(R.id.FabValiderDevis);
             FabDeleteDevis = itemView.findViewById(R.id.FabDeleteDevis);
-            FabArchiverDevis = itemView.findViewById(R.id.FabArchiverDevis);
+            //FabArchiverDevis = itemView.findViewById(R.id.FabArchiverDevis);
             Lnr01 = itemView.findViewById(R.id.Lnr01);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
 

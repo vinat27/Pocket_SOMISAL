@@ -1,10 +1,18 @@
 package com.sominfor.somisal_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,8 +57,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import needle.Needle;
+
+import static com.sominfor.somisal_app.activities.AddProduitDevisActivity.FRAGMENT_DEVIS;
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
+import static com.sominfor.somisal_app.fragments.DevisFragment.clientListDevis;
 
 public class AddDevisActivity extends AppCompatActivity  {
     /**variables globales**/
@@ -65,8 +79,8 @@ public class AddDevisActivity extends AppCompatActivity  {
     Client client;
     SearchableSpinner SsnDevCliRasoc;
     MaterialBetterSpinner MbSpnCliLieuv, MbSpnDevMag, MbSpnDevColiv, MbSpnDevMoreg, MbSpnDevDereg, MbSpnDevUscom;
-    Float DevTxrem, DevTxesc;
-    Double DevEcova;
+
+    Double DevEcova, DevTxrem, DevTxesc;
     /**Listes - Lieu de vente, Client, Magasin***/
     List<LieuVente> lieuVentes;
     List<Magasin> magasins;
@@ -97,7 +111,7 @@ public class AddDevisActivity extends AppCompatActivity  {
     DatePickerDialog DpdialogDadev, DpdialogDaliv;
     TextInputEditText EdtDevdadev,EdtDevDaliv, EdtDevRfdev, EdtDevTxrem, EdtDevTxesc, EdtDevEcova;
     ApiReceiverMethods apiReceiverMethods;
-
+    ProgressDialog prgDialog;
     /**Nouvelle Instance**/
     public static AddDevisActivity getInstance(){
         return   activityDevisActivity;
@@ -105,6 +119,11 @@ public class AddDevisActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_devis);
 
@@ -126,6 +145,10 @@ public class AddDevisActivity extends AppCompatActivity  {
 
         serveurNodeController = new ServeurNodeController();
         progressDialogInfo = new DelayedProgressDialog();
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Tranfert les données depuis la base de données centrale. Patientez...");
+        prgDialog.setCancelable(false);
+
         /**Récupération du serveur node**/
         serveurNode = serveurNodeController.getServeurNodeInfos();
 
@@ -139,12 +162,12 @@ public class AddDevisActivity extends AppCompatActivity  {
         delaiReglements = new ArrayList<>();
         commercialList = new ArrayList<>();
         apiReceiverMethods = new ApiReceiverMethods(getApplicationContext());
-        DevTxesc = 0.0f;
-        DevTxrem = 0.0f;
+        DevTxesc = 0.0;
+        DevTxrem = 0.0;
         DevEcova = 0.0;
 
         /**URL Récupération de la liste des clients**/
-        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/allClient";
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/allClient";
         apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allLivth";
         apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allComag";
         apiUrl04 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allColiv";
@@ -168,56 +191,33 @@ public class AddDevisActivity extends AppCompatActivity  {
         EdtDevTxesc = findViewById(R.id.EdtDevTxesc);
         EdtDevEcova = findViewById(R.id.EdtDevEcova);
 
-        /**Récupération de la liste de clients**/
-        if (DevisFragment.clientListDevis == null){
+        if (clientListDevis.size() == 0) {
             clients = apiReceiverMethods.recupererListeClients(apiUrl01,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         }else{
-            clients = DevisFragment.clientListDevis;
+            clients = clientListDevis;
         }
         clientSpinnerAdapter = new ClientSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, clients);
         SsnDevCliRasoc.setAdapter(clientSpinnerAdapter);
 
-        /***Récupération de la liste des lieux de vente**/
-        lieuVentes = apiReceiverMethods.recupererListeLieuv(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-        lieuVenteSpinnerAdapter = new LieuVenteSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, lieuVentes);
-        MbSpnCliLieuv.setAdapter(lieuVenteSpinnerAdapter);
+        /**Exécution en background - Popularisation des spinners (Combo boxes)**/
+        DelayedProgressDialog pgDialog = new DelayedProgressDialog();
+        pgDialog.show(getSupportFragmentManager(), "Load");
+        pgDialog.setCancelable(false);
+        new Thread(() -> {
 
-        /**Récupération de la liste des magasins**/
-        magasins = apiReceiverMethods.recupererListeMagasins(apiUrl03, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-        magasinSpinnerAdapter = new MagasinSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, magasins);
-        MbSpnDevMag.setAdapter(magasinSpinnerAdapter);
+            try {
+                Thread.sleep(4000);
+                SpinnerTask spinnerTask = new SpinnerTask();
+                spinnerTask.execute();
 
-        /**Récupération de la liste des livreurs**/
-        if (DevisFragment.livreurListDevis.isEmpty()){
-            livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-        }else{
-            livreurs = DevisFragment.livreurListDevis;
-        }
-        livreurSpinnerAdapter = new LivreurSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, livreurs);
-        MbSpnDevColiv.setAdapter(livreurSpinnerAdapter);
+                // Now start your activity
+                pgDialog.cancel();
 
-        /**Récupération de la liste des modes de reglemet**/
-        if (DevisFragment.modeReglementListDevis.isEmpty()){
-            modeReglements = apiReceiverMethods.recupererModeReglements(apiUrl06, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
-        }else{
-            modeReglements = DevisFragment.modeReglementListDevis;
-        }
-        modeReglementSpinnerAdapter = new ModeReglementSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, modeReglements);
-        MbSpnDevMoreg.setAdapter(modeReglementSpinnerAdapter);
-
-        /**Récupération de la liste des delais de reglemet**/
-        if (DevisFragment.modeReglementListDevis.isEmpty()){
-            delaiReglements = apiReceiverMethods.recupererDelaiReglements(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-        }else{
-            delaiReglements = DevisFragment.delaiReglementListDevis;
-        }
-        delaiReglementSpinnerAdapter = new DelaiReglementSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, delaiReglements);
-        MbSpnDevDereg.setAdapter(delaiReglementSpinnerAdapter);
-
-        /**Récupération de la liste des commerciaux**/
-        commercialList = apiReceiverMethods.recupererCommerciaux(apiUrl07, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
-        commercialSpinnerAdapter = new CommercialSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, commercialList);
-        MbSpnDevUscom.setAdapter(commercialSpinnerAdapter);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                pgDialog.cancel();
+            }
+        }).start();
 
         /**Initialiser les dates de devis et de livraison à la date courante**/
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -346,10 +346,10 @@ public class AddDevisActivity extends AppCompatActivity  {
                                                }
                                                /**Remise globale**/
                                                if (!EdtDevTxrem.getText().toString().equals(""))
-                                                   DevTxrem = Float.parseFloat(Objects.requireNonNull(EdtDevTxrem.getText()).toString());
+                                                   DevTxrem = Double.parseDouble(Objects.requireNonNull(EdtDevTxrem.getText()).toString());
                                                /**Escompte**/
                                                if (!EdtDevTxesc.getText().toString().equals(""))
-                                                   DevTxesc = Float.parseFloat(Objects.requireNonNull(EdtDevTxesc.getText()).toString());
+                                                   DevTxesc = Double.parseDouble(Objects.requireNonNull(EdtDevTxesc.getText()).toString());
 
                                                /**Eco-Participation*/
                                                if (!EdtDevEcova.getText().toString().equals(""))
@@ -409,6 +409,16 @@ public class AddDevisActivity extends AppCompatActivity  {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
@@ -446,5 +456,63 @@ public class AddDevisActivity extends AppCompatActivity  {
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    private class SpinnerTask extends AsyncTask<Void, Integer, Void>
+    {
 
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values){
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            lieuVentes = apiReceiverMethods.recupererListeLieuv(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+            magasins = apiReceiverMethods.recupererListeMagasins(apiUrl03, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+            livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+            modeReglements = apiReceiverMethods.recupererModeReglements(apiUrl06, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            delaiReglements = apiReceiverMethods.recupererDelaiReglements(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+            commercialList = apiReceiverMethods.recupererCommerciaux(apiUrl07, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // Now start your activity
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    lieuVenteSpinnerAdapter = new LieuVenteSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, lieuVentes);
+                    MbSpnCliLieuv.setAdapter(lieuVenteSpinnerAdapter);
+
+                    magasinSpinnerAdapter = new MagasinSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, magasins);
+                    MbSpnDevMag.setAdapter(magasinSpinnerAdapter);
+
+                    livreurSpinnerAdapter = new LivreurSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, livreurs);
+                    MbSpnDevColiv.setAdapter(livreurSpinnerAdapter);
+
+                    /**Récupération de la liste des modes de reglemet**/
+                    modeReglementSpinnerAdapter = new ModeReglementSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, modeReglements);
+                    MbSpnDevMoreg.setAdapter(modeReglementSpinnerAdapter);
+
+                    /**Récupération de la liste des delais de reglemet**/
+                    delaiReglementSpinnerAdapter = new DelaiReglementSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, delaiReglements);
+                    MbSpnDevDereg.setAdapter(delaiReglementSpinnerAdapter);
+
+                    /**Récupération de la liste des commerciaux**/
+                    commercialSpinnerAdapter = new CommercialSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, commercialList);
+                    MbSpnDevUscom.setAdapter(commercialSpinnerAdapter);
+                }
+            });
+
+            super.onPostExecute(result);
+        }
+    }
 }

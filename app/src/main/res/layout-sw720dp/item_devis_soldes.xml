@@ -238,24 +238,26 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/TxtReference"
+                    android:id="@+id/TxtNumeroCommande"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="Référence"
+                    android:text="@string/item_devis_soldes_NumeroCde"
                     android:layout_marginLeft="40dp"
+                    android:textSize="13sp"
                     />
 
                 <TextView
-                    android:id="@+id/TxtDevRefdev"
+                    android:id="@+id/TxtDevNucom"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="*"
-                    android:paddingLeft="8sp"/>
+                    android:paddingLeft="8sp"
+                    />
             </LinearLayout>
 
             <LinearLayout

@@ -62,4 +62,6 @@
     <dimen name="activity_client_details_htab_collapse_toolbar_heigth">156dp</dimen>
     <dimen name="activity_client_details_htab_header_marginTop">25dp</dimen>
     <dimen name="activity_client_details_htab_toolbar_marginBottom">48dp</dimen>
+    <dimen name="home_fragment_helloScreenText_marginTop">45dp</dimen>
+    <dimen name="home_fragment_helloScreenText_marginLeft">16dp</dimen>
 </resources>

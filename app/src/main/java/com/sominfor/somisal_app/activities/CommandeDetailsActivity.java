@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +56,11 @@ public class CommandeDetailsActivity extends AppCompatActivity {
     TextView TxtClirasoc,TxtComStatu, TxtComLimag, TxtComLiliv, TxtComVacom, TxtComadre1, TxtComadre2, TxtComcopos, TxtComville, TxtCombopos, TxtComcpays, TxtComrasol, TxtComrasoc, TxtComadr1l, TxtComadr2l, TxtComcopol, TxtComvilll, TxtCombopol, TxtComcpayl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commande_details);
 
@@ -137,7 +143,7 @@ public class CommandeDetailsActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
         RecyclerViewDetailsCommandes.setLayoutManager(linearLayoutManager);
 
-        recupererDetailsCommande(apiUrl01, commande.getComnucom());
+        recupererDetailsCommande(apiUrl01, commande.getComnucom(), commande.getComcomon());
 
     }
 
@@ -147,6 +153,16 @@ public class CommandeDetailsActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_fiche_commande_activity, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     @Override
@@ -174,7 +190,7 @@ public class CommandeDetailsActivity extends AppCompatActivity {
 
 
     /***Récupérer les détails devis**/
-    public void recupererDetailsCommande(String api_url, final String comNucom) {
+    public void recupererDetailsCommande(String api_url, final String comNucom, final String comComon) {
         RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
         progressDialogInfo.show(getSupportFragmentManager(), "Loading...");
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
@@ -224,6 +240,7 @@ public class CommandeDetailsActivity extends AppCompatActivity {
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("nucom", comNucom);
+                param.put("comon", comComon);
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
                 return param;

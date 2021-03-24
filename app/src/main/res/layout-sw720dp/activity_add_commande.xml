@@ -33,7 +33,7 @@
                 android:layout_margin="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
                 android:focusableInTouchMode="false"
                 android:fontFamily="@font/montserrat_regular"
-                app:hintText="@string/fragment_entete_MbSpinnerClient"
+                app:hintText="@string/add_commande_activity_MbSpinnerClient"
                 app:met_floatingLabel="normal" />
 
         </LinearLayout>
@@ -54,7 +54,7 @@
                 android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
                 android:focusableInTouchMode="false"
                 android:fontFamily="@font/montserrat_regular"
-                android:hint="@string/fragment_entete_MbSpnCliLieuv"
+                android:hint="@string/add_commande_activityMbSpnCliLieuv"
                 app:met_floatingLabel="normal"
                 app:met_hideUnderline="true"
                 app:met_textColor="@color/black"

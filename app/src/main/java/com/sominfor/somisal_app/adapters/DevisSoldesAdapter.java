@@ -57,7 +57,7 @@ public class DevisSoldesAdapter extends RecyclerView.Adapter<DevisSoldesAdapter.
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String DevDadevFormat = "";
         String DevDalivFormat = "";
-        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevComon().trim();
+        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevlimon().trim();
 
         try {
             DevDadevFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDadev())));

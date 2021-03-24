@@ -24,8 +24,8 @@ public class Devis implements Serializable {
     private String DevNucom;
     private String DevStatut;
     private String DevUscom;
-    private Float DevTxrem;
-    private Float DevTxesc;
+    private Double DevTxrem;
+    private Double DevTxesc;
     private Double DevEcova;
     private String DevMoexp;
     private String DevDaliv;
@@ -40,6 +40,8 @@ public class Devis implements Serializable {
     private String DexTexte;
     private String Devliliv;
     private String DevLimag;
+    private String devlista;
+    private String devlimon;
 
     //Expandables
     private boolean expandable;
@@ -62,6 +64,22 @@ public class Devis implements Serializable {
         CliRasoc = cliRasoc;
         DevComon = devComon;
         this.expandable = false;
+    }
+
+    public String getDevlimon() {
+        return devlimon;
+    }
+
+    public void setDevlimon(String devlimon) {
+        this.devlimon = devlimon;
+    }
+
+    public String getDevlista() {
+        return devlista;
+    }
+
+    public void setDevlista(String devlista) {
+        this.devlista = devlista;
     }
 
     public String getDevColieuv() {
@@ -216,19 +234,19 @@ public class Devis implements Serializable {
         DevUscom = devUscom;
     }
 
-    public Float getDevTxrem() {
+    public Double getDevTxrem() {
         return DevTxrem;
     }
 
-    public void setDevTxrem(Float devTxrem) {
+    public void setDevTxrem(Double devTxrem) {
         DevTxrem = devTxrem;
     }
 
-    public Float getDevTxesc() {
+    public Double getDevTxesc() {
         return DevTxesc;
     }
 
-    public void setDevTxesc(Float devTxesc) {
+    public void setDevTxesc(Double devTxesc) {
         DevTxesc = devTxesc;
     }
 

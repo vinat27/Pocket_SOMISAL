@@ -1,6 +1,7 @@
 package com.sominfor.somisal_app.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -10,13 +11,23 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.fragments.ClientFragment;
 import com.sominfor.somisal_app.fragments.CommandeFragment;
 import com.sominfor.somisal_app.fragments.DevisFragment;
+import com.sominfor.somisal_app.fragments.HomeFragment;
 import com.sominfor.somisal_app.fragments.ProduitFragment;
+import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.CustomTypefaceSpan;
 import com.sominfor.somisal_app.utils.UserSessionManager;
@@ -29,6 +40,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,8 +64,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-
-
+        /**Controle orientation***/
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
 
         /**Récupération de session utilisateur**/
         utilisateur = UserSessionManager.getInstance(getApplicationContext()).getUtilisateurDetail();
@@ -89,7 +111,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         TxtLogin.setText(utilisateur.getUtilisateurLogin());
         TxtFiliale.setText(utilisateur.getUtilisateurFiliale());
 
-        if( getIntent().getExtras() != null) {
+        if(getIntent()!=null && getIntent().getExtras() != null && getIntent().getExtras().getString("frgToLoad") != null) {
             intentFragment = getIntent().getExtras().getString("frgToLoad");
 
             switch (intentFragment) {
@@ -98,11 +120,15 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_frame, f).commit();
                     break;
-
+                case "3":
+                    Fragment frag = new CommandeFragment();
+                    fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, frag).commit();
+                    break;
             }
         }else{
             if (savedInstanceState == null) {
-                Fragment f = new ClientFragment();
+                Fragment f = new HomeFragment();
                 fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, f).commit();
             }
@@ -161,6 +187,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             f = new DevisFragment();
         }else if (id == R.id.nav_commande){
             f = new CommandeFragment();
+        }else if (id == R.id.nav_home){
+            f = new HomeFragment();
         }
         fragmentManager = (DashboardActivity.this).getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, f).commit();
@@ -184,6 +212,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         mNewTitle.setSpan(new CustomTypefaceSpan("montserratalternates_semibold" , font), 0 , mNewTitle.length(),  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mi.setTitle(mNewTitle);
     }
+
 
 
 }

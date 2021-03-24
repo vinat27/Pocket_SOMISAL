@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.FicheProduitActivity;
+import com.sominfor.somisal_app.fragments.CommentPosteAddCdeFullDialog;
 import com.sominfor.somisal_app.fragments.CommentPosteFullDialog;
 import com.sominfor.somisal_app.fragments.DeleteAlertDialogFragment;
+import com.sominfor.somisal_app.fragments.UpdateDcoFullDialog;
 import com.sominfor.somisal_app.handler.models.DetailCommande;
 import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Produit;
@@ -68,7 +70,7 @@ public class CommandeProduitAdapter extends RecyclerView.Adapter<CommandeProduit
         holder.TxtDcoqtcom.setText(String.format("%.3f", detailCommande.getDcoqtcom()));
         holder.TxtDcovacom.setText(String.format("%.2f", detailCommande.getDcovacom()));
         holder.TxtDcoTxRem.setText(String.valueOf(detailCommande.getDcotxrem()));
-        holder.TxtDcoVarem.setText(String.valueOf(detailCommande.getDcovarem()));
+        holder.TxtDcoVarem.setText(String.format("%.2f", detailCommande.getDcovarem()));
         /**Au clic du bouton détail**/
         holder.FabDetPro.setOnClickListener(v -> {
             Produit produit = new Produit();
@@ -91,7 +93,11 @@ public class CommandeProduitAdapter extends RecyclerView.Adapter<CommandeProduit
 
         /**Modification de poste**/
         holder.FabUpdatePro.setOnClickListener(v -> {
-
+            UpdateDcoFullDialog updateDcoFullDialog = UpdateDcoFullDialog.newInstance();
+            Bundle args = new Bundle();
+            args.putSerializable("detailCommande", detailCommande);
+            updateDcoFullDialog.setArguments(args);
+            updateDcoFullDialog.show(fragmentManager, ServeurNode.TAG);
         });
 
         /**Suppression de poste**/
@@ -107,11 +113,11 @@ public class CommandeProduitAdapter extends RecyclerView.Adapter<CommandeProduit
         holder.FabTxnPro.setOnClickListener(v -> {
             /***Ajout / Mise à jour de commentaires**/
 
-            CommentPosteFullDialog commentPosteFullDialog = CommentPosteFullDialog.newInstance();
+            CommentPosteAddCdeFullDialog commentPosteAddCdeFullDialog = CommentPosteAddCdeFullDialog.newInstance();
             Bundle args = new Bundle();
-            args.putString("txnpodev", detailCommande.getDcotxn());
-            commentPosteFullDialog.setArguments(args);
-            commentPosteFullDialog.show(fragmentManager, ServeurNode.TAG);
+            args.putSerializable("detailCommande", detailCommande);
+            commentPosteAddCdeFullDialog.setArguments(args);
+            commentPosteAddCdeFullDialog.show(fragmentManager, ServeurNode.TAG);
         });
 
         boolean isExpandable = detailCommandeList.get(position).isExpandable();

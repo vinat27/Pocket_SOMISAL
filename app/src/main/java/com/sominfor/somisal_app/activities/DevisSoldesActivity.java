@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,6 +62,12 @@ public class DevisSoldesActivity extends AppCompatActivity {
     private SearchView sv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**Controle orientation***/
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devis_soldes);
 
@@ -86,7 +93,7 @@ public class DevisSoldesActivity extends AppCompatActivity {
         serveurNodeController = new ServeurNodeController();
         serveurNode = serveurNodeController.getServeurNodeInfos();
         /**URL Récupération de la liste des systèmes*/
-        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/DevisByStatu";
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/devisByStatu";
         /**Récupération de session utilisateur**/
         utilisateur = UserSessionManager.getInstance(getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
@@ -141,6 +148,16 @@ public class DevisSoldesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
+
     /**Récupération de la liste de devis en cours**/
     public void listeDevisSoldes(String api_url){
         RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
@@ -161,7 +178,7 @@ public class DevisSoldesActivity extends AppCompatActivity {
                         devis.setCliRasoc(jsonObject.getString("CLIRASOC"));
                         devis.setDevDaliv(jsonObject.getString("DEVDALIV"));
                         devis.setDevVadev(jsonObject.getDouble("DEVVADEV"));
-                        devis.setDevComon(jsonObject.getString("DEVCOMONLIB"));
+                        devis.setDevComon(jsonObject.getString("DEVCOMON"));
                         devis.setDevNudev(jsonObject.getString("DEVNUDEV"));
                         devis.setDevNucom(jsonObject.getString("DEVNUCOM"));
                         devis.setDevDadev(jsonObject.getString("DEVDADEV"));
@@ -175,6 +192,7 @@ public class DevisSoldesActivity extends AppCompatActivity {
                         devis.setDevliliv(jsonObject.getString("DEVCOLIVLIB"));
                         devis.setDevNacli(jsonObject.getString("CLINACLI"));
                         devis.setDevNucli(jsonObject.getString("DEVNUCLI"));
+                        devis.setDevlimon(jsonObject.getString("DEVCOMONLIB"));
 
                         //Populariser la liste des produits
                         devisSoldesList.add(devis);

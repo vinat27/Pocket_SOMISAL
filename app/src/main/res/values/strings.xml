@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">SOMISAL</string>
+    <string name="app_name">SOMIAPPLI</string>
 
     <!--LoginActivity-->
     <string name="login_activity_MbSpnSystem_hint">Système</string>
     <string name="login_activity_EdtLogin_hint">Identifiant</string>
     <string name="login_activity_BtnConnexion">CONNEXION</string>
-    <string name="login_activity_TxtCopyright_text">Copyright © SOMINFOR 2020</string>
+    <string name="login_activity_TxtCopyright_text">Copyright © 2021 - SOMINFOR - Beta 0.9</string>
     <string name="login_activity_Snackbar01_NoServeur">Aucun serveur spécifié.</string>
     <string name="login_activity_Snackbar01_Action">Configurer</string>
     <string name="login_activity_Snackbar01_NoConnexion">Echec connexion au serveur</string>
@@ -23,7 +23,7 @@
     <string name="serveur_node_fragment_toast01">Serveur enregistré</string>
     <string name="serveur_node_fragment_toast02">Une erreur s\'est produite</string>
     <string name="serveur_node_fragment_toast03">Modification effectuée</string>
-    <string name="title_activity_dashboard">Accueil</string>
+    <string name="title_activity_dashboard">SOMIAPPLI</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -32,6 +32,7 @@
     <string name="action_settings">Settings</string>
 
     <!--DashboardActivity-->
+    <string name="menu_dashboard">Tableau de bord</string>
     <string name="menu_client">Clients</string>
     <string name="menu_produit">Produits</string>
     <string name="menu_devis">Devis</string>
@@ -75,7 +76,7 @@
     <string name="activity_fiche_produit_TxtStockAlerte">Stock d\'alerte</string>
 
     <!--ProduitFragment-->
-    <string name="produit_fragment_noStock">Pas de fiche de stock</string>
+    <string name="produit_fragment_noStock">Pas de fiche de stock - Produit Hors Stock</string>
 
     <!--FicheDevisActivity-->
     <string name="fiche_devis_activity_TxtDevStatuTitle">Statut</string>
@@ -100,15 +101,15 @@
     <string name="commentaires_devis_full_dialog_setTitle">Commentaires - Post-It</string>
 
     <!--activity_add_devis-->
-    <string name="activity_ass_devis_MbSpinnerClient">Client</string>
-    <string name="add_devis_activity_MbSpnLieuv">Lieu de vente</string>
-    <string name="add_devis_activity_MbSpnDevMag">Magasin</string>
-    <string name="add_devis_activity_EdtDevDadev">Date devis</string>
+    <string name="activity_ass_devis_MbSpinnerClient">Client <font color='#FF0000'>*</font></string>
+    <string name="add_devis_activity_MbSpnLieuv">Lieu de vente <font color='#FF0000'>*</font></string>
+    <string name="add_devis_activity_MbSpnDevMag">Magasin <font color='#FF0000'>*</font></string>
+    <string name="add_devis_activity_EdtDevDadev">Date devis <font color='#FF0000'>*</font></string>
     <string name="add_devis_activity_EdtDevRfdev">Référence</string>
-    <string name="add_devis_activity_MbSpnDevColiv">Livreur</string>
+    <string name="add_devis_activity_MbSpnDevColiv">Livreur <font color='#FF0000'>*</font></string>
     <string name="add_devis_activity_MbSpnDevDereg">Délai</string>
     <string name="add_devis_activity_MbSpnDevMoreg">Règlement</string>
-    <string name="add_devis_activity_EdtDevDaliv">Date Livraison</string>
+    <string name="add_devis_activity_EdtDevDaliv">Date Livraison <font color='#FF0000'>*</font></string>
     <string name="add_devis_activity_EdtDevTxrem">Remise Globale</string>
     <string name="add_devis_activity_EdtDevTxesc">Escompte</string>
     <string name="add_devis_activity_EdtDevEcova">Eco-Participation</string>
@@ -171,15 +172,15 @@
     <string name="ms_complete">Terminer</string>
 
     <!--fragment_entete-->
-    <string name="fragment_entete_MbSpinnerClient">Client</string>
+    <string name="fragment_entete_MbSpinnerClient">Client </string>
     <string name="fragment_entete_MbSpnCliLieuv">Lieu de vente</string>
-    <string name="add_commande_activity_MbSpnComComag">Magasin</string>
-    <string name="add_commande_activity_EdtComDacom">Date Commande</string>
+    <string name="add_commande_activity_MbSpnComComag">Magasin <font color='#FF0000'>*</font></string>
+    <string name="add_commande_activity_EdtComDacom">Date Commande <font color='#FF0000'>*</font></string>
     <string name="add_commande_activity_EdtComNamar">Marchandises</string>
-    <string name="add_commande_activity_MbSpnComCotrn">Tournée</string>
-    <string name="add_commande_activity_EdtComDaliv">Date Livraison</string>
-    <string name="add_commande_activity_MbSpnComColiv">Livreur</string>
-    <string name="add_commande_activity_MbSpnComCotrp">Transport</string>
+    <string name="add_commande_activity_MbSpnComCotrn">Tournée <font color='#FF0000'>*</font></string>
+    <string name="add_commande_activity_EdtComDaliv">Date Livraison <font color='#FF0000'>*</font></string>
+    <string name="add_commande_activity_MbSpnComColiv">Livreur <font color='#FF0000'>*</font></string>
+    <string name="add_commande_activity_MbSpnComCotrp">Transport <font color='#FF0000'>*</font></string>
     <string name="add_commande_activity_StepTitle">Données générales</string>
     <string name="add_commande_activity_StepTitleFacturation">Facturation</string>
 
@@ -264,5 +265,44 @@
     <string name="item_devis_soldes_NumeroCde">Commande:</string>
     <string name="TxtSoldeAuxiliairesText">SOLDE COMPTE AUXILIAIRE</string>
     <string name="TxtAdrLivraisonText">ADRESSE DE LIVRAISON</string>
+    <string name="error_SAL12">Date Commande incorrecte</string>
+    <string name="error_SAL13">Raison sociale non référencée</string>
+    <string name="error_SAL14">Adresse de livraison non référencée</string>
+
+    <string name="android_auto_update_dialog_title">Mise à jour - GPI Mobile</string>
+
+    <string name="android_auto_update_notify_ticker">Découvrez la nouvelle version, cliquez pour mettre à niveau</string>
+    <string name="android_auto_update_notify_content">Découvrez la nouvelle version, cliquez pour mettre à niveau</string>
+    <string name="android_auto_update_dialog_btn_download">Mettre à jour</string>
+    <string name="android_auto_update_dialog_btn_cancel">Plus tard</string>
+    <string name="android_auto_update_toast_no_new_update">Application déjà mise à jour</string>
+    <string name="android_auto_update_download_progress">Téléchargement:%1$d%%</string>
+    <string name="android_auto_update_dialog_checking">Vérification de la version</string>
+
+    <!--ValiderDevisAlertDialogFragment-->
+    <string name="ValiderAlertDialogFragment_Title">Validation</string>
+    <string name="valider_alert_dialog_ok">Oui</string>
+    <string name="valider_alert_dialog_cancel">Non</string>
+    <string name="valider_alert_dialog_message">Voulez vous valider ce devis en commande?</string>
+
+    <!--DeleteDevisAlertDialogFragment-->
+    <string name="DeleteDevisAlertDialogFragment_Title">Confirmation Suppression</string>
+    <string name="DeleteDevis_alert_dialog_ok">Oui</string>
+    <string name="DeleteDevis_alert_dialog_cancel">Non</string>
+    <string name="DeleteDevis_alert_dialog_message">Voulez vous supprimer ce devis?</string>
+
+    <!--DeleteCommandeDialogFragment-->
+    <string name="deleteCommandeAlertDialogFragment_Title">Confirmation</string>
+    <string name="delete_commande_alert_dialog_ok">Oui</string>
+    <string name="delete_commande_alert_dialog_cancel">Non</string>
+    <string name="delete_commande_alert_dialog_message">Voulez vous supprimer cette commande?</string>
+
+    <!--Activity_update_commande-->
+    <string name="activity_update_commande_TxtComNucom">N° Commande</string>
+    <string name="activity_update_commande_TxtDateCommandeTitle">Date commande</string>
+    <string name="helloScreenTextTxt">Bonjour,</string>
+    <string name="SearcheableSelectItem">Selectionner</string>
+    <string name="add_commande_activityMbSpnCliLieuv">Lieu de vente <font color='#FF0000'>*</font></string>
+    <string name="add_commande_activity_MbSpinnerClient">Client <font color='#FF0000'>*</font></string>
 
 </resources>

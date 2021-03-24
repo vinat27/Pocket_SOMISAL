@@ -13,34 +13,103 @@
         android:supportsRtl="true"
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.DevisArchivesActivity"></activity>
-        <activity android:name=".activities.DevisSoldesActivity" />
-        <activity android:name=".activities.UpdateProduitDevisActivity" />
-        <activity android:name=".activities.UpdateDevisActivity" />
-        <activity android:name=".activities.ReglementActivity" />
-        <activity android:name=".activities.AdresseLivraisonActivity" />
-        <activity android:name=".activities.AdresseFacturationActivity" />
+        <activity android:name=".activities.ShowDevisUserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked"></activity>
+
+        <activity android:name=".activities.ShowCommandeUserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked"/>
+        <activity
+            android:name=".activities.UpdateProduitCommandeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.ReglementUpdateActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.AdresseLivraisonUpdateActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.AdresseFacturationUpdateActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.UpdateCommandeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.DevisArchivesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.DevisSoldesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.UpdateProduitDevisActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.UpdateDevisActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.ReglementActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.AdresseLivraisonActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.AdresseFacturationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.ClientDetailsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked"
             android:theme="@style/SomisalTheme.NoActionBar" />
-        <activity android:name=".activities.AddProduitCommandeActivity" />
+        <activity
+            android:name=".activities.AddProduitCommandeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.AddCommandeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".activities.CommandeDetailsActivity" />
-        <activity android:name=".activities.AddProduitDevisActivity" />
+        <activity
+            android:name=".activities.CommandeDetailsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.AddProduitDevisActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.AddDevisActivity"
-            android:label="Nouveau devis" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Nouveau devis"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.FicheDevisActivity"
-            android:label="Details Devis" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Details Devis"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.FicheProduitActivity"
-            android:label="Fiche Produit" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Fiche Produit"
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.DashboardActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_dashboard"
+            android:screenOrientation="locked"
             android:theme="@style/SomisalTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,8 +119,13 @@
         </activity>
         <activity
             android:name=".activities.SettingsActivity"
-            android:label="Paramètres" />
-        <activity android:name=".activities.LoginActivity" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Paramètres"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="locked" />
     </application>
 
 </manifest>

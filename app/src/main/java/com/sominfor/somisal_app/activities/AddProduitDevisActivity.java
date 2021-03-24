@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
@@ -78,7 +79,7 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String DevDalivFormat, systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage,apiUrl02;
+    String DevDalivFormat, systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage,apiUrl02, coactOperation;
     RecyclerView RecyclerViewDetailsDevis;
     DetailsDevisProduitsAdapter detailsDevisProduitsAdapter;
     List<DetailDevis> detailDevisList = new ArrayList<>();
@@ -95,7 +96,7 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
 
     double vadev;
 
-    JSONArray podevJson, coproArray, nuprmArray, unvteArray, cofvtArray, qtdevArray, putarArray, txremArray, varemArray, texteArray;
+    JSONArray coactJson, podevJson, coproArray, nuprmArray, unvteArray, cofvtArray, qtdevArray, putarArray, txremArray, varemArray, texteArray;
 
     public static List<Produit> produitsDevisList;
     DelayedProgressDialog progressDialog;
@@ -128,6 +129,11 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_produit_devis);
         /**Gestion du menu d'action**/
@@ -143,6 +149,7 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
         devis = (Devis) getIntent().getSerializableExtra("devis");
         livreur = (Livreur) getIntent().getSerializableExtra("Livreur");
         progressDialog = new DelayedProgressDialog();
+        coactOperation = "UPD";
 
         /**Instanciation des widgets**/
         RecyclerViewDetailsDevis = findViewById(R.id.RecyclerViewDetailsDevis);
@@ -174,7 +181,7 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
 
         /**URL Insertion**/
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/create/devis/Onedevis";
-        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit";
+        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit/allProduit";
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         detailsDevisProduitsAdapter = new DetailsDevisProduitsAdapter(getApplicationContext(), detailDevisList, fragmentManager);
@@ -226,9 +233,11 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
                 txremArray = new JSONArray();
                 varemArray = new JSONArray();
                 texteArray = new JSONArray();
+                coactJson = new JSONArray();
 
                 for(int i=0;i<detailDevisList.size();i++){
-                   podevJson.put(detailDevisList.get(i).getDdvPodev());
+                    coactJson.put(coactOperation);
+                    podevJson.put(detailDevisList.get(i).getDdvPodev());
                     coproArray.put(detailDevisList.get(i).getDdvCopro());
                     nuprmArray.put(detailDevisList.get(i).getDdvNuprm());
                     unvteArray.put(detailDevisList.get(i).getDdvUnvte());
@@ -274,6 +283,16 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
         fab_add_devis_details.setOnClickListener(v -> {
             openAddProduitDialog();
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     @Override
@@ -375,6 +394,7 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
         {
             protected Map<String,String> getParams(){
                 Map<String, String> param = new HashMap<String, String>();
+                param.put("coact", coactJson.toString());
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("systeme",systemeAdresse);
@@ -385,8 +405,16 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
                 param.put("daval", devis.getDevDadev());
                 param.put("lieuv", lieuVente.getColieuv());
                 param.put("comag", magasin.getMagcomag());
-                param.put("notes", DexTexteSend);
-                param.put("uscom", devis.getDevUscom());
+                if (DexTexteSend!=null){
+                    param.put("notes", DexTexteSend);
+                }else{
+                    param.put("notes", "");
+                }
+                if (devis.getDevUscom()!=null){
+                    param.put("uscom", devis.getDevUscom());
+                }else{
+                    param.put("uscom", "");
+                }
                 param.put("txesc", String.valueOf(devis.getDevTxesc()));
                 param.put("ecova", String.valueOf(devis.getDevEcova()));
                 param.put("moexp", "");
@@ -404,7 +432,6 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
                 param.put("txrem", txremArray.toString());
                 param.put("varem", varemArray.toString());
                 param.put("texte", texteArray.toString());
-
 
                 return param;
             }

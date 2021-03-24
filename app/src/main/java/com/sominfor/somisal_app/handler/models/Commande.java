@@ -70,6 +70,7 @@ public class Commande implements Serializable {
     private String comtxhen;
     private String comtxhpd;
     private String coxtexte;
+    private String comnacli;
 
     //Expandables
     private boolean expandable;
@@ -87,6 +88,14 @@ public class Commande implements Serializable {
         this.comdaliv = comdaliv;
         this.comcotrn = comcotrn;
         this.comcoliv = comcoliv;
+    }
+
+    public String getComnacli() {
+        return comnacli;
+    }
+
+    public void setComnacli(String comnacli) {
+        this.comnacli = comnacli;
     }
 
     public String getCoxtexte() {

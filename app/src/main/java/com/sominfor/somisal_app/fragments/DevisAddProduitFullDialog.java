@@ -117,8 +117,8 @@ public class DevisAddProduitFullDialog extends DialogFragment {
         uniteList = new ArrayList<>();
         messageErreur = "";
         /**URL Récupération de la liste des produits**/
-        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit";
-        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/TarifProduitById";
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit/allProduit";
+        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit/TarifProduitById";
         apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allUnvte";
 
         apiReceiverMethods = new ApiReceiverMethods(getActivity().getApplicationContext());

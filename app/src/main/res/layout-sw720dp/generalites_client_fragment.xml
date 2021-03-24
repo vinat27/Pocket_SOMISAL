@@ -285,7 +285,6 @@
                     android:textSize="30sp"
                     android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/green_darken_3"
-                    android:text="19500.52"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -297,7 +296,6 @@
                     android:textSize="14sp"
                     android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/green_darken_3"
-                    android:text="Euros"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

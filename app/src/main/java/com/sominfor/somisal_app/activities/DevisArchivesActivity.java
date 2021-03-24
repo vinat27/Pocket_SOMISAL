@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,8 +60,15 @@ public class DevisArchivesActivity extends AppCompatActivity {
     private SearchView sv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**Controle orientation***/
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devis_archives);
+
 
         /**Contrôle de sessions utilisateur**/
         if (!UserSessionManager.getInstance(this).isLoggedIn()) {
@@ -84,7 +92,7 @@ public class DevisArchivesActivity extends AppCompatActivity {
         serveurNodeController = new ServeurNodeController();
         serveurNode = serveurNodeController.getServeurNodeInfos();
         /**URL Récupération de la liste des systèmes*/
-        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/DevisByStatu";
+        apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/devisByStatu";
         /**Récupération de session utilisateur**/
         utilisateur = UserSessionManager.getInstance(getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
@@ -119,7 +127,7 @@ public class DevisArchivesActivity extends AppCompatActivity {
                         devis.setCliRasoc(jsonObject.getString("CLIRASOC"));
                         devis.setDevDaliv(jsonObject.getString("DEVDALIV"));
                         devis.setDevVadev(jsonObject.getDouble("DEVVADEV"));
-                        devis.setDevComon(jsonObject.getString("DEVCOMONLIB"));
+                        devis.setDevComon(jsonObject.getString("DEVCOMON"));
                         devis.setDevNudev(jsonObject.getString("DEVNUDEV"));
                         devis.setDevNucom(jsonObject.getString("DEVNUCOM"));
                         devis.setDevDadev(jsonObject.getString("DEVDADEV"));
@@ -133,6 +141,7 @@ public class DevisArchivesActivity extends AppCompatActivity {
                         devis.setDevliliv(jsonObject.getString("DEVCOLIVLIB"));
                         devis.setDevNacli(jsonObject.getString("CLINACLI"));
                         devis.setDevNucli(jsonObject.getString("DEVNUCLI"));
+                        devis.setDevlimon(jsonObject.getString("DEVCOMONLIB"));
 
                         //Populariser la liste des produits
                         devisArchivesList.add(devis);
@@ -171,6 +180,16 @@ public class DevisArchivesActivity extends AppCompatActivity {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     // Options Menu (ActionBar Menu)

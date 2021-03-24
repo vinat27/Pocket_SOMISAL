@@ -23,4 +23,6 @@
     <!--Dimensions - item_produit-->
     <dimen name="item_produit_TxtProCoPro_textSize">12dp</dimen>
     <dimen name="item_produit_TxtProLiPro_textSize">13dp</dimen>
+    <dimen name="home_fragment_helloScreenText_marginTop">55dp</dimen>
+    <dimen name="home_fragment_helloScreenText_marginLeft">16dp</dimen>
 </resources>

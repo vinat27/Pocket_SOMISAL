@@ -10,4 +10,5 @@ import com.sominfor.somisal_app.handler.models.DetailDevis;
  */
 public interface CommandeProduitsListener {
     void onDataReceived(DetailCommande detailCommande);
+    void onDataReceivedPostIt(String CoxTexte, String ComTxnEn, String ComTxnPd);
 }

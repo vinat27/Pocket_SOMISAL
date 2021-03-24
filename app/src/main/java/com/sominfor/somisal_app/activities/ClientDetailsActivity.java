@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,13 +32,17 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.CommandeAdapter;
 import com.sominfor.somisal_app.adapters.CommandeClientAdapter;
+import com.sominfor.somisal_app.adapters.DevisAdapter;
+import com.sominfor.somisal_app.adapters.DevisClientAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commande;
+import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
@@ -90,9 +95,7 @@ public class ClientDetailsActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
                 viewPager.setCurrentItem(tab.getPosition());
-
             }
 
             @Override
@@ -132,7 +135,7 @@ public class ClientDetailsActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new GeneralitesClientFragment(), getString(R.string.activity_client_details_TabMenu1_Title));
         adapter.addFrag(new CommandesClientFragment(), getString(R.string.activity_client_details_TabMenu2_Title));
-        adapter.addFrag(new ComptabiliteClientFragment(), getString(R.string.activity_client_details_TabMenu3_Title));
+        adapter.addFrag(new DevisClientFragment(), getString(R.string.activity_client_details_TabMenu3_Title));
 
         viewPager.setAdapter(adapter);
     }
@@ -174,8 +177,11 @@ public class ClientDetailsActivity extends AppCompatActivity {
      */
     public static class GeneralitesClientFragment extends Fragment {
         int color;
-        TextView TxtCliRasoc, TxtCliNucli, TxtCliNacli, TxtCliadre1, TxtCliAdre2,TxtCliCopos, TxtCliville, TxtCliBopos, TxtCliCpays;
-
+        TextView TxtCliRasoc, TxtCliNucli, TxtCliNacli, TxtCliadre1, TxtCliAdre2,TxtCliCopos, TxtCliville, TxtCliBopos, TxtCliCpays, TxtSoldeCpteGene, TxtSoldeLimon;
+        ServeurNodeController serveurNodeController;
+        ServeurNode serveurNode;
+        String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage;
+        Utilisateur utilisateur;
         public GeneralitesClientFragment() {
         }
         @SuppressLint("ValidFragment")
@@ -196,6 +202,8 @@ public class ClientDetailsActivity extends AppCompatActivity {
             TxtCliville = view.findViewById(R.id.TxtCliville);
             TxtCliBopos = view.findViewById(R.id.TxtCliBopos);
             TxtCliCpays = view.findViewById(R.id.TxtCliCpays);
+            TxtSoldeCpteGene = view.findViewById(R.id.TxtSoldeCpteGene);
+            TxtSoldeLimon = view.findViewById(R.id.TxtSoldeLimon);
 
             /**Set values to Textviews**/
             TxtCliRasoc.setText(client.getCliRasoc());
@@ -208,10 +216,68 @@ public class ClientDetailsActivity extends AppCompatActivity {
             TxtCliBopos.setText(client.getCliBopos());
             TxtCliCpays.setText(client.getCliLiCpays());
 
+            serveurNodeController = new ServeurNodeController();
+            /**Récupération des informations serveur**/
+            serveurNode = serveurNodeController.getServeurNodeInfos();
+            /*URL Récupération de la liste des systèmes*/
+            apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/soldeByIdClient";
+            utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
+            systemeAdresse = utilisateur.getUtilisateurSysteme();
+            utilisateurLogin = utilisateur.getUtilisateurLogin();
+            utilisateurPassword = utilisateur.getUtilisateurPassword();
+            utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+            utilisateurCoage = utilisateur.getUtilisateurCoage();
+
+            /**Récupération du solde client**/
+            getClientSolde(apiUrl01);
+
             return view;
         }
+        /**
+         *
+         * @param api_url l'url de récupération des information du fichier JSON
+         *
+         */
+        public void getClientSolde(String api_url){
+            RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, api_url, s -> {
 
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (jsonObject.getString("SOLDE") == "null"){
+                        TxtSoldeCpteGene.setText("0");
+                        TxtSoldeLimon.setText(client.getCliLiComon().trim());
+                    }else{
+                        String solde = jsonObject.getString("SOLDE");
+                        TxtSoldeCpteGene.setText(solde);
+                        TxtSoldeLimon.setText(client.getCliLiComon().trim());
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }, Throwable::printStackTrace)
+            {
+                /**Paramètres envoyés**/
+                protected Map<String,String> getParams(){
+                    Map<String, String> param = new HashMap<>();
+                    param.put("systeme",systemeAdresse);
+                    param.put("login",utilisateurLogin);
+                    param.put("password",utilisateurPassword);
+                    param.put("cosoc", utilisateurCosoc);
+                    param.put("coage", utilisateurCoage);
+                    param.put("comon", client.getCliComon());
+                    param.put("nacpx", client.getCliNacpx());
+                    param.put("cpaux", client.getCliCpaux());
+                    param.put("cpgen", client.getCliCpgen());
 
+                    return param;
+                }
+            };
+            int socketTimeout = 30000;
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            stringRequest.setRetryPolicy(policy);
+            requestQueue.add(stringRequest);
+        }
 
     }
 
@@ -224,7 +290,7 @@ public class ClientDetailsActivity extends AppCompatActivity {
         FrameLayout frameLayoutCdeClient;
         ServeurNodeController serveurNodeController;
         ServeurNode serveurNode;
-        String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, comStatu, apiUrl02, apiUrl03, apiUrl04, apiUrl05, utilisateurCosoc, utilisateurCoage;
+        String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage;
         Utilisateur utilisateur;
         public RequestQueue rq;
         DelayedProgressDialog progressDialogInfo;
@@ -287,7 +353,7 @@ public class ClientDetailsActivity extends AppCompatActivity {
                             commande.setComrasoc(jsonObject.getString("COMRASOC"));
                             commande.setComdaliv(jsonObject.getString("COMDALIV"));
                             commande.setComliliv(jsonObject.getString("LIBCOLIV").trim());
-                            commande.setComvacom(jsonObject.getDouble("DIVVACOM"));
+                            commande.setComvacom(jsonObject.getDouble("COMVACOM"));
                             commande.setComnucom(jsonObject.getString("COMNUCOM"));
                             commande.setComdacom(jsonObject.getString("COMDACOM"));
                             commande.setComlilieuv(jsonObject.getString("LIBLIEUV").trim());
@@ -309,6 +375,7 @@ public class ClientDetailsActivity extends AppCompatActivity {
                             commande.setComvilll(jsonObject.getString("COMVILLL").trim());
                             commande.setComlicpayr(jsonObject.getString("LIBCPAYL").trim());
                             commande.setCombopol(jsonObject.getString("COMBOPOL").trim());
+                            commande.setComcomon(jsonObject.getString("COMCOMON"));
 
                             //Populariser la liste des commandes
                             commandeList.add(commande);
@@ -354,32 +421,128 @@ public class ClientDetailsActivity extends AppCompatActivity {
     /**
      * Fragment ComptabiliteClientFragment
      */
-    public static class ComptabiliteClientFragment extends Fragment {
+    public static class DevisClientFragment extends Fragment {
         int color;
-
-        public ComptabiliteClientFragment() {
+        RequestQueue req;
+        RecyclerView recyclerViewDevisClient;
+        FrameLayout frameLayoutDevClient;
+        ServeurNodeController serveurNodeController;
+        ServeurNode serveurNode;
+        String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, comStatu, apiUrl02, apiUrl03, apiUrl04, apiUrl05, utilisateurCosoc, utilisateurCoage;
+        Utilisateur utilisateur;
+        public RequestQueue rq;
+        DelayedProgressDialog progressDialogInfo;
+        List<Devis> devisList;
+        DevisClientAdapter devisClientAdapter;
+        public DevisClientFragment() {
         }
         @SuppressLint("ValidFragment")
-        public ComptabiliteClientFragment(int color) {
+        public DevisClientFragment(int color) {
             this.color = color;
         }
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.generalites_client_fragment, container, false);
-            /*rq = Volley.newRequestQueue(getActivity());
-            rubriques = new ArrayList<>();
+            View view = inflater.inflate(R.layout.devis_client_fragment, container, false);
+            req = Volley.newRequestQueue(getActivity());
 
-            recyclerView =  view.findViewById(R.id.RecyclerViewRubriques);
+            /***Instanciation des widgets***/
+            frameLayoutDevClient = view.findViewById(R.id.frameLayout);
+            recyclerViewDevisClient = view.findViewById(R.id.RecyclerViewDevisClient);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
-            recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setHasFixedSize(true);
+            recyclerViewDevisClient.setLayoutManager(linearLayoutManager);
 
-            error_info =  view.findViewById(R.id.error_info);*/
+            progressDialogInfo = new DelayedProgressDialog();
+            serveurNodeController = new ServeurNodeController();
+            devisList = new ArrayList<>();
+            /**Récupération des informations serveur**/
+            serveurNode = serveurNodeController.getServeurNodeInfos();
+            /*URL Récupération de la liste des systèmes*/
+            apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/devisByIdClient";
+            utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
+            systemeAdresse = utilisateur.getUtilisateurSysteme();
+            utilisateurLogin = utilisateur.getUtilisateurLogin();
+            utilisateurPassword = utilisateur.getUtilisateurPassword();
+            utilisateurCosoc = utilisateur.getUtilisateurCosoc();
+            utilisateurCoage = utilisateur.getUtilisateurCoage();
 
-            //recupererListeRubrique(url_machine_rubrique,eqpcodep,eqpnueqp,eqpidrep,eqpcosct,eqpcosoc, eqpcoage);
+            listeDevisClient(apiUrl01);
             return view;
         }
+        /**Récupération de la liste de devis en cours**/
+        public void listeDevisClient(String api_url){
+            RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+            progressDialogInfo.show(getActivity().getSupportFragmentManager(), "Loading...");
+            progressDialogInfo.setCancelable(false);
+            StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+                try{
+                    JSONArray array = new JSONArray(s);
+                    if (array.length() == 0){
+                        progressDialogInfo.cancel();
+                        frameLayoutDevClient.setVisibility(View.VISIBLE);
+                    }
+                    for (int i=0; i<array.length(); i++){
+                        try{
+                            JSONObject jsonObject = array.getJSONObject(i);
+                            Devis devis = new Devis();
+                            devis.setCliRasoc(client.getCliRasoc());
+                            devis.setDevDaliv(jsonObject.getString("DEVDALIV"));
+                            devis.setDevVadev(jsonObject.getDouble("DEVVADEV"));
+                            devis.setDevlimon(jsonObject.getString("LIBCOMON"));
+                            devis.setDevNudev(jsonObject.getString("DEVNUDEV"));
+                            devis.setDevDadev(jsonObject.getString("DEVDADEV"));
+                            devis.setDevLieuv(jsonObject.getString("LIBLIEUV").trim());
+                            devis.setDevColieuv(jsonObject.getString("DEVLIEUV"));
+                            devis.setDevRfdev(jsonObject.getString("DEVRFDEV"));
+                            devis.setDevStatut(jsonObject.getString("DEVSTATU"));
+                            devis.setDevlista(jsonObject.getString("LIBSTATU"));
+                            devis.setDevComag(jsonObject.getString("DEVCOMAG"));
+                            devis.setDevLimag(jsonObject.getString("LIBCOMAG").trim());
+                            devis.setDevColiv(jsonObject.getString("DEVCOLIV").trim());
+                            devis.setDevliliv(jsonObject.getString("LIBCOLIV").trim());
+                            devis.setDevNacli(client.getCliNacli());
+                            devis.setDevNucli(jsonObject.getString("DEVNUCLI"));
+                            devis.setDevMoreg(jsonObject.getString("DEVMOREG"));
+                            devis.setDevDereg(jsonObject.getString("DEVDEREG"));
+                            devis.setDevComon(jsonObject.getString("DEVCOMON"));
 
+                            //Populariser la liste des produits
+                            devisList.add(devis);
+                            progressDialogInfo.cancel();
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                            progressDialogInfo.cancel();
+
+                        }
+                    }
+                    devisClientAdapter = new DevisClientAdapter(getActivity(),devisList);
+                    recyclerViewDevisClient.setAdapter(devisClientAdapter);
+                }catch(JSONException e){
+                    e.printStackTrace();
+
+                }
+            }, volleyError -> {
+                volleyError.printStackTrace();
+                progressDialogInfo.cancel();
+                /**Erreur connexion**/
+                Toast.makeText(getActivity(), getResources().getString(R.string.login_activity_Snackbar01_NoConnexion), Toast.LENGTH_LONG).show();
+            })
+            {
+                protected Map<String,String> getParams(){
+                    Map<String, String> param = new HashMap<String, String>();
+                    param.put("systeme",systemeAdresse);
+                    param.put("login",utilisateurLogin);
+                    param.put("password",utilisateurPassword);
+                    param.put("nucli", client.getCliNucli());
+                    param.put("cosoc", utilisateurCosoc);
+                    param.put("coage", utilisateurCoage);
+                    return param;
+                }
+            };
+            int socketTimeout = 10000;
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            postRequest.setRetryPolicy(policy);
+            requestQueue.add(postRequest);
+        }
 
     }
 

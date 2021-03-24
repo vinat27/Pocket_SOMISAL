@@ -98,7 +98,7 @@ public class ProduitFragment extends Fragment implements CallbackListener {
         /**Récupération des informations serveur**/
         serveurNode = serveurNodeController.getServeurNodeInfos();
         /*URL Récupération de la liste des systèmes*/
-        ApiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit";
+        ApiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit/allProduit";
         utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();

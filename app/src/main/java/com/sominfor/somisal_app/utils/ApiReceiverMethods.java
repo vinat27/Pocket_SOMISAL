@@ -131,6 +131,16 @@ public class ApiReceiverMethods {
                         client.setCliLitrn(jsonObject.getString("LIBCOTRN").trim());
                         client.setCliCotrp(jsonObject.getString("CLICOTRP").trim());
                         client.setCliLitrp(jsonObject.getString("LIBCOTRP").trim());
+                        client.setCliRasol(jsonObject.getString("CLIRASOL").trim());
+                        client.setCliAdr1l(jsonObject.getString("CLIADR1L").trim());
+                        client.setCliAdr2l(jsonObject.getString("CLIADR2L").trim());
+                        client.setCliCopol(jsonObject.getString("CLICOPOL").trim());
+                        client.setCliVilll(jsonObject.getString("CLIVILLL").trim());
+                        client.setCliBopol(jsonObject.getString("CLIBOPOL").trim());
+                        client.setCliCpayl(jsonObject.getString("CLICPAYL").trim());
+                        client.setCliNacpx(jsonObject.getString("CLINACPX"));
+                        client.setCliCpgen(jsonObject.getString("CLICPGEN"));
+                        client.setCliCpaux(jsonObject.getString("CLICPAUX"));
                         //client.setCliLiCpays(jsonObject.getString(""));
 
                         //Populariser la liste des clients
@@ -142,9 +152,7 @@ public class ApiReceiverMethods {
             }catch(JSONException e){
                 e.printStackTrace();
             }
-        }, volleyError -> {
-            volleyError.printStackTrace();
-        })
+        }, Throwable::printStackTrace)
         {
             protected Map<String,String> getParams(){
                 Map<String, String> param = new HashMap<String, String>();

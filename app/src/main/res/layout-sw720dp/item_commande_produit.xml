@@ -136,24 +136,6 @@
                         android:textSize="17sp"
                         android:paddingLeft="8sp"
                         />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/item_detail_commande_TxtQuantiteLivree"
-                        android:paddingLeft="5sp"/>
-
-                    <TextView
-                        android:id="@+id/TxtDcoqtliv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="2.000 K"
-                        android:paddingLeft="8sp"
-                        android:textSize="16sp"/>
-
                 </LinearLayout>
 
             </LinearLayout>

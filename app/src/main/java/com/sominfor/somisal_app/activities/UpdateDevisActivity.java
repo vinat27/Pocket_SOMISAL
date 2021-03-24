@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,10 +70,21 @@ public class UpdateDevisActivity extends AppCompatActivity {
     Livreur livreurNotSelected, livreur;
     ModeReglement modeReglement,modeReglementNotSelected;
     DelaiReglement delaiReglement, delaiReglementNotSelected;
+    static UpdateDevisActivity updateDevisActivity;
+
+    /**Nouvelle Instance**/
+    public static UpdateDevisActivity getInstance(){
+        return  updateDevisActivity;
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_devis);
 
@@ -105,7 +117,9 @@ public class UpdateDevisActivity extends AppCompatActivity {
         utilisateurCosoc = utilisateur.getUtilisateurCosoc();
         utilisateurCoage = utilisateur.getUtilisateurCoage();
         apiReceiverMethods = new ApiReceiverMethods(getApplicationContext());
-        serveurNodeController = new ServeurNodeController();
+        serveurNodeController = new ServeurNodeController();/**Instanciation de l'activité**/
+        updateDevisActivity = this;
+
         /**Récupération du serveur node**/
         serveurNode = serveurNodeController.getServeurNodeInfos();
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allColiv";
@@ -115,7 +129,7 @@ public class UpdateDevisActivity extends AppCompatActivity {
         livreurs = new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
         devis = (Devis) bundle.getSerializable("devis");
-        @SuppressLint("DefaultLocale") String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevComon().trim();
+        @SuppressLint("DefaultLocale") String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevlimon().trim();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String DevDadevFormat = "";
@@ -136,7 +150,7 @@ public class UpdateDevisActivity extends AppCompatActivity {
         TxtDevLiliv.setText(devis.getDevColiv());
         TxtDevDaliv.setText(DevDalivFormat);
         TxtDevVadev.setText(vadev);
-        EdtDevRfdev.setText(devis.getDevRfdev());
+        EdtDevRfdev.setText(devis.getDevRfdev().trim());
         EdtDevDaliv.setText(devis.getDevDaliv());
 
         EdtDevDaliv.setOnClickListener(v -> {
@@ -203,7 +217,6 @@ public class UpdateDevisActivity extends AppCompatActivity {
                 MbSpnDevDereg.setText(MbSpnDevDereg.getAdapter().getItem(spinnerPosition).toString());
         }
 
-
         /**
          * Selection Livreur*/
         MbSpnDevColiv.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -231,7 +244,6 @@ public class UpdateDevisActivity extends AppCompatActivity {
                                 assert dateDevis != null;
                                     /**Date devis correcte - Comparaison à la date de livraison**/
                                     if (dateDevisLivraison.compareTo(dateDevis) >= 0){
-
                                         devis.setDevRfdev(EdtDevRfdev.getText().toString());
                                         devis.setDevDaliv(EdtDevDaliv.getText().toString());
                                         /**Vérification si élément sélectionné ou pas**/
@@ -288,6 +300,16 @@ public class UpdateDevisActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL11), Toast.LENGTH_LONG).show();
                     }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!getResources().getBoolean(R.bool.isTablet)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     /**Attribuer la date selectionnée au champ de date de livraison**/

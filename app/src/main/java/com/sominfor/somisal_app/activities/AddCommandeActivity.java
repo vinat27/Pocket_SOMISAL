@@ -2,6 +2,8 @@ package com.sominfor.somisal_app.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,12 +24,15 @@ import com.sominfor.somisal_app.adapters.LivreurSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.MagasinSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.TourneeSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.TransportSpinnerAdapter;
-import com.sominfor.somisal_app.fragments.ClientFragment;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
+import com.sominfor.somisal_app.handler.models.Commercial;
+import com.sominfor.somisal_app.handler.models.DelaiReglement;
 import com.sominfor.somisal_app.handler.models.LieuVente;
 import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.Magasin;
+import com.sominfor.somisal_app.handler.models.ModeReglement;
+import com.sominfor.somisal_app.handler.models.Pays;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Tournee;
 import com.sominfor.somisal_app.handler.models.Transport;
@@ -37,13 +42,17 @@ import com.sominfor.somisal_app.utils.UserSessionManager;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
+import static com.sominfor.somisal_app.fragments.CommandeFragment.clientListCde;
+import static com.sominfor.somisal_app.fragments.CommandeFragment.livreurListCdeFragment;
 
 public class AddCommandeActivity extends AppCompatActivity {
     public static final String TAG = AddCommandeActivity.class.getSimpleName();
@@ -54,7 +63,10 @@ public class AddCommandeActivity extends AppCompatActivity {
     List<Tournee> tournees;
     List<Livreur> livreurs;
     List<Transport> transports;
-
+    public static List<Pays> paysFacturationList;
+    public static List<DelaiReglement> delaiReglements;
+    public static List<ModeReglement> modeReglements;
+    public static List<Commercial> uscomList;
     /***Adapters**/
     ClientSpinnerAdapter clientSpinnerAdapter;
     LieuVenteSpinnerAdapter lieuVenteSpinnerAdapter;
@@ -62,7 +74,6 @@ public class AddCommandeActivity extends AppCompatActivity {
     TourneeSpinnerAdapter tourneeSpinnerAdapter;
     LivreurSpinnerAdapter livreurSpinnerAdapter;
     TransportSpinnerAdapter transportSpinnerAdapter;
-
     /**
      * Widgets
      **/
@@ -81,10 +92,10 @@ public class AddCommandeActivity extends AppCompatActivity {
     Client client;
     LieuVente lieuVente;
     Magasin magasin;
-    Tournee tournee;
-    Livreur livreur;
-    Transport transport;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06,utilisateurCosoc, utilisateurCoage;
+    Tournee tournee, tourneeNotSelected;
+    Livreur livreur, livreurNotSelected;
+    Transport transport, transportNotSelected;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, apiUrl09, apiUrl10, utilisateurCosoc, utilisateurCoage;
     public RequestQueue rq;
 
     ApiReceiverMethods apiReceiverMethods;
@@ -100,6 +111,12 @@ public class AddCommandeActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        /**Controle orientation***/
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         /**Gestion du menu d'action**/
         if (getSupportActionBar() != null) getSupportActionBar().setTitle("Nouvelle Commande");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -123,14 +140,22 @@ public class AddCommandeActivity extends AppCompatActivity {
         lieuVentes = new ArrayList<>();
         apiReceiverMethods = new ApiReceiverMethods(getApplicationContext());
         magasins = new ArrayList<>();
+        paysFacturationList = new ArrayList<>();
+        delaiReglements = new ArrayList<>();
+        modeReglements = new ArrayList<>();
+        uscomList = new ArrayList<>();
 
         /**URL Récupération de la liste des clients**/
-        apiUrl01 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/allClient";
+        apiUrl01 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/client/allClient";
         apiUrl02 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allLivth";
         apiUrl03 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allComag";
         apiUrl04 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allCotrn";
         apiUrl05 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allColiv";
         apiUrl06 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allCotrp";
+        apiUrl07 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allPays";
+        apiUrl08 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allMoreg";
+        apiUrl09 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDereg";
+        apiUrl10 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allUscom";
 
         /**Instanciation des widgets**/
         SsnComCliRasoc = findViewById(R.id.MbSpnComRasoc);
@@ -145,34 +170,43 @@ public class AddCommandeActivity extends AppCompatActivity {
         EdtComNamar = findViewById(R.id.EdtComNamar);
 
         /**Récupération de la liste de clients**/
-        clientList = ClientFragment.clients;
+        if (clientListCde.size()==0) {
+            clientList = apiReceiverMethods.recupererListeClients(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+        } else {
+            clientList = clientListCde;
+        }
         clientSpinnerAdapter = new ClientSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, clientList);
         SsnComCliRasoc.setAdapter(clientSpinnerAdapter);
 
-        /***Récupération de la liste des lieux de vente**/
-        lieuVentes = apiReceiverMethods.recupererListeLieuv(apiUrl02, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
-        lieuVenteSpinnerAdapter = new LieuVenteSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, lieuVentes);
-        MbSpnCliLieuv.setAdapter(lieuVenteSpinnerAdapter);
-
-        /**Récupération de la liste des magasins**/
-        magasins = apiReceiverMethods.recupererListeMagasins(apiUrl03, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
-        magasinSpinnerAdapter = new MagasinSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, magasins);
-        MbSpnComComag.setAdapter(magasinSpinnerAdapter);
-
-        /**Récupération de la liste des magasins**/
-        tournees = apiReceiverMethods.recupererListeTournees(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
-        tourneeSpinnerAdapter = new TourneeSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, tournees);
-        MbSpnComCotrn.setAdapter(tourneeSpinnerAdapter);
-
+        if (livreurListCdeFragment.size()==0){
+            livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
+        }else{
+            livreurs = livreurListCdeFragment;
+        }
         /**Récupération de la liste des livreurs**/
-        livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
         livreurSpinnerAdapter = new LivreurSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, livreurs);
         MbSpnComColiv.setAdapter(livreurSpinnerAdapter);
 
-        /**Récupération de la liste des transports**/
-        transports = apiReceiverMethods.recupererListeTransport(apiUrl06, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
-        transportSpinnerAdapter = new TransportSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, transports);
-        MbSpnComCotrp.setAdapter(transportSpinnerAdapter);
+        /**Exécution en background - Popularisation des spinners (Combo boxes)**/
+        DelayedProgressDialog pgDialog = new DelayedProgressDialog();
+        pgDialog.show(getSupportFragmentManager(), "Load");
+        pgDialog.setCancelable(false);
+        new Thread(() -> {
+
+            try {
+                Thread.sleep(4000);
+                SpinnerTask spinnerTask = new SpinnerTask();
+                spinnerTask.execute();
+
+                // Now start your activity
+                pgDialog.cancel();
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                pgDialog.cancel();
+            }
+        }).start();
+
 
         /**Date commande**/
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -198,10 +232,10 @@ public class AddCommandeActivity extends AppCompatActivity {
                 /**Initialiser des listes **/
                 if (!client.getCliCotrn().equals("")) {
                     /**Initialisation Tournée**/
-                    Tournee tournee = new Tournee();
-                    tournee.setTrnLitrn(client.getCliLitrn());
-                    tournee.setTrnCotrn(client.getCliCotrn());
-                    int spinnerPosition = tournees.indexOf(tournee);
+                    tourneeNotSelected = new Tournee();
+                    tourneeNotSelected.setTrnLitrn(client.getCliLitrn());
+                    tourneeNotSelected.setTrnCotrn(client.getCliCotrn());
+                    int spinnerPosition = tournees.indexOf(tourneeNotSelected);
                     if (spinnerPosition != -1)
                     /**Set value to spinnerLivreur*/
                         MbSpnComCotrn.setText(MbSpnComCotrn.getAdapter().getItem(spinnerPosition).toString());
@@ -210,10 +244,10 @@ public class AddCommandeActivity extends AppCompatActivity {
                 /**Initialiser des listes **/
                 if (!client.getCliColiv().equals("")) {
                     /**Initialisation livreur**/
-                    Livreur livreur = new Livreur();
-                    livreur.setLivColiv(client.getCliColiv());
-                    livreur.setLivliliv(client.getCliLiliv());
-                    int spinnerPosition = livreurs.indexOf(livreur);
+                    livreurNotSelected = new Livreur();
+                    livreurNotSelected.setLivColiv(client.getCliColiv());
+                    livreurNotSelected.setLivliliv(client.getCliLiliv());
+                    int spinnerPosition = livreurs.indexOf(livreurNotSelected);
                     if (spinnerPosition != -1)
                     /**Set value to spinnerLivreur*/
                         MbSpnComColiv.setText(MbSpnComColiv.getAdapter().getItem(spinnerPosition).toString());
@@ -222,10 +256,10 @@ public class AddCommandeActivity extends AppCompatActivity {
                 /**Initialiser des listes **/
                 if (!client.getCliCotrp().equals("")) {
                     /**Initialisation livreur**/
-                    Transport transport = new Transport();
-                    transport.setTrpCotrp(client.getCliCotrp());
-                    transport.setTrpLitrp(client.getCliLitrp());
-                    int spinnerPosition = transports.indexOf(transport);
+                    transportNotSelected = new Transport();
+                    transportNotSelected.setTrpCotrp(client.getCliCotrp());
+                    transportNotSelected.setTrpLitrp(client.getCliLitrp());
+                    int spinnerPosition = transports.indexOf(transportNotSelected);
                     if (spinnerPosition != -1)
                     /**Set value to spinnerLivreur*/
                         MbSpnComCotrp.setText(MbSpnComCotrp.getAdapter().getItem(spinnerPosition).toString());
@@ -264,25 +298,59 @@ public class AddCommandeActivity extends AppCompatActivity {
                     if (MbSpnComComag.length() != 0) {
                         if (MbSpnComColiv.getText().length() != 0) {
                             if (MbSpnComCotrn.getText().length() != 0) {
-                                Intent i = new Intent(getApplicationContext(), AdresseFacturationActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                i.putExtra("client", client);
-                                i.putExtra("Lieuvente", lieuVente);
-                                i.putExtra("Magasin", magasin);
-                                i.putExtra("ComDacom", EdtComDacom.getText().toString());
-                                i.putExtra("Tournee", tournee);
-                                i.putExtra("ComDaliv", EdtComDaliv.getText().toString());
-                                i.putExtra("Transport", transport);
-                                i.putExtra("ComNamar", EdtComNamar.getText().toString());
-                                startActivity(i);
-                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                                /**Comparaison des dates**/
+                                try {
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                    Date currentDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+                                    Date dateCommande = simpleDateFormat.parse(EdtComDacom.getText().toString());
+                                    Date dateLivraison = simpleDateFormat.parse(EdtComDaliv.getText().toString());
+                                    assert dateCommande != null;
+                                    if (dateCommande.compareTo(currentDate) >= 0) {
+                                        /**Date devis correcte - Comparaison à la date de livraison**/
+                                        if (dateLivraison.compareTo(dateCommande) >= 0) {
+                                            Intent i = new Intent(getApplicationContext(), AdresseFacturationActivity.class);
+                                            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                            i.putExtra("client", client);
+                                            i.putExtra("Lieuvente", lieuVente);
+                                            i.putExtra("Magasin", magasin);
+                                            i.putExtra("ComDacom", EdtComDacom.getText().toString());
+                                            if (null == tournee) {
+                                                i.putExtra("Tournee", tourneeNotSelected);
+                                            } else {
+                                                i.putExtra("Tournee", tournee);
+                                            }
+                                            /**Livreur**/
+                                            if (null == livreur) {
+                                                i.putExtra("Livreur", livreurNotSelected);
+                                            } else {
+                                                i.putExtra("Livreur", livreur);
+                                            }
+                                            /**Transport**/
+                                            if (null == transport) {
+                                                i.putExtra("Transport", transportNotSelected);
+                                            } else {
+                                                i.putExtra("Transport", transport);
+                                            }
+                                            i.putExtra("ComDaliv", EdtComDaliv.getText().toString());
+                                            i.putExtra("ComNamar", EdtComNamar.getText().toString());
+                                            startActivity(i);
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL09), Toast.LENGTH_LONG).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL12), Toast.LENGTH_LONG).show();
+                                    }
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                             } else {
                                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL05), Toast.LENGTH_LONG).show();
                             }
                         } else {
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL01), Toast.LENGTH_LONG).show();
                         }
-
                     } else {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL02), Toast.LENGTH_LONG).show();
                     }
@@ -292,10 +360,18 @@ public class AddCommandeActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL04), Toast.LENGTH_LONG).show();
             }
-
         });
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     // Options Menu (ActionBar Menu)
@@ -342,4 +418,59 @@ public class AddCommandeActivity extends AppCompatActivity {
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    private class SpinnerTask extends AsyncTask<Void, Integer, Void> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            lieuVentes = apiReceiverMethods.recupererListeLieuv(apiUrl02, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            magasins = apiReceiverMethods.recupererListeMagasins(apiUrl03, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            tournees = apiReceiverMethods.recupererListeTournees(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+           /**Récupération de la liste des transports**/
+            transports = apiReceiverMethods.recupererListeTransport(apiUrl06, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            /***Récupération de la liste des lieux de vente**/
+            paysFacturationList = apiReceiverMethods.recupererListePays(apiUrl07, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            modeReglements = apiReceiverMethods.recupererModeReglements(apiUrl08, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            delaiReglements = apiReceiverMethods.recupererDelaiReglements(apiUrl09, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            uscomList = apiReceiverMethods.recupererCommerciaux(apiUrl10, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // Now start your activity
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    /**Récupération de la liste des transports**/
+                    transportSpinnerAdapter = new TransportSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, transports);
+                    MbSpnComCotrp.setAdapter(transportSpinnerAdapter);
+                    lieuVenteSpinnerAdapter = new LieuVenteSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, lieuVentes);
+                    MbSpnCliLieuv.setAdapter(lieuVenteSpinnerAdapter);
+
+                    magasinSpinnerAdapter = new MagasinSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, magasins);
+                    MbSpnComComag.setAdapter(magasinSpinnerAdapter);
+                    tourneeSpinnerAdapter = new TourneeSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, tournees);
+                    MbSpnComCotrn.setAdapter(tourneeSpinnerAdapter);
+
+                }
+            });
+
+            super.onPostExecute(result);
+        }
+    }
 }

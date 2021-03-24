@@ -75,18 +75,17 @@ public class DdvUpdateProduitsAdapter extends RecyclerView.Adapter<DdvUpdateProd
             produit.setProcopro(detailDevis.getDdvCopro());
             produit.setPronuprm(detailDevis.getDdvNuprm());
             produit.setProlipro(detailDevis.getDdvLipro());
-
             if (produit.getPronuprm() != 0) {
                 //Produits
                 Intent i = new Intent(context, FicheProduitActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("produit", produit);
+                i.putExtras(bundle);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }else{
                 Toast.makeText(context, context.getResources().getString(R.string.produit_fragment_noStock), Toast.LENGTH_LONG).show();
             }
-
         });
 
         /**Modification de poste**/

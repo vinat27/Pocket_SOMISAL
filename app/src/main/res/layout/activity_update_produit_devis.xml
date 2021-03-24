@@ -289,8 +289,6 @@
 
                 </LinearLayout>
 
-
-
                 <LinearLayout
                     android:id="@+id/Lnr01"
                     android:layout_width="fill_parent"
@@ -314,7 +312,6 @@
                         android:text="@string/noProductAddedText"
                         android:textColor="@color/colorPrimary" />
                 </LinearLayout>
-
             </com.google.android.material.card.MaterialCardView>
 
             <!--Valider-->
