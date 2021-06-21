@@ -51,7 +51,7 @@ public class FicheProduitActivity extends AppCompatActivity {
     Produit produit;
     TextView TxtProLiPro, TxtProCoPro, TxtPrmRfprm, TxtPrmNuprm, TxtPrmLimrq, TxtPrmDecat, TxtPrmDefam;
     TextView TxtPrmLisfa, TxtPrmNacpt, TxtPrmQtMag, TxtPrmQtRes, TxtPrmQtcom, TxtPrmQtsto, TxtPrmQtsal;
-    TextView TxtPrmPriun, TxtPrmDepru, TxtPrmQtval, TxtPrmDaden, TxtPrmDadso, TxtPrmDadin, TxtPrmPoids;
+    TextView TxtPrmDaden, TxtPrmDadso, TxtPrmDadin, TxtPrmPoids;
     TextView TxtPrmUnstk, TxtPrmLimag;
     public RequestQueue rq;
     DelayedProgressDialog progressDialogInfo;
@@ -98,9 +98,6 @@ public class FicheProduitActivity extends AppCompatActivity {
         TxtPrmQtcom = findViewById(R.id.TxtPrmQtcom);
         TxtPrmQtsto = findViewById(R.id.TxtPrmQtsto);
         TxtPrmQtsal = findViewById(R.id.TxtPrmQtsal);
-        TxtPrmPriun = findViewById(R.id.TxtPrmPriun);
-        TxtPrmDepru = findViewById(R.id.TxtPrmDepru);
-        TxtPrmQtval = findViewById(R.id.TxtPrmQtval);
         TxtPrmDaden = findViewById(R.id.TxtPrmDaden);
         TxtPrmDadso = findViewById(R.id.TxtPrmDadso);
         TxtPrmDadin = findViewById(R.id.TxtPrmDadin);
@@ -232,9 +229,6 @@ public class FicheProduitActivity extends AppCompatActivity {
                 TxtPrmQtcom.setText(String.format("%.2f", produitFini.getPrmqtcom()));
                 TxtPrmQtsto.setText(String.format("%.2f", produitFini.getPrmqtsto()));
                 TxtPrmQtsal.setText("");
-                TxtPrmPriun.setText(String.format("%.2f", produitFini.getPrmpriun()));
-                TxtPrmDepru.setText(String.format("%.2f", produitFini.getPrmdepru()));
-                TxtPrmQtval.setText(String.format("%.2f", produitFini.getPrmvasto()));
                 TxtPrmDaden.setText(PrmDadenFormat);
                 TxtPrmDadso.setText(PrmDadsoFormat);
                 TxtPrmDadin.setText(PrmDadinFormat);
