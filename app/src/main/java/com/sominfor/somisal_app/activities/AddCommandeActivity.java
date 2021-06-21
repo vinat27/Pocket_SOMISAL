@@ -26,6 +26,7 @@ import com.sominfor.somisal_app.adapters.TourneeSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.TransportSpinnerAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
+import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.Commercial;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
 import com.sominfor.somisal_app.handler.models.LieuVente;
@@ -96,6 +97,8 @@ public class AddCommandeActivity extends AppCompatActivity {
     Livreur livreur, livreurNotSelected;
     Transport transport, transportNotSelected;
     String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, apiUrl09, apiUrl10, utilisateurCosoc, utilisateurCoage;
+    Commande commande;
+    Pays pays;
     public RequestQueue rq;
 
     ApiReceiverMethods apiReceiverMethods;
@@ -309,31 +312,45 @@ public class AddCommandeActivity extends AppCompatActivity {
                                     if (dateCommande.compareTo(currentDate) >= 0) {
                                         /**Date devis correcte - Comparaison à la date de livraison**/
                                         if (dateLivraison.compareTo(dateCommande) >= 0) {
-                                            Intent i = new Intent(getApplicationContext(), AdresseFacturationActivity.class);
+                                            Intent i = new Intent(getApplicationContext(), AdresseLivraisonActivity.class);
                                             i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                             i.putExtra("client", client);
-                                            i.putExtra("Lieuvente", lieuVente);
-                                            i.putExtra("Magasin", magasin);
-                                            i.putExtra("ComDacom", EdtComDacom.getText().toString());
+                                            i.putExtra("lieuvente", lieuVente);
+                                            i.putExtra("magasin", magasin);
                                             if (null == tournee) {
-                                                i.putExtra("Tournee", tourneeNotSelected);
+                                                i.putExtra("tournee", tourneeNotSelected);
                                             } else {
-                                                i.putExtra("Tournee", tournee);
+                                                i.putExtra("tournee", tournee);
                                             }
                                             /**Livreur**/
                                             if (null == livreur) {
-                                                i.putExtra("Livreur", livreurNotSelected);
+                                                i.putExtra("livreur", livreurNotSelected);
                                             } else {
-                                                i.putExtra("Livreur", livreur);
+                                                i.putExtra("livreur", livreur);
                                             }
                                             /**Transport**/
                                             if (null == transport) {
-                                                i.putExtra("Transport", transportNotSelected);
+                                                i.putExtra("transport", transportNotSelected);
                                             } else {
-                                                i.putExtra("Transport", transport);
+                                                i.putExtra("transport", transport);
                                             }
-                                            i.putExtra("ComDaliv", EdtComDaliv.getText().toString());
-                                            i.putExtra("ComNamar", EdtComNamar.getText().toString());
+                                            /**Set values to Commande**/
+                                            commande = new Commande();
+                                            /**Set values to object**/
+                                            commande.setComdacom(EdtComDacom.getText().toString());
+                                            commande.setComdaliv(EdtComDaliv.getText().toString());
+                                            commande.setComnamar(EdtComNamar.getText().toString());
+                                            commande.setComrasoc(client.getCliRasoc());
+                                            commande.setComadre1(client.getCliAdre1());
+                                            commande.setComadre2(client.getCliAdre2());
+                                            commande.setComcopos(client.getCliCopos());
+                                            commande.setComville(client.getCliVille());
+                                            commande.setCombopos(client.getCliBopos());
+                                            i.putExtra("commande", commande);
+                                            /**Set values to Pays**/
+                                            pays = new Pays();
+                                            pays.setPaysCopay(client.getCliCpays());
+                                            i.putExtra("pays", pays);
                                             startActivity(i);
                                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                         } else {
