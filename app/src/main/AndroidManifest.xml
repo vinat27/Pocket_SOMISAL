@@ -13,13 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ShowDevisUserActivity"
+        <activity android:name=".activities.CommandesPreparees"></activity>
+        <activity android:name=".activities.CommandesSoldees" />
+        <activity
+            android:name=".activities.ShowDevisUserActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked"></activity>
-
-        <activity android:name=".activities.ShowCommandeUserActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activities.ShowCommandeUserActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="locked"/>
+            android:screenOrientation="locked" />
         <activity
             android:name=".activities.UpdateProduitCommandeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

@@ -32,8 +32,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.AddCommandeActivity;
 import com.sominfor.somisal_app.activities.AddDevisActivity;
+import com.sominfor.somisal_app.activities.CommandesPreparees;
+import com.sominfor.somisal_app.activities.CommandesSoldees;
 import com.sominfor.somisal_app.activities.DashboardActivity;
 import com.sominfor.somisal_app.activities.DelayedProgressDialog;
+import com.sominfor.somisal_app.activities.DevisSoldesActivity;
 import com.sominfor.somisal_app.activities.LoginActivity;
 import com.sominfor.somisal_app.adapters.CommandeAdapter;
 import com.sominfor.somisal_app.adapters.DevisAdapter;
@@ -160,6 +163,18 @@ public class CommandeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Gestion de menu
         int id = item.getItemId();
+        switch (id){
+            case R.id.action_soldes:
+                Intent intent = new Intent(getActivity(), CommandesSoldees.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return true;
+            case R.id.action_preparation:
+                Intent i = new Intent(getActivity(), CommandesPreparees.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

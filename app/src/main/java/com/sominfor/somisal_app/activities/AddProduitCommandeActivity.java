@@ -63,8 +63,6 @@ import java.util.Objects;
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 public class AddProduitCommandeActivity extends AppCompatActivity implements CommandeProduitsListener {
-    FragmentManager fragmentManager;
-    AppCompatActivity activity;
     public static String FRAGMENT_COMMANDE = "3";
     private static final int SPLASH_TIME = 4000;
     Double vacom;
@@ -193,7 +191,7 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
         TxtComColiv.setText(livreur.getLivliliv());
         /**Date de livraison**/
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
-        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             ComDalivFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdaliv())));
         } catch (ParseException e) {

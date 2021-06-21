@@ -21,7 +21,7 @@
                 app:showAsAction="never"/>
             <item
                 android:id="@+id/action_preparation"
-                android:title="Prepations"
+                android:title="Préparations"
                 android:orderInCategory="1"
                 app:showAsAction="never"/>
 
