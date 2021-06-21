@@ -313,6 +313,15 @@
                     android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                     tools:targetApi="jelly_bean" />
                 <!--En Magasin-->
+                <TextView
+                    android:id="@+id/TxtPrmQtsal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text=""
+                    android:textColor="@color/black" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -444,14 +453,6 @@
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
-                    <TextView
-                        android:id="@+id/TxtPrmQtsal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text=""
-                        android:textColor="@color/black" />
                 </LinearLayout>
 
             </LinearLayout>
