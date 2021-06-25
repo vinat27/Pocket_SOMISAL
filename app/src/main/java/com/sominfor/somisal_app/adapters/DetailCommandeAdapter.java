@@ -56,7 +56,7 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
     @Override
     public void onBindViewHolder(@NonNull DetailCommandeAdapter.DetailCommandeVh holder, int position) {
         DetailCommande detailCommande = detailCommandeList.get(position);
-        String qtliv = String.format("%.3f", detailCommande.getDcoqtcom()) +" "+detailCommande.getDcounvte();
+        String qtliv = String.format("%.3f", detailCommande.getDcoqtliv()) +" "+detailCommande.getDcounvte();
         Double wvarem = 0.00;
         Double wvapos = 0.00;
 

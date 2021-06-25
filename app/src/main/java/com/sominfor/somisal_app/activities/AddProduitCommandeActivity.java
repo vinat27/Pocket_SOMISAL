@@ -392,6 +392,19 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
                 }else{
                     param.put("notes", "");
                 }
+                /**Commentaires en-tête**/
+                if (ComTxnEnSend != null){
+                    param.put("txtop", ComTxnEnSend);
+                }else{
+                    param.put("txtop","");
+                }
+
+                /**Commentaires pied**/
+                if (ComTxnPdSend != null){
+                    param.put("txbot", ComTxnPdSend);
+                }else{
+                    param.put("txbot", "");
+                }
                 if (commercial.getCoUscom()!=null){
                     param.put("uscom", commercial.getCoUscom());
                 }else{
@@ -411,6 +424,7 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
                 param.put("cotrp", transport.getTrpCotrp());
                 param.put("cotrn", tournee.getTrnCotrn());
                 param.put("coliv", livreur.getLivColiv());
+                param.put("zogeo", commande.getComzogeo());
                 param.put("rasol", commande.getComrasol().replaceAll("'","''"));
                 param.put("adr1l", commande.getComadr1l().replaceAll("'","''"));
                 param.put("adr2l", commande.getComadr2l().replaceAll("'","''"));

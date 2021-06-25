@@ -192,11 +192,6 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
         TxtComComag.setText(commande.getComlimag());
         TxtComColiv.setText(commande.getComliliv());
 
-        /**Set values to txh**/
-        CoxTexteSend = commande.getCoxtexte();
-        ComTxnEnSend = commande.getComtxhen();
-        ComTxnPdSend = commande.getComtxhpd();
-
         /**Date de livraison**/
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -211,6 +206,8 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
 
         produitsUpdateCommandes = apiReceiverMethods.recupererProduits(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         recupererDetailsCommande(apiUrl03, commande.getComnucom());
+
+        Log.v("Entete", CoxTexteSend);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         dcoUpdateCommandeAdapter = new DcoUpdateCommandeAdapter(getApplicationContext(), detailCommandeList, fragmentManager);
@@ -382,9 +379,9 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 /**Commentaires et Post-it***/
-                commande.setComtxhen(jsonObject.getString("COMTXHEN"));
-                commande.setComtxhpd(jsonObject.getString("COMTXHPI"));
-                commande.setCoxtexte(jsonObject.getString("DCOTEXTE"));
+                ComTxnEnSend = jsonObject.getString("COMTXHEN");
+                ComTxnPdSend = jsonObject.getString("COMTXHPI");
+                CoxTexteSend = jsonObject.getString("DEXTEXTE");
                 /**Formatage de l'array produit**/
                 JSONArray array= jsonObject.getJSONArray("Produits");
                 for(int i=0;i<array.length();i++) {
@@ -496,6 +493,19 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
                 }else{
                     param.put("notes", "");
                 }
+                /**Commentaires en-tête**/
+                if (ComTxnEnSend != null){
+                    param.put("txtop", ComTxnEnSend);
+                }else{
+                    param.put("txtop","");
+                }
+
+                /**Commentaires pied**/
+                if (ComTxnPdSend != null){
+                    param.put("txbot", ComTxnPdSend);
+                }else{
+                    param.put("txbot", "");
+                }
                 if (commande.getComuscom()!=null){
                     param.put("uscom", commande.getComuscom());
                 }else{
@@ -515,6 +525,12 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
                 param.put("cotrp", commande.getComcotrp());
                 param.put("cotrn", commande.getComcotrn());
                 param.put("coliv", commande.getComcoliv());
+
+                if (commande.getComzogeo()!=null){
+                    param.put("zogeo", commande.getComzogeo());
+                }else{
+                    param.put("zogeo", "");
+                }
                 param.put("rasol", commande.getComrasol().replaceAll("'","''"));
                 param.put("adr1l", commande.getComadr1l().replaceAll("'","''"));
                 param.put("adr2l", commande.getComadr2l().replaceAll("'","''"));

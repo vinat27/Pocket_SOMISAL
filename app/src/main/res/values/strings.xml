@@ -305,4 +305,7 @@
     <string name="add_commande_activityMbSpnCliLieuv">Lieu de vente <font color='#FF0000'>*</font></string>
     <string name="add_commande_activity_MbSpinnerClient">Client <font color='#FF0000'>*</font></string>
 
+    <!--activity_commandes_preparees-->
+    <string name="TxtNoCdePrepareesError">Aucune commande en préparation!</string>
+
 </resources>

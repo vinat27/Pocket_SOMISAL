@@ -40,6 +40,6 @@ public class Magasin implements Serializable {
         }
         Magasin c = (Magasin) t;
         //Compare however you want, ie
-        return (c.getMagcomag().equals(this.getMagcomag())) & (c.getMaglimag().equals(this.getMaglimag()));
+        return (c.getMagcomag().equals(this.getMagcomag()));
     }
 }

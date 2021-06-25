@@ -23,6 +23,7 @@ import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commercial;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
 import com.sominfor.somisal_app.handler.models.Devis;
+import com.sominfor.somisal_app.handler.models.GestionParametre;
 import com.sominfor.somisal_app.handler.models.LieuVente;
 import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.Magasin;
@@ -141,6 +142,7 @@ public class ApiReceiverMethods {
                         client.setCliNacpx(jsonObject.getString("CLINACPX"));
                         client.setCliCpgen(jsonObject.getString("CLICPGEN"));
                         client.setCliCpaux(jsonObject.getString("CLICPAUX"));
+                        client.setCliZogeo(jsonObject.getString("CLIZOGEO"));
                         //client.setCliLiCpays(jsonObject.getString(""));
 
                         //Populariser la liste des clients
@@ -560,6 +562,46 @@ public class ApiReceiverMethods {
         return produitList;
     }
 
+    /**Récupération des paramètres de gestion**/
+    public List<GestionParametre> recupererGestParam(String api_url, String systemeAdresse, String utilisateurLogin, String utilisateurPassword, String utilisateurCosoc, String utilisateurCoage){
+        RequestQueue requestQueue = new Volley().newRequestQueue(context);
+        List<GestionParametre> gestionParametres = new ArrayList<>();
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+            try{
+                JSONArray array = new JSONArray(s);
+                for (int i=0; i<array.length(); i++){
+                    try{
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        GestionParametre gestionParametre = new GestionParametre();
+                        gestionParametre.setCopar(jsonObject.getString("ARGUM").trim());
+                        gestionParametre.setDatas(jsonObject.getString("CHOIX").trim());
+                        //Populariser la liste des magasins
+                        gestionParametres.add(gestionParametre);
+                    }catch(JSONException e){
+                        e.printStackTrace();
+                    }
+                }
 
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace)
+        {
+            protected Map<String,String> getParams(){
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+        return gestionParametres;
+    }
 
 }

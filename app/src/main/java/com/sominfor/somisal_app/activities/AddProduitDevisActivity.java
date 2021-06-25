@@ -410,6 +410,19 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
                 }else{
                     param.put("notes", "");
                 }
+                /**Commentaires en-tête**/
+                if (DevTxnEnSend != null){
+                    param.put("txtop", DevTxnEnSend);
+                }else{
+                    param.put("txtop", "");
+                }
+                /**Commentaires Pied**/
+                if (DevTxnPdSend != null){
+                    param.put("txbot", DevTxnPdSend);
+                }else{
+                    param.put("txbot","");
+                }
+
                 if (devis.getDevUscom()!=null){
                     param.put("uscom", devis.getDevUscom());
                 }else{

@@ -45,6 +45,7 @@ public class Client implements Serializable {
     private String CliVilll;
     private String CliCpayl;
     private String CliMaill;
+    private String CliZogeo;
 
     /**Données bancaires**/
     private String CliBnqu1;
@@ -148,6 +149,14 @@ public class Client implements Serializable {
         CliNucli = cliNucli;
         CliNacli = cliNacli;
         CliRasoc = cliRasoc;
+    }
+
+    public String getCliZogeo() {
+        return CliZogeo;
+    }
+
+    public void setCliZogeo(String cliZogeo) {
+        CliZogeo = cliZogeo;
     }
 
     public String getClililivth() {

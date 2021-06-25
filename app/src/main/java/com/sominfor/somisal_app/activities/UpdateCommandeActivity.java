@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.Commercial;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
+import com.sominfor.somisal_app.handler.models.GestionParametre;
 import com.sominfor.somisal_app.handler.models.LieuVente;
 import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.Magasin;
@@ -51,6 +53,7 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 import static com.sominfor.somisal_app.fragments.CommandeFragment.livreurListCdeFragment;
 import static com.sominfor.somisal_app.fragments.CommandeFragment.tourneeListCdeFragment;
 import static com.sominfor.somisal_app.fragments.CommandeFragment.transportListCdeFragment;
+import static com.sominfor.somisal_app.fragments.HomeFragment.gestionParametresHome;
 
 public class UpdateCommandeActivity extends AppCompatActivity {
     public static final String TAG = UpdateCommandeActivity.class.getSimpleName();
@@ -61,7 +64,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
     Tournee tournee, tourneeNotSelected;
     Livreur livreur, livreurNotSelected;
     Transport transport, transportNotSelected;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, apiUrl09, apiUrl10, utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, gszon, gstrn, apiUrl11, apiUrl07, apiUrl08, apiUrl09, apiUrl10, utilisateurCosoc, utilisateurCoage;
     ApiReceiverMethods apiReceiverMethods;
     Commande commande;
     TextView TxtComRasoc, TxtComLieuv, TxtComNucom, TxtComLimag, TxtComDacom, TxtComLiliv, TxtComVacom;
@@ -72,6 +75,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
     List<Tournee> tournees;
     List<Livreur> livreurs;
     List<Transport> transports;
+    List<GestionParametre> gestionParametres;
 
     public static List<Pays> paysFacturationUpdCdeList;
     public static List<DelaiReglement> delaiReglementsUpdCde;
@@ -114,6 +118,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         utilisateurCoage = utilisateur.getUtilisateurCoage();
         serveurNodeController = new ServeurNodeController();
         apiReceiverMethods = new ApiReceiverMethods(getApplicationContext());
+        gestionParametres = new ArrayList<>();
         /**Récupération du serveur node**/
         serveurNode = serveurNodeController.getServeurNodeInfos();
         /**Récupération de commandes*/
@@ -132,6 +137,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         apiUrl08 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
         apiUrl09 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allDereg";
         apiUrl10 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allUscom";
+        apiUrl11 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allChoixBySociete";
         /**Instanciation des widgets**/
         TxtComRasoc = findViewById(R.id.TxtComRasoc);
         TxtComLieuv = findViewById(R.id.TxtComLieuv);
@@ -172,10 +178,25 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         });
         /**Marquer la date selectionnée dans le champ date livraison**/
         setDateOnEdtDevDaliv();
-        /***Récupération des listes de tournée, livreurs, transports***/
+        /**Récupération des données de gestion paramètres**/
+        if(gestionParametresHome.isEmpty()){
+            gestionParametres = apiReceiverMethods.recupererGestParam(apiUrl11,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+        }else{
+            gestionParametres = gestionParametresHome;
+        }
+        /**Gestion de zone géographie**/
+        gszon = gestionParametres.get(0).getDatas();
+        /**Gestion de tournée**/
+        gstrn = gestionParametres.get(1).getDatas();
 
+        /**Gestion tournée**/
+        if (gstrn.equals("N")){
+            MbSpnComCotrn.setVisibility(View.GONE);
+
+        }
+        /***Récupération des listes de tournée, livreurs, transports***/
         /**--Tournées--**/
-        if (tourneeListCdeFragment.size() == 0) {
+        if (tourneeListCdeFragment.isEmpty()) {
             tournees = apiReceiverMethods.recupererListeTournees(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         } else {
             tournees = tourneeListCdeFragment;
@@ -262,12 +283,22 @@ public class UpdateCommandeActivity extends AppCompatActivity {
 
                             /**Date devis correcte - Comparaison à la date de livraison**/
                             if (dateLivraison.compareTo(currentDate) >= 0) {
-                                Intent i = new Intent(getApplicationContext(), AdresseFacturationUpdateActivity.class);
+                                Intent i = new Intent(getApplicationContext(), AdresseLivraisonUpdateActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                 if (null == tournee) {
                                    commande.setComcotrn(tourneeNotSelected.getTrnCotrn());
                                 } else {
                                     commande.setComcotrn(tournee.getTrnCotrn());
+                                }
+
+                                if (!gstrn.equals("N")){
+                                    if (null == tournee) {
+                                        commande.setComcotrn(tourneeNotSelected.getTrnCotrn());
+                                    } else {
+                                        commande.setComcotrn(tournee.getTrnCotrn());
+                                    }
+                                }else{
+                                    commande.setComcotrn("");
                                 }
                                 /**Livreur**/
                                 if (null == livreur) {
@@ -275,6 +306,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
                                 } else {
                                    commande.setComcoliv(livreur.getLivColiv());
                                 }
+
                                 /**Transport**/
                                 if (null == transport) {
                                    commande.setComcotrp(transportNotSelected.getTrpCotrp());

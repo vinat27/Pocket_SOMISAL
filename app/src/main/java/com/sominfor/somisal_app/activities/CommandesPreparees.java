@@ -167,6 +167,7 @@ public class CommandesPreparees extends AppCompatActivity {
             Log.v("Commandes",s);
             try{
                 JSONArray array = new JSONArray(s);
+                Log.v("Commandes_leng",String.valueOf(array.length()));
                 if (array.length() == 0){
                     progressDialogInfo.cancel();
                     frameLayout.setVisibility(View.VISIBLE);

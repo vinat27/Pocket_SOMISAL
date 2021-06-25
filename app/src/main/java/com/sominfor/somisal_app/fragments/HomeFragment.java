@@ -25,14 +25,20 @@ import com.sominfor.somisal_app.activities.LoginActivity;
 import com.sominfor.somisal_app.activities.ShowCommandeUserActivity;
 import com.sominfor.somisal_app.activities.ShowDevisUserActivity;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
+import com.sominfor.somisal_app.handler.models.GestionParametre;
+import com.sominfor.somisal_app.handler.models.Magasin;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
@@ -46,9 +52,11 @@ public class HomeFragment extends Fragment {
     TextView TxtCdeNumber, TxtDevNumber, TxthelloScreenUser;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
-    String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, devStatu, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, utilisateurCosoc, utilisateurCoage, coactVal, coactDel, coactArc;
+    String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, devStatu, apiUrl02, apiUrl03, utilisateurCosoc, utilisateurCoage, coactVal, coactDel, coactArc;
     Utilisateur utilisateur;
     CardView CommandeCardView, DevisCardView;
+    ApiReceiverMethods apiReceiverMethods;
+    public static List<GestionParametre> gestionParametresHome;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
         getActivity().setTitle("Tableau de bord");
@@ -58,11 +66,14 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
         serveurNodeController = new ServeurNodeController();
+        apiReceiverMethods = new ApiReceiverMethods(getActivity().getApplicationContext());
+        gestionParametresHome = new ArrayList<>();
         /**Récupération des informations serveur**/
         serveurNode = serveurNodeController.getServeurNodeInfos();
         /*URL Récupération de la liste des systèmes*/
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/devisByClientAndStatut";
         apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/commande/commandeByClientAndSatut";
+        apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allChoixBySociete";
         utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
@@ -78,8 +89,10 @@ public class HomeFragment extends Fragment {
 
         TxthelloScreenUser.setText(utilisateurLogin);
         /**Compter le nombre de commandes et de devis**/
+
         countDev(apiUrl01);
         countCom(apiUrl02);
+        gestionParametresHome = apiReceiverMethods.recupererGestParam(apiUrl03,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
 
         CommandeCardView.setOnClickListener(v -> {
             Intent i = new Intent(getActivity(), ShowCommandeUserActivity.class);
@@ -93,6 +106,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    /**Récupération du nombre de devis utilisateur**/
     public void countDev(String api_url){
         RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
         DelayedProgressDialog progressDialogInfo = new DelayedProgressDialog();
@@ -130,6 +144,7 @@ public class HomeFragment extends Fragment {
         requestQueue.add(postRequest);
     }
 
+    /**Récupération du nombre de commandes utilisateur**/
     public void countCom(String api_url){
         RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
@@ -161,4 +176,6 @@ public class HomeFragment extends Fragment {
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
     }
+
+
 }

@@ -213,10 +213,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         TxtDevDaliv.setText(DevDalivFormat);
 
 
-        /**Set values to txh**/
-        DexTexteSend = devis.getDexTexte();
-        DevTxnEnSend = devis.getDevTxhEnt();
-        DevTxnPdSend = devis.getDevTxhPie();
+
 
         /**Terminer Devis**/
         BtnTerminer.setOnClickListener(v -> {
@@ -385,9 +382,11 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                 Log.v("Response", s);
                 JSONObject jsonObject = new JSONObject(s);
                 /**Commentaires et Post-it***/
-                devis.setDevTxhEnt(jsonObject.getString("DEVTXHEN"));
-                devis.setDevTxhPie(jsonObject.getString("DEVTXHPI"));
-                devis.setDexTexte(jsonObject.getString("DEXTEXTE"));
+                /**Set values to txh**/
+                DexTexteSend = jsonObject.getString("DEXTEXTE");
+                DevTxnEnSend = jsonObject.getString("DEVTXHEN");
+                DevTxnPdSend = jsonObject.getString("DEVTXHPI");
+
                 /**Formatage de l'array produit**/
                 JSONArray array= jsonObject.getJSONArray("Produits");
                 for(int i=0;i<array.length();i++) {
@@ -498,6 +497,18 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                     param.put("notes", DexTexteSend);
                 }else{
                     param.put("notes", "");
+                }
+                /**Commentaires en-tête**/
+                if (DevTxnEnSend != null){
+                    param.put("txtop", DevTxnEnSend);
+                }else{
+                    param.put("txtop", "");
+                }
+                /**Commentaires Pied**/
+                if (DevTxnPdSend != null){
+                    param.put("txbot", DevTxnPdSend);
+                }else{
+                    param.put("txbot","");
                 }
                 if (devis.getDevUscom()!=null){
                     param.put("uscom", devis.getDevUscom());

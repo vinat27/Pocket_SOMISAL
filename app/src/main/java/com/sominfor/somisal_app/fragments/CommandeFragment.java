@@ -45,6 +45,7 @@ import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Livreur;
+import com.sominfor.somisal_app.handler.models.Magasin;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Tournee;
 import com.sominfor.somisal_app.handler.models.Transport;
@@ -78,6 +79,7 @@ public class CommandeFragment extends Fragment {
     public static List<Tournee> tourneeListCdeFragment;
     public static List<Livreur> livreurListCdeFragment;
     public static List<Transport> transportListCdeFragment;
+    public static List<Magasin> magasinsCdeFragment;
     /***Widgets**/
     RecyclerView recyclerViewCde;
     FrameLayout frameLayout;
@@ -88,7 +90,7 @@ public class CommandeFragment extends Fragment {
     /**Classe d'objets*/
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
-    String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, comStatu, apiUrl02, coactDel, apiUrl03, apiUrl04, apiUrl05, apiUrl06, utilisateurCosoc, utilisateurCoage;
+    String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, comStatu, apiUrl02, coactDel, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, utilisateurCosoc, utilisateurCoage;
     Utilisateur utilisateur;
     DelayedProgressDialog progressDialogInfo;
     List<Commande> commandeList;
@@ -136,6 +138,7 @@ public class CommandeFragment extends Fragment {
         apiUrl04 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allCotrn";
         apiUrl05 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allColiv";
         apiUrl06 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allCotrp";
+        apiUrl07 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allComag";
         utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
@@ -148,6 +151,7 @@ public class CommandeFragment extends Fragment {
         tourneeListCdeFragment = apiReceiverMethods.recupererListeTournees(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         livreurListCdeFragment = apiReceiverMethods.recupererListeLivreurs(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         transportListCdeFragment = apiReceiverMethods.recupererListeTransport(apiUrl06, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+        magasinsCdeFragment = apiReceiverMethods.recupererListeMagasins(apiUrl07, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         /**Liste de commandes**/
         listeCommandesEnCours(apiUrl01);
         /**Ajout de commande**/
@@ -285,7 +289,7 @@ public class CommandeFragment extends Fragment {
                         commande.setComlicpayr(jsonObject.getString("LIBCPAYL").trim());
                         commande.setCombopol(jsonObject.getString("COMBOPOL").trim());
                         commande.setComcotrp(jsonObject.getString("COMCOTRP"));
-                        commande.setComcotrn(jsonObject.getString("COMCOTRN"));
+                        commande.setComcotrn(jsonObject.getString("COMCOTRN").trim());
                         commande.setComcoliv(jsonObject.getString("COMCOLIV").trim());
                         commande.setComcpays(jsonObject.getString("COMCPAYS"));
                         commande.setComcpayl(jsonObject.getString("COMCPAYL"));

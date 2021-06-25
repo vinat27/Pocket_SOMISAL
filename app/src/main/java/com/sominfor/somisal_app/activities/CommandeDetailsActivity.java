@@ -200,7 +200,7 @@ public class CommandeDetailsActivity extends AppCompatActivity {
                 /**Commentaires et Post-it***/
                 commande.setComtxhen(jsonObject.getString("COMTXHEN"));
                 commande.setComtxhpd(jsonObject.getString("COMTXHPI"));
-                commande.setCoxtexte(jsonObject.getString("DCOTEXTE"));
+                commande.setCoxtexte(jsonObject.getString("DEXTEXTE"));
                 /**Formatage de l'array produit**/
                 JSONArray array= jsonObject.getJSONArray("Produits");
                 for(int i=0;i<array.length();i++) {
