@@ -341,7 +341,6 @@ public class AddCommandeActivity extends AppCompatActivity {
                 if (MbSpnCliLieuv.length() != 0) {
                     if (MbSpnComComag.length() != 0) {
                         if (MbSpnComColiv.getText().length() != 0) {
-
                                 /**Comparaison des dates**/
                                 try {
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -357,13 +356,13 @@ public class AddCommandeActivity extends AppCompatActivity {
                                             i.putExtra("client", client);
                                             i.putExtra("lieuvente", lieuVente);
                                             i.putExtra("magasin", magasin);
-                                            if (!gstrn.equals("N")){
+                                            if (!gstrn.equals("N")) {
                                                 if (null == tournee) {
                                                     i.putExtra("tournee", tourneeNotSelected);
                                                 } else {
                                                     i.putExtra("tournee", tournee);
                                                 }
-                                            }else{
+                                            } else {
                                                 tournee.setTrnCotrn("");
                                                 tournee.setTrnLitrn("");
                                                 i.putExtra("tournee", tournee);
@@ -394,9 +393,9 @@ public class AddCommandeActivity extends AppCompatActivity {
                                             commande.setComville(client.getCliVille());
                                             commande.setCombopos(client.getCliBopos());
                                             /**Gestion Zone Géographique**/
-                                            if (gszon.equals("N")){
+                                            if (gszon.equals("N")) {
                                                 commande.setComzogeo("");
-                                            }else{
+                                            } else {
                                                 commande.setComzogeo(client.getCliZogeo());
                                             }
                                             i.putExtra("commande", commande);
@@ -404,8 +403,17 @@ public class AddCommandeActivity extends AppCompatActivity {
                                             pays = new Pays();
                                             pays.setPaysCopay(client.getCliCpays());
                                             i.putExtra("pays", pays);
-                                            startActivity(i);
-                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                            if (gstrn.equals("N")){
+                                                startActivity(i);
+                                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                            }else{
+                                                if (MbSpnComCotrn.getText().length() != 0){
+                                                    startActivity(i);
+                                                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                                }else{
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL05), Toast.LENGTH_LONG).show();
+                                                }
+                                            }
                                         } else {
                                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL09), Toast.LENGTH_LONG).show();
                                         }

@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
@@ -27,8 +28,11 @@ import com.sominfor.somisal_app.fragments.CommandeFragment;
 import com.sominfor.somisal_app.fragments.DevisFragment;
 import com.sominfor.somisal_app.fragments.HomeFragment;
 import com.sominfor.somisal_app.fragments.ProduitFragment;
+import com.sominfor.somisal_app.handler.models.Commande;
+import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
 import com.sominfor.somisal_app.utils.CustomTypefaceSpan;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -48,7 +52,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CommandeFilterListener {
 
     TextView TxtLogin, TxtFiliale;
     Utilisateur utilisateur;
@@ -213,6 +217,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         mi.setTitle(mNewTitle);
     }
 
-
-
+    @Override
+    public void onDataReceived(CommandeFilterElements commandeFilterElements) {
+        CommandeFragment commandeFragment = CommandeFragment.getInstance();
+        commandeFragment.onDataReceived(commandeFilterElements);
+    }
 }

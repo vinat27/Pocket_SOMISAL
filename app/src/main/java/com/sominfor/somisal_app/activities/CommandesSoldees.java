@@ -1,12 +1,5 @@
 package com.sominfor.somisal_app.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -19,21 +12,29 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
-import com.sominfor.somisal_app.adapters.CommandeAdapter;
 import com.sominfor.somisal_app.adapters.CommandeSoldeesAdapter;
-import com.sominfor.somisal_app.adapters.DevisSoldesAdapter;
+import com.sominfor.somisal_app.fragments.FiltresCommandesDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Commande;
-import com.sominfor.somisal_app.handler.models.Devis;
+import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -41,14 +42,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
-public class CommandesSoldees extends AppCompatActivity {
+public class CommandesSoldees extends AppCompatActivity implements CommandeFilterListener {
 
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
@@ -61,6 +66,7 @@ public class CommandesSoldees extends AppCompatActivity {
     FrameLayout frameLayout;
     List<Commande> commandesSoldeesList;
     CommandeSoldeesAdapter commandeSoldeesAdapter;
+    FloatingActionButton fab_filter;
     private MenuItem mSearchItem;
     private SearchView sv;
     @Override
@@ -71,7 +77,7 @@ public class CommandesSoldees extends AppCompatActivity {
         /**Controle orientation***/
         if(!getResources().getBoolean(R.bool.isTablet)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else{
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
@@ -81,6 +87,9 @@ public class CommandesSoldees extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
         rq = Volley.newRequestQueue(this);
+        /**Instanciation du bouton filtre*/
+        fab_filter = findViewById(R.id.Fab_Filter);
+
         commandesSoldeesList = new ArrayList<>();
         recyclerViewCdeSoldees = findViewById(R.id.recyclerViewCdeSoldees);
         frameLayout = findViewById(R.id.frameLayout);
@@ -111,6 +120,11 @@ public class CommandesSoldees extends AppCompatActivity {
 
         /**Liste de commandes soldées**/
         listeCommandesSoldees(apiUrl01);
+
+        /**onClick sur le fab_filter_*/
+        fab_filter.setOnClickListener(v -> {
+            openFiltresCommandes();
+        });
     }
     // Options Menu (ActionBar Menu)
     @Override
@@ -252,5 +266,29 @@ public class CommandesSoldees extends AppCompatActivity {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
+    }
+
+    /**
+     * Ouvrir fenetre de filtres
+     **/
+    private void openFiltresCommandes() {
+        /***Filtre sur les commandes soldées**/
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FiltresCommandesDialog filtresCommandesDialog = FiltresCommandesDialog.newInstance();
+        filtresCommandesDialog.show(fragmentManager, ServeurNode.TAG);
+    }
+
+    @Override
+    public void onDataReceived(CommandeFilterElements commandeFilterElements) {
+        /**Transformation de date des informations reçues**/
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
+            Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
+
+            commandeSoldeesAdapter.filterDateRange(dateInf, dateSup);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

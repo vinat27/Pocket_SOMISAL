@@ -14,6 +14,7 @@
         android:icon="@drawable/ic_baseline_filter_list_24_white"
         app:showAsAction="always" >
         <menu>
+            <group android:id="@+id/group1">
             <item
                 android:id="@+id/action_soldes"
                 android:title="Soldées"
@@ -30,6 +31,18 @@
                 android:title="Reliquat"
                 android:orderInCategory="1"
                 app:showAsAction="never"/>
+            </group>
+
+            <group android:id="@+id/group2">
+                <item
+                    android:id="@+id/filter_"
+                    android:title="Filtres"
+                    android:icon="@drawable/ic_baseline_filter_alt_24"
+                    android:orderInCategory="4"
+                    app:showAsAction="never"
+                    android:iconTint="@color/black"
+                    />
+            </group>
         </menu>
 
     </item>

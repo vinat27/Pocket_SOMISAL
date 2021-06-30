@@ -23,6 +23,7 @@ import com.sominfor.somisal_app.handler.models.Commande;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -173,5 +174,30 @@ public class CommandeSoldeesAdapter extends RecyclerView.Adapter<CommandeSoldees
             notifyDataSetChanged();
         }
     };
+
+    /***Filtre par intervalle de dates**/
+    public void filterDateRange(Date charText, Date charText1) {
+
+        List<Commande> filteredList = new ArrayList<>();
+        if (charText.equals("")||charText.equals(null)) {
+            filteredList.addAll(commandeSearchs);
+        } else {
+            for (Commande wp : commandeSearchs) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date strDate = sdf.parse(wp.getComdacom());
+                    if (charText1.after(strDate)&&charText.before(strDate)) {
+                        filteredList.add(wp);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        commandeList.clear();
+        commandeList.addAll(filteredList);
+        notifyDataSetChanged();
+    }
 
 }

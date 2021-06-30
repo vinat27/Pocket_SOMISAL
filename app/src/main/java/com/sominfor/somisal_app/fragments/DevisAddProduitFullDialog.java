@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -61,8 +62,8 @@ public class DevisAddProduitFullDialog extends DialogFragment {
     Toolbar toolbar;
     MaterialButton BtnValider;
     SearchableSpinner SsnDdvCopro;
-    MaterialBetterSpinner MbSpnDdvUnvte;
-    TextInputEditText EdtDdvCofvt, EdtDdvQtpro;
+    TextInputEditText EdtDdvQtpro;
+    TextView MbSpnDcoUnvte, TxtDcoCofvt;
     List<Produit> produitList;
     List<Unite> uniteList;
     ProduitsSearchableAdapter produitsSearchableAdapter;
@@ -72,7 +73,7 @@ public class DevisAddProduitFullDialog extends DialogFragment {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, cliNucli, cliNacli, clilieuv, utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, cliNucli, cliNacli, clilieuv, utilisateurCosoc, utilisateurCoage, uniteVente, coeff;
     public RequestQueue rq;
     Double wvarem, wvapos;
     ApiReceiverMethods apiReceiverMethods;
@@ -94,8 +95,8 @@ public class DevisAddProduitFullDialog extends DialogFragment {
         toolbar = view.findViewById(R.id.toolbar);
         BtnValider = view.findViewById(R.id.BtnValider);
         SsnDdvCopro = view.findViewById(R.id.MbSpnCopro);
-        MbSpnDdvUnvte = view.findViewById(R.id.MbSpnDdvUnvte);
-        EdtDdvCofvt = view.findViewById(R.id.EdtDdvCofvt);
+        MbSpnDcoUnvte = view.findViewById(R.id.MbSpnDcoUnvte);
+        TxtDcoCofvt = view.findViewById(R.id.TxtDcoCofvt);
         EdtDdvQtpro = view.findViewById(R.id.EdtDdvQtpro);
         serveurNodeController = new ServeurNodeController();
         /**Initialisation des valeurs de poste et de remise***/
@@ -141,9 +142,6 @@ public class DevisAddProduitFullDialog extends DialogFragment {
         produitsSearchableAdapter = new ProduitsSearchableAdapter(getContext(), android.R.layout.simple_spinner_item, produitList);
         SsnDdvCopro.setAdapter(produitsSearchableAdapter);
 
-        /**Récupération de la liste des unités**/
-        recupererListeUnites(apiUrl03);
-
         /** Choix de Produit
          *  Selection automatique de l'unite
          *  Coefficient automatique rempli***/
@@ -153,15 +151,11 @@ public class DevisAddProduitFullDialog extends DialogFragment {
                 /**Récupération de produit sélectionné**/
                 produit = produitsSearchableAdapter.getItem(position);
                 /**Selection automatique d'unités**/
-                String unvte = produit.getProunvte();
                 String liunvte = produit.getProliunvte();
-                Unite unite = new Unite();
-                unite.setUniteCode(unvte);
-                unite.setUniteLibelle(liunvte);
-                int spinnerPosition = uniteList.indexOf(unite);
-                MbSpnDdvUnvte.setText(MbSpnDdvUnvte.getAdapter().getItem(spinnerPosition).toString());
-                /**Remplir le coefficient**/
-                EdtDdvCofvt.setText(String.valueOf(produit.getProcofvt()));
+                uniteVente = "Unité de vente: "+liunvte;
+                MbSpnDcoUnvte.setText(uniteVente);
+                coeff = "Coefficient: "+produit.getProcofvt();
+                TxtDcoCofvt.setText(coeff);
             }
 
             @Override
@@ -172,7 +166,7 @@ public class DevisAddProduitFullDialog extends DialogFragment {
 
         /**Validation**/
         BtnValider.setOnClickListener(v -> {
-            if (SsnDdvCopro.getSelectedItem()!=null && MbSpnDdvUnvte.length()!=0 && EdtDdvCofvt.getText().length() != 0 && EdtDdvQtpro.getText().length() != 0){
+            if (SsnDdvCopro.getSelectedItem()!=null && EdtDdvQtpro.getText().length() != 0){
                 /**Calcul du tarif**/
                 calculTarifRemise(apiUrl02, produit.getProcopro(), produit.getProunvte(), clilieuv, cliNacli, dacom, cliNucli, Double.parseDouble(EdtDdvQtpro.getText().toString()));
 
@@ -247,7 +241,7 @@ public class DevisAddProduitFullDialog extends DialogFragment {
                     detailDevis.setDdvTxnPo("");
                     detailDevis.setDdvDadev(dadev);
                     /***Extras**/
-                    detailDevis.setDdvCofvt(Integer.parseInt(EdtDdvCofvt.getText().toString()));
+                    detailDevis.setDdvCofvt(produit.getProcofvt());
                     detailDevis.setDdvNucli(cliNucli);
                     detailDevis.setDdvNacli(cliNacli);
                     detailDevis.setDdvLieuv(clilieuv);
@@ -287,45 +281,4 @@ public class DevisAddProduitFullDialog extends DialogFragment {
         requestQueue.add(postRequest);
     }
 
-    /**Récupération de la liste des unités**/
-    public void recupererListeUnites(String api_url){
-        RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
-            try{
-                JSONArray array = new JSONArray(s);
-                for (int i=0; i<array.length(); i++){
-                    try{
-                        JSONObject jsonObject = array.getJSONObject(i);
-                        Unite unite = new Unite();
-
-                        unite.setUniteLibelle(jsonObject.getString("DATA1").trim());
-                        unite.setUniteCode(jsonObject.getString("ARGUM").trim());
-                        //Populariser la liste des produits
-                        uniteList.add(unite);
-                    }catch(JSONException e){
-                        e.printStackTrace();
-                    }
-                }
-                uniteSpinnerAdapter = new UniteSpinnerAdapter(getContext(), android.R.layout.simple_spinner_item, uniteList);
-                MbSpnDdvUnvte.setAdapter(uniteSpinnerAdapter);
-            }catch(JSONException e){
-                e.printStackTrace();
-            }
-        }, Throwable::printStackTrace)
-        {
-            protected Map<String,String> getParams(){
-                Map<String, String> param = new HashMap<String, String>();
-                param.put("systeme",systemeAdresse);
-                param.put("login",utilisateurLogin);
-                param.put("password",utilisateurPassword);
-                param.put("cosoc", utilisateurCosoc);
-                param.put("coage", utilisateurCoage);
-                return param;
-            }
-        };
-        int socketTimeout = 30000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        postRequest.setRetryPolicy(policy);
-        requestQueue.add(postRequest);
-    }
 }

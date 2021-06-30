@@ -42,22 +42,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/spinner_style"
-                android:orientation="vertical">
-
-                <!--Choix de clients-->
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/MbSpnCopro"
-                    android:layout_width="match_parent"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                    android:focusableInTouchMode="false"
-                    android:fontFamily="@font/montserrat_regular"
-                    app:hintText="@string/devis_add_produit_full_dialog_SchSTextHint"
-                    app:met_floatingLabel="normal" />
+                    android:src="@drawable/ic_baseline_date_range_24"
+                    android:paddingLeft="16dp"
+                    />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingLeft="8dp"
+                    android:layout_height="wrap_content"
+                    android:text="Date Commande"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="17dp"
+                    />
             </LinearLayout>
+
+
 
             <!--Unité de vente - Coefficient-->
             <LinearLayout
@@ -73,69 +77,75 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/spinner_style"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/MbSpnDcoUnvte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="12dp"
+                        android:text="De "/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:textColor="@color/colorPrimary"
-                        android:text=""
-                        android:gravity="center"
-                        />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="Date"
+                        android:inputType="date"
+                        app:errorEnabled="true"
+                        android:singleLine="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/EdtDateInf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:fontFamily="@font/montserrat_regular" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
 
-                <!--Coefficient-->
-                <!--<com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:hint="@string/devis_add_produit_full_dialog_EdtDdvCofvt"
-                    android:singleLine="true">
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/EdtDcoCofvt"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:fontFamily="@font/montserrat_regular" />
-                </com.google.android.material.textfield.TextInputLayout>-->
                 <TextView
-                    android:id="@+id/TxtDcoCofvt"
-                    android:layout_width="match_parent"
+
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:textColor="@color/colorPrimary"
-                    android:text=""
-                    android:gravity="center"
+                    android:text=" à "
                     />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="Date"
+                        android:inputType="date"
+                        app:errorEnabled="true"
+                        android:singleLine="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/EdtDateSup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:fontFamily="@font/montserrat_regular" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!--Coefficient-->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="@string/devis_add_produit_full_dialog_EdtDdvQtpro"
-                android:singleLine="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/EdtDcoQtpro"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:fontFamily="@font/montserrat_regular" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <!--Valider-->
             <com.google.android.material.button.MaterialButton
@@ -145,11 +155,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:fontFamily="@font/montserrat_medium"
-                android:padding="@dimen/login_activity_BtnConnexion_padding"
                 android:text="@string/serveur_node_fragment_BtnValider_hint"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
                 app:backgroundTint="@color/colorPrimary"
                 app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius" />
 

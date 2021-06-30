@@ -307,5 +307,6 @@
 
     <!--activity_commandes_preparees-->
     <string name="TxtNoCdePrepareesError">Aucune commande en préparation!</string>
+    <string name="filtres_commandes_dialog">Filtres - Commandes</string>
 
 </resources>

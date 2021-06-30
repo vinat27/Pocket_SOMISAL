@@ -25,13 +25,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.CommandePrepareesAdapter;
 import com.sominfor.somisal_app.adapters.CommandeSoldeesAdapter;
+import com.sominfor.somisal_app.fragments.FiltresCommandesDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Commande;
+import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -39,14 +43,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
-public class CommandesPreparees extends AppCompatActivity {
+public class CommandesPreparees extends AppCompatActivity implements CommandeFilterListener {
 
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
@@ -61,6 +69,7 @@ public class CommandesPreparees extends AppCompatActivity {
     CommandePrepareesAdapter commandePrepareesAdapter;
     private MenuItem mSearchItem;
     private SearchView sv;
+    FloatingActionButton fab_filter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,12 +112,17 @@ public class CommandesPreparees extends AppCompatActivity {
         utilisateurPassword = utilisateur.getUtilisateurPassword();
         utilisateurCosoc = utilisateur.getUtilisateurCosoc();
         utilisateurCoage = utilisateur.getUtilisateurCoage();
-
+        fab_filter = findViewById(R.id.Fab_Filter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
         recyclerViewCdePreparees.setLayoutManager(linearLayoutManager);
 
         /**Liste de commandes préparées**/
         listeCommandesPreparees(apiUrl01);
+
+        /**Bouton filtre**/
+        fab_filter.setOnClickListener(v -> {
+            openFiltresCommandes();
+        });
     }
 
     // Options Menu (ActionBar Menu)
@@ -251,5 +265,29 @@ public class CommandesPreparees extends AppCompatActivity {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
+    }
+
+    /**
+     * Ouvrir fenetre de filtres
+     **/
+    private void openFiltresCommandes() {
+        /***Filtre sur les commandes en préparation**/
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FiltresCommandesDialog filtresCommandesDialog = FiltresCommandesDialog.newInstance();
+        filtresCommandesDialog.show(fragmentManager, ServeurNode.TAG);
+    }
+
+    @Override
+    public void onDataReceived(CommandeFilterElements commandeFilterElements) {
+        /**Transformation de date des informations reçues**/
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
+            Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
+
+            commandePrepareesAdapter.filterDateRange(dateInf, dateSup);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

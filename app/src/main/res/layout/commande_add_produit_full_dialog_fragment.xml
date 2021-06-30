@@ -73,10 +73,9 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/spinner_style"
                     android:orientation="vertical">
 
-                    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    <!--<com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                         android:id="@+id/MbSpnDcoUnvte"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -88,11 +87,21 @@
                         app:met_floatingLabel="normal"
                         app:met_hideUnderline="true"
                         app:met_textColor="@color/black"
-                        app:met_textColorHint="@color/black" />
+                        app:met_textColorHint="@color/black" />-->
+                    <TextView
+                        android:id="@+id/MbSpnDcoUnvte"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/colorPrimary"
+                        android:text=""
+                        />
+
                 </LinearLayout>
 
                 <!--Coefficient-->
-                <com.google.android.material.textfield.TextInputLayout
+                <!--<com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,7 +116,19 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:fontFamily="@font/montserrat_regular" />
-                </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>-->
+
+                <TextView
+                    android:id="@+id/TxtDcoCofvt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textColor="@color/colorPrimary"
+                    android:text=""
+                    />
 
             </LinearLayout>
 

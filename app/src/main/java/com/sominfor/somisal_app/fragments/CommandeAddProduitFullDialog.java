@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -63,8 +64,8 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
     Toolbar toolbar;
     MaterialButton BtnValider;
     SearchableSpinner SsnDcoCopro;
-    MaterialBetterSpinner MbSpnDcoUnvte;
     TextInputEditText EdtDcoCofvt, EdtDcoQtpro;
+    TextView MbSpnDcoUnvte, TxtDcoCofvt;
     List<Produit> produitList;
     List<Unite> uniteList;
     ProduitsSearchableAdapter produitsSearchableAdapter;
@@ -75,7 +76,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, utilisateurCosoc, utilisateurCoage, cliNucli, cliNacli, clilieuv;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, utilisateurCosoc, utilisateurCoage, cliNucli, cliNacli, clilieuv, uniteVente, coeff;
     public RequestQueue rq;
     Double wvarem, wvapos;
     ApiReceiverMethods apiReceiverMethods;
@@ -97,7 +98,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
         BtnValider = view.findViewById(R.id.BtnValider);
         SsnDcoCopro = view.findViewById(R.id.MbSpnCopro);
         MbSpnDcoUnvte = view.findViewById(R.id.MbSpnDcoUnvte);
-        EdtDcoCofvt = view.findViewById(R.id.EdtDcoCofvt);
+        TxtDcoCofvt = view.findViewById(R.id.TxtDcoCofvt);
         EdtDcoQtpro = view.findViewById(R.id.EdtDcoQtpro);
         serveurNodeController = new ServeurNodeController();
         /**Initialisation des valeurs de poste et de remise***/
@@ -143,7 +144,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
         SsnDcoCopro.setAdapter(produitsSearchableAdapter);
 
         /**Récupération de la liste des unités**/
-        recupererListeUnites(apiUrl03);
+        //recupererListeUnites(apiUrl03);
 
         SsnDcoCopro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -152,14 +153,10 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
                 /**Selection automatique d'unités**/
                 String unvte = produit.getProunvte();
                 String liunvte = produit.getProliunvte();
-                Unite unite = new Unite();
-                unite.setUniteCode(unvte);
-                unite.setUniteLibelle(liunvte);
-                int spinnerPosition = uniteList.indexOf(unite);
-                if (spinnerPosition!= -1)
-                MbSpnDcoUnvte.setText(MbSpnDcoUnvte.getAdapter().getItem(spinnerPosition).toString());
-
-                EdtDcoCofvt.setText(String.valueOf(produit.getProcofvt()));
+                uniteVente = "Unité de vente: "+liunvte;
+                MbSpnDcoUnvte.setText(uniteVente);
+                coeff = "Coefficient: "+produit.getProcofvt();
+                TxtDcoCofvt.setText(coeff);
             }
 
             @Override
@@ -169,7 +166,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
 
         /**Validation**/
         BtnValider.setOnClickListener(v -> {
-            if (SsnDcoCopro.getSelectedItem()!=null && MbSpnDcoUnvte.length()!=0 && EdtDcoCofvt.getText().length() != 0 && EdtDcoQtpro.getText().length() != 0){
+            if (SsnDcoCopro.getSelectedItem()!=null && EdtDcoQtpro.getText().length() != 0){
                 if (Double.parseDouble(EdtDcoQtpro.getText().toString()) != 0){
                     /**Calcul du tarif**/
                     calculTarifRemise(apiUrl02, produit.getProcopro(), produit.getProunvte(), clilieuv, cliNacli, dacom, cliNucli, Double.parseDouble(EdtDcoQtpro.getText().toString()));
@@ -244,7 +241,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
                     detailCommande.setDcovarem(wvarem);
                     detailCommande.setDcotxn("");
                     detailCommande.setDcoDacom(dadev);
-                    detailCommande.setDcocofvt(Integer.parseInt(EdtDcoCofvt.getText().toString()));
+                    detailCommande.setDcocofvt(produit.getProcofvt());
                     detailCommande.setDcoNucli(cliNucli);
                     detailCommande.setDcoNacli(cliNacli);
                     detailCommande.setDcoLieuv(clilieuv);
@@ -285,7 +282,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
     }
 
     /**Récupération de la liste des unités**/
-    public void recupererListeUnites(String api_url){
+    /*public void recupererListeUnites(String api_url){
         RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
             try{
@@ -324,6 +321,6 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
-    }
+    }*/
 
 }

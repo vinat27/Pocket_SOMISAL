@@ -3,6 +3,7 @@ package com.sominfor.somisal_app.fragments;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,8 +15,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.MenuCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -43,6 +47,8 @@ import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commande;
+import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
+import com.sominfor.somisal_app.handler.models.DetailCommande;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.Magasin;
@@ -50,6 +56,7 @@ import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Tournee;
 import com.sominfor.somisal_app.handler.models.Transport;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -57,9 +64,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
@@ -73,6 +85,7 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 public class CommandeFragment extends Fragment {
     /***Variables globales**/
     public static String FRAGMENT_COMMANDE = "3";
+    public static final String TAG = CommandeFragment.class.getSimpleName();
     private static final int SPLASH_TIME = 4000;
     public static List<Client> clientListCde;
     static CommandeFragment instanceCommandeFragment = null;
@@ -96,9 +109,10 @@ public class CommandeFragment extends Fragment {
     List<Commande> commandeList;
     CommandeAdapter commandeAdapter;
     ApiReceiverMethods apiReceiverMethods;
+    JSONArray coactJson;
 
-    JSONArray coactJson, pocomJson, coproArray, nuprmArray, unvteArray, cofvtArray, qtcomArray, putarArray, txremArray, varemArray, texteArray;
-    //TODO Libellé Statut - Libellé Monnaie - Commentaire commande - Post-it - CadZon sur les montants
+    public static CommandeFragment newInstance(){ return new CommandeFragment(); }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.commande_fragment, container, false);
         /***** Déclaration de barre de menu dans le fragment*******/
@@ -178,13 +192,31 @@ public class CommandeFragment extends Fragment {
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 return true;
+            case R.id.filter_:
+                openFiltresCommandes();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onDataReceived(CommandeFilterElements commandeFilterElements) {
+        /**Transformation de date des informations reçues**/
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
+            Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
+
+            Log.v("Date", commandeFilterElements.getDateInf());
+            commandeAdapter.filterDateRange(dateInf, dateSup);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.commande_fragment_menu, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
         /**Gestion de menu recherche**/
         mSearchItem = menu.findItem(R.id.action_search);
         sv = (SearchView) MenuItemCompat.getActionView(mSearchItem);
@@ -204,6 +236,11 @@ public class CommandeFragment extends Fragment {
                 return true;
             }
         });
+        MenuItem menuItem = menu.findItem(R.id.filter_);
+
+        if (menuItem != null) {
+            tintMenuIcon(getActivity(), menuItem, android.R.color.black);
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -396,6 +433,38 @@ public class CommandeFragment extends Fragment {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
+    }
+
+    /**Set Color to menu icon*/
+    public static void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
+        Drawable normalDrawable = item.getIcon();
+        Drawable wrapDrawable = DrawableCompat.wrap(normalDrawable);
+        DrawableCompat.setTint(wrapDrawable, context.getResources().getColor(color));
+
+        item.setIcon(wrapDrawable);
+    }
+
+    /**Ouvrir fenetre de filtres**/
+    private void openFiltresCommandes() {
+        /***Filtre sur les commandes en cours**/
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FiltresCommandesDialog filtresCommandesDialog = FiltresCommandesDialog.newInstance();
+
+        //devisPostItFullDialog.setTargetFragment(devisPostItFullDialog, 100);
+        filtresCommandesDialog.show(fragmentManager, ServeurNode.TAG);
+    }
+
+    private CommandeFilterListener mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (CommandeFilterListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement MyListener");
+        }
     }
 
 }
