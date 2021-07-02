@@ -23,6 +23,7 @@ import com.sominfor.somisal_app.handler.models.Commande;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,10 +35,12 @@ import java.util.Objects;
 public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAdapter.CommandeVh>{
     private static List<Commande> commandeList;
     private Context context;
+    private List<Commande> commandeSearchs;
     /**Constructeur**/
     public CommandeClientAdapter(Context context, List<Commande> commandeList){
         this.context = context;
         this.commandeList = commandeList;
+        commandeSearchs = new ArrayList<>(commandeList);
     }
     @NonNull
     @Override
@@ -149,6 +152,32 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
             });
 
         }
+    }
+
+    public void filterDateRange(Date charText, Date charText1, String statut) {
+
+        List<Commande> filteredList = new ArrayList<>();
+        if (charText.equals("")||charText.equals(null)) {
+            filteredList.addAll(commandeSearchs);
+        } else {
+            for (Commande wp : commandeSearchs) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date strDate = sdf.parse(wp.getComdacom());
+                    if (wp.getComstatu().equals(statut) && charText1.compareTo(strDate) >= 0 && charText.compareTo(strDate) <= 0) {
+                        filteredList.add(wp);
+                    }else{
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        commandeList.clear();
+        commandeList.addAll(filteredList);
+        notifyDataSetChanged();
     }
 
 }

@@ -24,13 +24,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.adapters.DevisSoldesAdapter;
+import com.sominfor.somisal_app.fragments.FiltresDevisDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
+import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.DevisFilterListener;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -38,14 +42,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
-public class DevisSoldesActivity extends AppCompatActivity {
+public class DevisSoldesActivity extends AppCompatActivity implements DevisFilterListener {
 
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
@@ -60,6 +68,7 @@ public class DevisSoldesActivity extends AppCompatActivity {
     DevisSoldesAdapter devisSoldesAdapter;
     private MenuItem mSearchItem;
     private SearchView sv;
+    FloatingActionButton fab_filter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**Controle orientation***/
@@ -80,6 +89,7 @@ public class DevisSoldesActivity extends AppCompatActivity {
         devisSoldesList = new ArrayList<>();
         recyclerViewDevisSoldes = findViewById(R.id.RecyclerViewDevisSoldes);
         frameLayout = findViewById(R.id.frameLayout);
+        fab_filter = findViewById(R.id.Fab_Filter);
         devStatut = "S";
 
         /**Gestion du menu d'action**/
@@ -107,8 +117,10 @@ public class DevisSoldesActivity extends AppCompatActivity {
 
         /**Récupération des devis soldés**/
         listeDevisSoldes(apiUrl01);
-
-
+        /**Onclick fab_filter**/
+        fab_filter.setOnClickListener(v -> {
+            openFiltresDevis();
+        });
     }
 
     // Options Menu (ActionBar Menu)
@@ -233,5 +245,26 @@ public class DevisSoldesActivity extends AppCompatActivity {
         requestQueue.add(postRequest);
     }
 
+    /**Ouvrir fenetre de filtres**/
+    private void openFiltresDevis() {
+        /***Filtre sur les commandes en cours**/
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FiltresDevisDialog filtresDevisDialog = FiltresDevisDialog.newInstance();
+        filtresDevisDialog.show(fragmentManager, ServeurNode.TAG);
+    }
+
+    @Override
+    public void onDataReceivedDevis(CommandeFilterElements commandeFilterElements) {
+        /**Transformation de date des informations reçues**/
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
+            Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
+
+            devisSoldesAdapter.filterDateRange(dateInf, dateSup);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+    }
 }
 

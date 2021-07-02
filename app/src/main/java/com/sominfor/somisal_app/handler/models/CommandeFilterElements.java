@@ -8,6 +8,7 @@ package com.sominfor.somisal_app.handler.models;
 public class CommandeFilterElements {
     private String dateInf;
     private String dateSup;
+    private String commandeStatut;
 
     public String getDateInf() {
         return dateInf;
@@ -23,5 +24,13 @@ public class CommandeFilterElements {
 
     public void setDateSup(String dateSup) {
         this.dateSup = dateSup;
+    }
+
+    public String getCommandeStatut() {
+        return commandeStatut;
+    }
+
+    public void setCommandeStatut(String commandeStatut) {
+        this.commandeStatut = commandeStatut;
     }
 }

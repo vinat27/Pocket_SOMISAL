@@ -15,7 +15,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
-import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
+import com.sominfor.somisal_app.interfaces.DevisFilterListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,19 +24,19 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Créé par vatsou le 28,juin,2021
+ * Créé par vatsou le 30,juin,2021
  * SOMINFOR
  * Paris, FRANCE
  */
-public class FiltresCommandesDialog extends DialogFragment {
-    public static final String TAG = FiltresCommandesDialog.class.getSimpleName();
+public class FiltresDevisDialog extends DialogFragment {
+    public static final String TAG = FiltresDevisDialog.class.getSimpleName();
     private Toolbar toolbar;
     TextInputEditText EdtDaInf, EdtDaSup;
     MaterialButton btnValider;
     DatePickerDialog DpDaInf, DpDaSup;
-    CommandeFilterListener commandeFilterListener;
+    DevisFilterListener devisFilterListener;
 
-    public static FiltresCommandesDialog newInstance(){ return new FiltresCommandesDialog(); }
+    public static FiltresDevisDialog newInstance(){ return new FiltresDevisDialog(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class FiltresCommandesDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.filtres_commandes_dialog, container, false);
+        View view = inflater.inflate(R.layout.filtres_devis_dialog, container, false);
         /***Instanciation des widgets***/
         toolbar = view.findViewById(R.id.toolbar);
         EdtDaInf = view.findViewById(R.id.EdtDateInf);
@@ -67,7 +67,7 @@ public class FiltresCommandesDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         toolbar.setNavigationOnClickListener(v -> dismiss());
-        toolbar.setTitle(getResources().getString(R.string.filtres_commandes_dialog));
+        toolbar.setTitle(getResources().getString(R.string.filtres_devis_dialog));
 
         /**Champ de date, selection de date  DatePicker**/
         EdtDaInf.setOnClickListener(v -> DpDaInf.show());
@@ -92,8 +92,8 @@ public class FiltresCommandesDialog extends DialogFragment {
                     commandeFilterElements.setDateInf(EdtDaInf.getText().toString());
                     commandeFilterElements.setDateSup(EdtDaSup.getText().toString());
 
-                    commandeFilterListener = (CommandeFilterListener) getActivity();
-                    commandeFilterListener.onDataReceived(commandeFilterElements);
+                    devisFilterListener = (DevisFilterListener) getActivity();
+                    devisFilterListener.onDataReceivedDevis(commandeFilterElements);
                     dismiss();
                 }else{
                     Toast.makeText(getActivity(), "Intervalle de date incorrecte", Toast.LENGTH_LONG).show();

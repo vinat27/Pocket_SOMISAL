@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.Commercial;
+import com.sominfor.somisal_app.handler.models.DelaiLivraison;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
 import com.sominfor.somisal_app.handler.models.GestionParametre;
 import com.sominfor.somisal_app.handler.models.LieuVente;
@@ -55,6 +57,7 @@ import java.util.Locale;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 import static com.sominfor.somisal_app.fragments.CommandeFragment.clientListCde;
+import static com.sominfor.somisal_app.fragments.CommandeFragment.delaiLivraisons;
 import static com.sominfor.somisal_app.fragments.CommandeFragment.livreurListCdeFragment;
 import static com.sominfor.somisal_app.fragments.CommandeFragment.magasinsCdeFragment;
 import static com.sominfor.somisal_app.fragments.HomeFragment.gestionParametresHome;
@@ -73,6 +76,7 @@ public class AddCommandeActivity extends AppCompatActivity {
     public static List<DelaiReglement> delaiReglements;
     public static List<ModeReglement> modeReglements;
     public static List<Commercial> uscomList;
+    List<DelaiLivraison> delaiLivraisonList;
     /***Adapters**/
     ClientSpinnerAdapter clientSpinnerAdapter;
     LieuVenteSpinnerAdapter lieuVenteSpinnerAdapter;
@@ -88,6 +92,7 @@ public class AddCommandeActivity extends AppCompatActivity {
     MaterialBetterSpinner MbSpnCliLieuv, MbSpnComComag, MbSpnComCotrn, MbSpnComColiv, MbSpnComCotrp;
     TextInputEditText EdtComDacom, EdtComDaliv, EdtComNamar;
     DatePickerDialog DpComDacom, DpComDaliv;
+    TextView TxtDlvlv;
 
     /**
      * Classes d'Objets
@@ -97,15 +102,14 @@ public class AddCommandeActivity extends AppCompatActivity {
     Utilisateur utilisateur;
     Client client;
     LieuVente lieuVente;
-    Magasin magasin;
+    Magasin magasin, magasinNotSelected;
     Tournee tournee, tourneeNotSelected;
     Livreur livreur, livreurNotSelected;
     Transport transport, transportNotSelected;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, apiUrl09, apiUrl10, apiUrl11, gszon, gstrn, utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, apiUrl09, apiUrl10, apiUrl11, apiUrl12, gszon, gstrn, utilisateurCosoc, utilisateurCoage;
     Commande commande;
     Pays pays;
     public RequestQueue rq;
-
     ApiReceiverMethods apiReceiverMethods;
 
     @Override
@@ -136,8 +140,6 @@ public class AddCommandeActivity extends AppCompatActivity {
         utilisateurPassword = utilisateur.getUtilisateurPassword();
         utilisateurCosoc = utilisateur.getUtilisateurCosoc();
         utilisateurCoage = utilisateur.getUtilisateurCoage();
-
-
         serveurNodeController = new ServeurNodeController();
         /**Récupération du serveur node**/
         serveurNode = serveurNodeController.getServeurNodeInfos();
@@ -146,6 +148,7 @@ public class AddCommandeActivity extends AppCompatActivity {
         rq = Volley.newRequestQueue(getApplicationContext());
         clientList = new ArrayList<>();
         lieuVentes = new ArrayList<>();
+        delaiLivraisonList = new ArrayList<>();
         apiReceiverMethods = new ApiReceiverMethods(getApplicationContext());
         magasins = new ArrayList<>();
         paysFacturationList = new ArrayList<>();
@@ -154,6 +157,7 @@ public class AddCommandeActivity extends AppCompatActivity {
         uscomList = new ArrayList<>();
         gestionParametres = new ArrayList<>();
         tourneeNotSelected = new Tournee();
+        magasinNotSelected = new Magasin();
 
         /**URL Récupération de la liste des clients**/
         apiUrl01 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/client/allClient";
@@ -167,6 +171,7 @@ public class AddCommandeActivity extends AppCompatActivity {
         apiUrl09 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDereg";
         apiUrl10 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allUscom";
         apiUrl11 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allChoixBySociete";
+        apiUrl12 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDlv";
 
         /**Instanciation des widgets**/
         SsnComCliRasoc = findViewById(R.id.MbSpnComRasoc);
@@ -179,6 +184,7 @@ public class AddCommandeActivity extends AppCompatActivity {
         EdtComDacom = findViewById(R.id.EdtComDacom);
         EdtComDaliv = findViewById(R.id.EdtComDaliv);
         EdtComNamar = findViewById(R.id.EdtComNamar);
+        TxtDlvlv = findViewById(R.id.TxtDlvlv);
 
         /**Récupération des données de gestion paramètres**/
         if(gestionParametresHome.isEmpty()){
@@ -196,8 +202,6 @@ public class AddCommandeActivity extends AppCompatActivity {
             MbSpnComCotrn.setVisibility(View.GONE);
 
         }
-
-
         /**Récupération de la liste de clients**/
         if (clientListCde.size()==0) {
             clientList = apiReceiverMethods.recupererListeClients(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
@@ -206,6 +210,13 @@ public class AddCommandeActivity extends AppCompatActivity {
         }
         clientSpinnerAdapter = new ClientSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, clientList);
         SsnComCliRasoc.setAdapter(clientSpinnerAdapter);
+
+        /**Récupération liste de délai de livraison**/
+        if (delaiLivraisons.size()==0){
+            delaiLivraisonList = apiReceiverMethods.recupererDlv(apiUrl12, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
+        }else{
+            delaiLivraisonList = delaiLivraisons;
+        }
 
         if (livreurListCdeFragment.size()==0){
             livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
@@ -224,13 +235,6 @@ public class AddCommandeActivity extends AppCompatActivity {
         }
         magasinSpinnerAdapter = new MagasinSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, magasins);
         MbSpnComComag.setAdapter(magasinSpinnerAdapter);
-        /***Set first value to Spinner Magasin**/
-        if (!magasins.isEmpty()){
-            /**Set value to spinnerMagasin*/
-                MbSpnComComag.setText(MbSpnComComag.getAdapter().getItem(0).toString());
-                magasin = magasinSpinnerAdapter.getItem(0);
-        }
-
 
         /**Exécution en background - Popularisation des spinners (Combo boxes)**/
         DelayedProgressDialog pgDialog = new DelayedProgressDialog();
@@ -251,7 +255,6 @@ public class AddCommandeActivity extends AppCompatActivity {
                 pgDialog.cancel();
             }
         }).start();
-
 
         /**Date commande**/
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -308,20 +311,56 @@ public class AddCommandeActivity extends AppCompatActivity {
                     /**Set value to spinnerLivreur*/
                         MbSpnComCotrp.setText(MbSpnComCotrp.getAdapter().getItem(spinnerPosition).toString());
                 }
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
         /**Récupération sélection lieu de ventes**/
-        MbSpnCliLieuv.setOnItemClickListener((parent, view, position, id) -> lieuVente = lieuVenteSpinnerAdapter.getItem(position));
+        MbSpnCliLieuv.setOnItemClickListener((parent, view, position, id) -> {
+            lieuVente = lieuVenteSpinnerAdapter.getItem(position);
+            /**Récupération de magasin par défaut**/
+            if (!lieuVente.getComag().equals("")){
+                /**Inititalisation magasin**/
+                magasinNotSelected = new Magasin();
+                magasinNotSelected.setMagcomag(lieuVente.getComag());
+                int spinnerPosition = magasins.indexOf(magasinNotSelected);
+                if (spinnerPosition != -1){
+                    /**Set value to magasin spinner**/
+                    MbSpnComComag.setText(MbSpnComComag.getAdapter().getItem(spinnerPosition).toString());
+                    if (!gszon.equals("N") && !client.getCliZogeo().equals("")){
+                        String codlv = magasinNotSelected.getMagcomag().trim()+" "+client.getCliZogeo();
+                        DelaiLivraison delaiLivraison = new DelaiLivraison();
+                        delaiLivraison.setNudlv(codlv);
+                        int listPosition = delaiLivraisonList.indexOf(delaiLivraison);
+                        if (listPosition != -1){
+                            String dateLivraisonSouhaitee = addDaysToDateLivraison(delaiLivraisonList.get(listPosition).getDldlv());
+                            EdtComDaliv.setText(dateLivraisonSouhaitee);
+                            String dlvDlv = "Delai: "+delaiLivraisonList.get(listPosition).getDldlv()+" jour(s)";
+                            TxtDlvlv.setText(dlvDlv);
+                        }
+                    }
+                }
 
-
-        MbSpnComComag.setOnItemClickListener((parent, view, position, id) -> magasin = magasinSpinnerAdapter.getItem(position));
+            }
+        });
+        /**Récupération magasin***/
+        MbSpnComComag.setOnItemClickListener((parent, view, position, id) ->{
+            magasin = magasinSpinnerAdapter.getItem(position);
+            if (!gszon.equals("N") && !client.getCliZogeo().equals("")){
+                String codlv = magasin.getMagcomag().trim()+" "+client.getCliZogeo();
+                DelaiLivraison delaiLivraison = new DelaiLivraison();
+                delaiLivraison.setNudlv(codlv);
+                int listPosition = delaiLivraisons.indexOf(delaiLivraison);
+                if (listPosition != -1){
+                    String dateLivraisonSouhaitee = addDaysToDateLivraison(delaiLivraisonList.get(listPosition).getDldlv());
+                    EdtComDaliv.setText(dateLivraisonSouhaitee);
+                    String dlvDlv = "Delai: "+delaiLivraisonList.get(listPosition).getDldlv()+" jour(s)";
+                    TxtDlvlv.setText(dlvDlv);
+                }
+            }
+        });
 
         /**Récupération sélection tournée**/
         MbSpnComCotrn.setOnItemClickListener((parent, view, position, id) -> {
@@ -335,7 +374,7 @@ public class AddCommandeActivity extends AppCompatActivity {
 
         /**Récupération sélection transport**/
         MbSpnComCotrp.setOnItemClickListener((parent, view, position, id) -> transport = transportSpinnerAdapter.getItem(position));
-
+        /***Bouton Suivant**/
         BtnNext.setOnClickListener(v -> {
             if (SsnComCliRasoc.getSelectedItem() != null) {
                 if (MbSpnCliLieuv.length() != 0) {
@@ -355,7 +394,13 @@ public class AddCommandeActivity extends AppCompatActivity {
                                             i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                             i.putExtra("client", client);
                                             i.putExtra("lieuvente", lieuVente);
-                                            i.putExtra("magasin", magasin);
+                                            /***Magasin**/
+                                            if (null == magasin){
+                                                i.putExtra("magasin", magasinNotSelected);
+                                            }else{
+                                                i.putExtra("magasin", magasin);
+                                            }
+                                            /***Tournée***/
                                             if (!gstrn.equals("N")) {
                                                 if (null == tournee) {
                                                     i.putExtra("tournee", tourneeNotSelected);
@@ -367,7 +412,6 @@ public class AddCommandeActivity extends AppCompatActivity {
                                                 tournee.setTrnLitrn("");
                                                 i.putExtra("tournee", tournee);
                                             }
-
                                             /**Livreur**/
                                             if (null == livreur) {
                                                 i.putExtra("livreur", livreurNotSelected);
@@ -538,8 +582,6 @@ public class AddCommandeActivity extends AppCompatActivity {
                     lieuVenteSpinnerAdapter = new LieuVenteSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, lieuVentes);
                     MbSpnCliLieuv.setAdapter(lieuVenteSpinnerAdapter);
 
-
-
                     tourneeSpinnerAdapter = new TourneeSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, tournees);
                     MbSpnComCotrn.setAdapter(tourneeSpinnerAdapter);
 
@@ -549,4 +591,18 @@ public class AddCommandeActivity extends AppCompatActivity {
             super.onPostExecute(result);
         }
     }
+
+    /**Add days to dateLivraison**/
+    public String addDaysToDateLivraison(int daysNbr){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = new Date();
+        // convert date to calendar
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        // Add days to calendar
+        c.add(Calendar.DATE, daysNbr);
+        String dateInString = sdf.format(c.getTime());
+        return dateInString;
+    }
+
 }

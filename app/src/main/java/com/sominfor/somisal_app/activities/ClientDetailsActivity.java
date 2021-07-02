@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sominfor.somisal_app.R;
@@ -39,27 +41,38 @@ import com.sominfor.somisal_app.adapters.CommandeAdapter;
 import com.sominfor.somisal_app.adapters.CommandeClientAdapter;
 import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.adapters.DevisClientAdapter;
+import com.sominfor.somisal_app.fragments.CommandeFragment;
+import com.sominfor.somisal_app.fragments.FiltresCommandesClientDialog;
+import com.sominfor.somisal_app.fragments.FiltresCommandesDialog;
+import com.sominfor.somisal_app.fragments.FiltresDevisClientDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commande;
+import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
+import com.sominfor.somisal_app.interfaces.DevisFilterListener;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
-public class ClientDetailsActivity extends AppCompatActivity {
+public class ClientDetailsActivity extends AppCompatActivity implements CommandeFilterListener, DevisFilterListener {
     public Toolbar toolbar;
     TabLayout tabLayout;
     public static Client client;
@@ -140,6 +153,18 @@ public class ClientDetailsActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    @Override
+    public void onDataReceived(CommandeFilterElements commandeFilterElements) {
+        CommandesClientFragment commandesClientFragment = CommandesClientFragment.getInstance();
+        commandesClientFragment.onDataReceived(commandeFilterElements);
+    }
+
+    @Override
+    public void onDataReceivedDevis(CommandeFilterElements commandeFilterElements) {
+        DevisClientFragment devisClientFragment = DevisClientFragment.getInstance();
+        devisClientFragment.onDataDevisReceived(commandeFilterElements);
+    }
+
     /**
      * ViewPageAdapter - Afficheur de fragments
      */
@@ -177,7 +202,7 @@ public class ClientDetailsActivity extends AppCompatActivity {
      */
     public static class GeneralitesClientFragment extends Fragment {
         int color;
-        TextView TxtCliRasoc, TxtCliNucli, TxtCliNacli, TxtCliadre1, TxtCliAdre2,TxtCliCopos, TxtCliville, TxtCliBopos, TxtCliCpays, TxtSoldeCpteGene, TxtSoldeLimon;
+        TextView TxtCliRasoc, TxtCliNucli, TxtCliNacli, TxtCliadre1, TxtCliAdre2,TxtCliCopos, TxtCliville, TxtCliBopos, TxtCliCpays, TxtSoldeCpteGene, TxtSoldeLimon, TxtSoldePlafond;
         ServeurNodeController serveurNodeController;
         ServeurNode serveurNode;
         String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage;
@@ -204,6 +229,7 @@ public class ClientDetailsActivity extends AppCompatActivity {
             TxtCliCpays = view.findViewById(R.id.TxtCliCpays);
             TxtSoldeCpteGene = view.findViewById(R.id.TxtSoldeCpteGene);
             TxtSoldeLimon = view.findViewById(R.id.TxtSoldeLimon);
+            TxtSoldePlafond = view.findViewById(R.id.TxtSoldePlafond);
 
             /**Set values to Textviews**/
             TxtCliRasoc.setText(client.getCliRasoc());
@@ -215,6 +241,7 @@ public class ClientDetailsActivity extends AppCompatActivity {
             TxtCliville.setText(client.getCliVille());
             TxtCliBopos.setText(client.getCliBopos());
             TxtCliCpays.setText(client.getCliLiCpays());
+            TxtSoldePlafond.setText(String.valueOf(client.getCliMtplf()));
 
             serveurNodeController = new ServeurNodeController();
             /**Récupération des informations serveur**/
@@ -296,6 +323,8 @@ public class ClientDetailsActivity extends AppCompatActivity {
         DelayedProgressDialog progressDialogInfo;
         List<Commande> commandeList;
         CommandeClientAdapter commandeClientAdapter;
+        FloatingActionButton fab_filter;
+        static CommandesClientFragment instanceClientCommandeFragment = null;
 
         public CommandesClientFragment() {
         }
@@ -310,9 +339,13 @@ public class ClientDetailsActivity extends AppCompatActivity {
             rq = Volley.newRequestQueue(getActivity());
             /***Instanciation des widgets***/
             frameLayoutCdeClient = view.findViewById(R.id.frameLayout);
+            fab_filter = view.findViewById(R.id.Fab_Filter);
             recyclerViewCommandeClient = view.findViewById(R.id.RecyclerViewCommandeClient);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
             recyclerViewCommandeClient.setLayoutManager(linearLayoutManager);
+
+            /**Initialisation instance**/
+            instanceClientCommandeFragment = this;
 
             progressDialogInfo = new DelayedProgressDialog();
             serveurNodeController = new ServeurNodeController();
@@ -330,7 +363,44 @@ public class ClientDetailsActivity extends AppCompatActivity {
 
             listeCommandesClients(apiUrl01);
 
+            /**fab_filter onClick**/
+            fab_filter.setOnClickListener(v -> {
+                openFiltresCommandes();
+            });
+
             return view;
+        }
+
+        /**Instance de fragment**/
+        public static CommandesClientFragment getInstance(){
+            return instanceClientCommandeFragment;
+        }
+
+        private CommandeFilterListener mListener;
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+            try {
+                mListener = (CommandeFilterListener) context;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(context.toString()
+                        + " must implement MyListener");
+            }
+        }
+
+        public void onDataReceived(CommandeFilterElements commandeFilterElements) {
+            /**Transformation de date des informations reçues**/
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
+                Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
+                String statut = commandeFilterElements.getCommandeStatut();
+
+                commandeClientAdapter.filterDateRange(dateInf, dateSup, statut);
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
         }
 
         /**Récupération de la liste de devis en cours**/
@@ -416,6 +486,13 @@ public class ClientDetailsActivity extends AppCompatActivity {
             requestQueue.add(postRequest);
         }
 
+        /**Ouvrir fenetre de filtres**/
+        private void openFiltresCommandes() {
+            /***Filtre sur les commandes en cours**/
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FiltresCommandesClientDialog filtresCommandesClientDialog = FiltresCommandesClientDialog.newInstance();
+            filtresCommandesClientDialog.show(fragmentManager, ServeurNode.TAG);
+        }
     }
 
     /**
@@ -434,6 +511,8 @@ public class ClientDetailsActivity extends AppCompatActivity {
         DelayedProgressDialog progressDialogInfo;
         List<Devis> devisList;
         DevisClientAdapter devisClientAdapter;
+        FloatingActionButton fab_filter;
+        static DevisClientFragment instanceClientDevisFragment = null;
         public DevisClientFragment() {
         }
         @SuppressLint("ValidFragment")
@@ -448,9 +527,10 @@ public class ClientDetailsActivity extends AppCompatActivity {
             /***Instanciation des widgets***/
             frameLayoutDevClient = view.findViewById(R.id.frameLayout);
             recyclerViewDevisClient = view.findViewById(R.id.RecyclerViewDevisClient);
+            fab_filter = view.findViewById(R.id.Fab_Filter);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
             recyclerViewDevisClient.setLayoutManager(linearLayoutManager);
-
+            instanceClientDevisFragment = this;
             progressDialogInfo = new DelayedProgressDialog();
             serveurNodeController = new ServeurNodeController();
             devisList = new ArrayList<>();
@@ -466,7 +546,44 @@ public class ClientDetailsActivity extends AppCompatActivity {
             utilisateurCoage = utilisateur.getUtilisateurCoage();
 
             listeDevisClient(apiUrl01);
+
+            fab_filter.setOnClickListener(v -> {
+                openFiltresDevis();
+            });
+
             return view;
+        }
+        /**Instance de fragment**/
+        public static DevisClientFragment getInstance(){
+            return instanceClientDevisFragment;
+        }
+
+        private DevisFilterListener mListener;
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+            try {
+                mListener = (DevisFilterListener) context;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(context.toString()
+                        + " must implement MyListener");
+            }
+        }
+
+        public void onDataDevisReceived(CommandeFilterElements commandeFilterElements) {
+            /**Transformation de date des informations reçues**/
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
+                Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
+                String statut = commandeFilterElements.getCommandeStatut();
+                Log.v("StatutCde", statut);
+
+                devisClientAdapter.filterDateRange(dateInf, dateSup, statut);
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
         }
         /**Récupération de la liste de devis en cours**/
         public void listeDevisClient(String api_url){
@@ -544,6 +661,13 @@ public class ClientDetailsActivity extends AppCompatActivity {
             requestQueue.add(postRequest);
         }
 
+        /**Ouvrir fenetre de filtres**/
+        private void openFiltresDevis() {
+            /***Filtre sur les devis en cours**/
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FiltresDevisClientDialog filtresDevisClientDialog = FiltresDevisClientDialog.newInstance();
+            filtresDevisClientDialog.show(fragmentManager, ServeurNode.TAG);
+        }
     }
 
 }

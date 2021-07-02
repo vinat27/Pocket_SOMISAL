@@ -15,16 +15,28 @@
         android:icon="@drawable/ic_baseline_filter_list_24_white"
         app:showAsAction="always" >
         <menu>
-    <item
-        android:id="@+id/action_soldes"
-        android:title="Devis soldés"
-        android:orderInCategory="2"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_archives"
-        android:title="Devis archivés"
-        android:orderInCategory="1"
-        app:showAsAction="never"/>
+            <group android:id="@+id/group1">
+                <item
+                    android:id="@+id/action_soldes"
+                    android:orderInCategory="2"
+                    android:title="Devis soldés"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/action_archives"
+                    android:orderInCategory="1"
+                    android:title="Devis archivés"
+                    app:showAsAction="never" />
+            </group>
+            <group android:id="@+id/group2">
+                <item
+                    android:id="@+id/filter_"
+                    android:title="Filtres"
+                    android:icon="@drawable/ic_baseline_filter_alt_24"
+                    android:orderInCategory="4"
+                    app:showAsAction="never"
+                    android:iconTint="@color/black"
+                    />
+            </group>
         </menu>
 
     </item>

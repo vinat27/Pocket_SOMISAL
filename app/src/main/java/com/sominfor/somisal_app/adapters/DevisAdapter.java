@@ -22,12 +22,14 @@ import com.sominfor.somisal_app.activities.UpdateDevisActivity;
 import com.sominfor.somisal_app.fragments.DeleteAlertDialogFragment;
 import com.sominfor.somisal_app.fragments.DeleteDevisAlertDialogFragment;
 import com.sominfor.somisal_app.fragments.ValiderAlertDialogFragment;
+import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,9 +38,6 @@ import java.util.Objects;
  * SOMINFOR
  * Paris, FRANCE
  */
-
-//TODO: 27-02-2021 Gestion des boutons archiver - supprimer - valider
-
 
 public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
     private static List<Devis> devisList;
@@ -211,4 +210,31 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
             notifyDataSetChanged();
         }
     };
+
+    /**Filtres de devis par date**/
+    public void filterDateRange(Date charText, Date charText1) {
+
+        List<Devis> filteredList = new ArrayList<>();
+        if (charText.equals("")||charText.equals(null)) {
+            filteredList.addAll(devisSearchs);
+        } else {
+            for (Devis wp : devisSearchs) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date strDate = sdf.parse(wp.getDevDadev());
+                    if (charText1.compareTo(strDate) >= 0 && charText.compareTo(strDate) <= 0) {
+                        filteredList.add(wp);
+                    }else{
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        devisList.clear();
+        devisList.addAll(filteredList);
+        notifyDataSetChanged();
+    }
 }

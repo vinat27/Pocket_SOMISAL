@@ -162,7 +162,8 @@
     <string name="activity_commande_details_TxtVille">Ville</string>
     <string name="activity_commande_details_TxtBp">B.P.</string>
     <string name="activity_commande_details_TxtPays">Pays</string>
-    <string name="TxtLivraisonText">SOLDE COMPTE</string>
+    <string name="TxtLivraisonText">Solde Compte</string>
+    <string name="TxtPlafondText">Plafond</string>
     <!--item_details_commande-->
     <string name="item_detail_commande_TxtQuantiteLivree">Qte Livrée</string>
 
@@ -308,5 +309,6 @@
     <!--activity_commandes_preparees-->
     <string name="TxtNoCdePrepareesError">Aucune commande en préparation!</string>
     <string name="filtres_commandes_dialog">Filtres - Commandes</string>
-
+    <string name="filtres_devis_dialog">Filtres - Devis</string>
+    <string name="filtre_commande_client_statu_commande">Statut <font color='#FF0000'>*</font></string>
 </resources>

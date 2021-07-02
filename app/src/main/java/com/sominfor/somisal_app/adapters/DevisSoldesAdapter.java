@@ -23,6 +23,7 @@ import com.sominfor.somisal_app.handler.models.Devis;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -167,4 +168,31 @@ public class DevisSoldesAdapter extends RecyclerView.Adapter<DevisSoldesAdapter.
             notifyDataSetChanged();
         }
     };
+
+    /**Filtres de devis par date**/
+    public void filterDateRange(Date charText, Date charText1) {
+
+        List<Devis> filteredList = new ArrayList<>();
+        if (charText.equals("")||charText.equals(null)) {
+            filteredList.addAll(devisSearchs);
+        } else {
+            for (Devis wp : devisSearchs) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date strDate = sdf.parse(wp.getDevDadev());
+                    if (charText1.compareTo(strDate) >= 0 && charText.compareTo(strDate) <= 0) {
+                        filteredList.add(wp);
+                    }else{
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        devisList.clear();
+        devisList.addAll(filteredList);
+        notifyDataSetChanged();
+    }
 }

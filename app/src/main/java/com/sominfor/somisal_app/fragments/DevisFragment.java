@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -48,6 +49,8 @@ import com.sominfor.somisal_app.adapters.LivreurSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.ProduitAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
+import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
+import com.sominfor.somisal_app.handler.models.DelaiLivraison;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
 import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Devis;
@@ -56,6 +59,8 @@ import com.sominfor.somisal_app.handler.models.ModeReglement;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
+import com.sominfor.somisal_app.interfaces.DevisFilterListener;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -74,6 +79,7 @@ import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.AddProduitDevisActivity.FRAGMENT_DEVIS;
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
+import static com.sominfor.somisal_app.fragments.CommandeFragment.tintMenuIcon;
 
 /**
  * Créé par vatsou le 13,janvier,2021
@@ -83,9 +89,11 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
  */
 public class DevisFragment extends Fragment {
     private static final int SPLASH_TIME = 4000;
+    public static final String TAG = DevisFragment.class.getSimpleName();
     FrameLayout frameLayout;
     RecyclerView recyclerViewDevis;
     List<Devis> devisList;
+    public static List<DelaiLivraison> delaiDevisLivraisons;
     public static List<Client> clientListDevis;
     public static List<Livreur> livreurListDevis;
     public static List<DelaiReglement> delaiReglementListDevis;
@@ -98,7 +106,7 @@ public class DevisFragment extends Fragment {
     FloatingActionButton fab_add_devis;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
-    String ApiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, devStatu, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, utilisateurCosoc, utilisateurCoage, coactVal, coactDel, coactArc;
+    String ApiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, devStatu, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, utilisateurCosoc, utilisateurCoage, coactVal, coactDel;
     Utilisateur utilisateur;
     public RequestQueue rq;
     DelayedProgressDialog progressDialogInfo;
@@ -114,12 +122,15 @@ public class DevisFragment extends Fragment {
             getActivity().finish();
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
+
+
         rq = Volley.newRequestQueue(getActivity());
         devisList = new ArrayList<>();
         clientListDevis = new ArrayList<>();
         livreurListDevis = new ArrayList<>();
         delaiReglementListDevis = new ArrayList<>();
         modeReglementListDevis = new ArrayList<>();
+        delaiDevisLivraisons = new ArrayList<>();
         /**Initialisation instance**/
         instance = this;
         progressDialogInfo = new DelayedProgressDialog();
@@ -144,6 +155,7 @@ public class DevisFragment extends Fragment {
         apiUrl04 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allDereg";
         apiUrl05 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
         apiUrl06 = protocole+"://"+serveurNode.getServeurNodeIp()+"/create/devis/Onedevis";
+        apiUrl07 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDlv";
         utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
         utilisateurLogin = utilisateur.getUtilisateurLogin();
@@ -171,17 +183,14 @@ public class DevisFragment extends Fragment {
         coactJson = new JSONArray();
         coactJsonDel = new JSONArray();
 
-
         clientListDevis = apiReceiverMethods.recupererListeClients(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-
         /**Récupération de la liste des livreurs**/
         livreurListDevis = apiReceiverMethods.recupererListeLivreurs(apiUrl03, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-
         /**Récupération de la liste de délais de règlement**/
         delaiReglementListDevis = apiReceiverMethods.recupererDelaiReglements(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-
         /**Récupération de la liste des modes de règlement**/
         modeReglementListDevis = apiReceiverMethods.recupererModeReglements(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+        delaiDevisLivraisons = apiReceiverMethods.recupererDlv(apiUrl07, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
 
         /***Ajout de devis**/
         fab_add_devis.setOnClickListener(v -> {
@@ -191,7 +200,6 @@ public class DevisFragment extends Fragment {
 
         return view;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -208,6 +216,10 @@ public class DevisFragment extends Fragment {
                 it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(it);
                 return true;
+            case R.id.filter_:
+                openFiltresDevis();
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -216,6 +228,7 @@ public class DevisFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.devis_fragment_menu, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
         /**Gestion de menu recherche**/
         mSearchItem = menu.findItem(R.id.action_search);
         sv = (SearchView) MenuItemCompat.getActionView(mSearchItem);
@@ -235,13 +248,15 @@ public class DevisFragment extends Fragment {
                 return true;
             }
         });
-
+        MenuItem menuItem = menu.findItem(R.id.filter_);
+        if (menuItem != null) {
+            tintMenuIcon(getActivity(), menuItem, android.R.color.black);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**Instance de fragment**/
     public static DevisFragment getInstance(){
-
         return instance;
     }
 
@@ -255,7 +270,6 @@ public class DevisFragment extends Fragment {
             if (dateDevisLivraison.compareTo(currentDate) >= 0){
                 for(int i=0;i<1;i++){
                     coactJson.put(coactVal);
-
                 }
 
                 /**Validation*/
@@ -292,10 +306,8 @@ public class DevisFragment extends Fragment {
     public void doValidateNegativeClick(Devis dd) {
     }
 
-
     /***Suppression approuvée**/
     public void doDeleteDevisPositiveClick(Devis devisValidate) {
-
                 for(int i=0;i<1;i++){
                     coactJsonDel.put(coactDel);
                 }
@@ -319,8 +331,6 @@ public class DevisFragment extends Fragment {
                         pgDialog.cancel();
                     }
                 }).start();
-
-
     }
 
     /**Validation non approuvée**/
@@ -366,7 +376,6 @@ public class DevisFragment extends Fragment {
                         devis.setDevTxesc(jsonObject.getDouble("DEVTXESC"));
                         devis.setDevUscom(jsonObject.getString("DEVUSCOM").trim());
                         devis.setDevComon(jsonObject.getString("DEVCOMON"));
-
                         //Populariser la liste des produits
                         devisList.add(devis);
                         progressDialogInfo.cancel();
@@ -491,7 +500,7 @@ public class DevisFragment extends Fragment {
         })
         {
             protected Map<String,String> getParams(){
-                Map<String, String> param = new HashMap<String, String>();
+                Map<String, String> param = new HashMap<>();
                 param.put("coact", coactJsonDel.toString());
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
@@ -513,7 +522,6 @@ public class DevisFragment extends Fragment {
                 param.put("moreg", dev.getDevMoreg());
                 param.put("dereg", dev.getDevDereg());
 
-
                 return param;
             }
         };
@@ -523,4 +531,37 @@ public class DevisFragment extends Fragment {
         requestQueue.add(postRequest);
     }
 
+    public void onDataReceivedDevis(CommandeFilterElements commandeFilterElements) {
+        /**Transformation de date des informations reçues**/
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
+            Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
+
+            devisAdapter.filterDateRange(dateInf, dateSup);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**Ouvrir fenetre de filtres**/
+    private void openFiltresDevis() {
+        /***Filtre sur les commandes en cours**/
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FiltresDevisDialog filtresDevisDialog = FiltresDevisDialog.newInstance();
+        filtresDevisDialog.show(fragmentManager, ServeurNode.TAG);
+    }
+
+    private DevisFilterListener mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (DevisFilterListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement MyListener");
+        }
+    }
 }

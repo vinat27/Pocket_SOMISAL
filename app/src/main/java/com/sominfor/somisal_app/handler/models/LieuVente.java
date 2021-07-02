@@ -11,6 +11,7 @@ public class LieuVente implements Serializable {
     public static final String TAG = LieuVente.class.getSimpleName();
     private String Colieuv;
     private String Lilieuv;
+    private String comag;
 
     public LieuVente(){}
 
@@ -28,6 +29,14 @@ public class LieuVente implements Serializable {
 
     public void setLilieuv(String lilieuv) {
         Lilieuv = lilieuv;
+    }
+
+    public String getComag() {
+        return comag;
+    }
+
+    public void setComag(String comag) {
+        this.comag = comag;
     }
 
     @Override

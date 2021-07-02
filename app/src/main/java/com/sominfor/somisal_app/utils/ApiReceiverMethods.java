@@ -21,6 +21,7 @@ import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.adapters.LieuVenteSpinnerAdapter;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commercial;
+import com.sominfor.somisal_app.handler.models.DelaiLivraison;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.GestionParametre;
@@ -69,6 +70,7 @@ public class ApiReceiverMethods {
                         LieuVente lieuVente = new LieuVente();
                         lieuVente.setColieuv(jsonObject.getString("ARGUM"));
                         lieuVente.setLilieuv(jsonObject.getString("DATA1").trim());
+                        lieuVente.setComag(jsonObject.getString("MAG").trim());
                         //Populariser la liste des lieux de vente
                         lieuVentes.add(lieuVente);
                     }catch(JSONException e){
@@ -143,7 +145,7 @@ public class ApiReceiverMethods {
                         client.setCliCpgen(jsonObject.getString("CLICPGEN"));
                         client.setCliCpaux(jsonObject.getString("CLICPAUX"));
                         client.setCliZogeo(jsonObject.getString("CLIZOGEO"));
-                        //client.setCliLiCpays(jsonObject.getString(""));
+                        client.setCliMtplf(jsonObject.getDouble("CLIMTPLF"));
 
                         //Populariser la liste des clients
                         clients.add(client);
@@ -602,6 +604,50 @@ public class ApiReceiverMethods {
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
         return gestionParametres;
+    }
+
+    /**Récupération de la liste des délai de livraison**/
+    public List<DelaiLivraison> recupererDlv(String api_url, String systemeAdresse, String utilisateurLogin, String utilisateurPassword, String utilisateurCosoc, String utilisateurCoage){
+        RequestQueue requestQueue = new Volley().newRequestQueue(context);
+        List<DelaiLivraison> delaiLivraisons = new ArrayList<>();
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+            Log.v("Dlv",s);
+            try{
+                JSONArray array = new JSONArray(s);
+                for (int i=0; i<array.length(); i++){
+                    try{
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        DelaiLivraison delaiLivraison = new DelaiLivraison();
+                        delaiLivraison.setNudlv(jsonObject.getString("ARGUM").trim());
+                        delaiLivraison.setLidlv(jsonObject.getString("DESIGNATION").trim());
+                        delaiLivraison.setDldlv(Integer.parseInt(jsonObject.getString("DELAI").trim()));
+                        //Populariser la liste de délai de livraison
+                        delaiLivraisons.add(delaiLivraison);
+                    }catch(JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace)
+        {
+            protected Map<String,String> getParams(){
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+        return delaiLivraisons;
     }
 
 }

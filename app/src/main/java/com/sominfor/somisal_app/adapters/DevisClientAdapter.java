@@ -19,11 +19,13 @@ import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.FicheDevisActivity;
 import com.sominfor.somisal_app.activities.UpdateDevisActivity;
+import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.Devis;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,10 +37,12 @@ import java.util.Objects;
 public class DevisClientAdapter extends RecyclerView.Adapter<DevisClientAdapter.DevisVh> {
     private static List<Devis> devisList;
     private Context context;
+    private List<Devis> devisSearchs;
     /**Constructeur**/
     public DevisClientAdapter(Context context, List<Devis> devisList){
         this.context = context;
         this.devisList = devisList;
+        devisSearchs = new ArrayList<>(devisList);
     }
     @NonNull
     @Override
@@ -143,5 +147,30 @@ public class DevisClientAdapter extends RecyclerView.Adapter<DevisClientAdapter.
             });
 
         }
+    }
+
+    public void filterDateRange(Date charText, Date charText1, String statut) {
+        List<Devis> filteredList = new ArrayList<>();
+        if (charText.equals("")||charText.equals(null)) {
+            filteredList.addAll(devisSearchs);
+        } else {
+            for (Devis wp : devisSearchs) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date strDate = sdf.parse(wp.getDevDadev());
+                    if (wp.getDevStatut().equals(statut) && charText1.compareTo(strDate) >= 0 && charText.compareTo(strDate) <= 0) {
+                        filteredList.add(wp);
+                    }else{
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        devisList.clear();
+        devisList.addAll(filteredList);
+        notifyDataSetChanged();
     }
 }

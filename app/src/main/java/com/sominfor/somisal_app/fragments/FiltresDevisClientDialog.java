@@ -14,50 +14,63 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.adapters.StatutCommandeAdapter;
 import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
+import com.sominfor.somisal_app.handler.models.StatutCommande;
 import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
+import com.sominfor.somisal_app.interfaces.DevisFilterListener;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
- * Créé par vatsou le 28,juin,2021
+ * Créé par vatsou le 01,juillet,2021
  * SOMINFOR
  * Paris, FRANCE
  */
-public class FiltresCommandesDialog extends DialogFragment {
-    public static final String TAG = FiltresCommandesDialog.class.getSimpleName();
+public class FiltresDevisClientDialog extends DialogFragment {
+    public static final String TAG = FiltresDevisClientDialog.class.getSimpleName();
     private Toolbar toolbar;
     TextInputEditText EdtDaInf, EdtDaSup;
     MaterialButton btnValider;
+    String commandeStatut;
     DatePickerDialog DpDaInf, DpDaSup;
-    CommandeFilterListener commandeFilterListener;
+    DevisFilterListener devisFilterListener;
+    MaterialBetterSpinner MbSpnDevSta;
+    List<StatutCommande> statutCommandes;
+    StatutCommandeAdapter statutCommandeAdapter;
+    StatutCommande statutCommande;
 
-    public static FiltresCommandesDialog newInstance(){ return new FiltresCommandesDialog(); }
+    public static FiltresDevisClientDialog newInstance(){ return new FiltresDevisClientDialog(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.SomisalTheme_FullScreenDialog);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.filtres_commandes_dialog, container, false);
+        View view = inflater.inflate(R.layout.filtres_devis_client_dialog, container, false);
         /***Instanciation des widgets***/
         toolbar = view.findViewById(R.id.toolbar);
         EdtDaInf = view.findViewById(R.id.EdtDateInf);
         EdtDaSup = view.findViewById(R.id.EdtDateSup);
+        MbSpnDevSta = view.findViewById(R.id.MbSpnDevSta);
         btnValider = view.findViewById(R.id.BtnValider);
 
         /**Date commande**/
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         EdtDaInf.setText(sdf.format(new Date()));
         EdtDaSup.setText(sdf.format(new Date()));
+
+        populariseStatutCommande();
 
         return view;
     }
@@ -79,6 +92,10 @@ public class FiltresCommandesDialog extends DialogFragment {
         /**Marquer la date selectionnée dans le champ date devis**/
         setDateOnEdtDaSup();
 
+        MbSpnDevSta.setOnItemClickListener((parent, view1, position, id) -> {
+            statutCommande = statutCommandeAdapter.getItem(position);
+        });
+
         /***Au clic de validation**/
         btnValider.setOnClickListener(v -> {
             try {
@@ -87,16 +104,17 @@ public class FiltresCommandesDialog extends DialogFragment {
                 Date dateSup = simpleDateFormat.parse(EdtDaSup.getText().toString());
                 assert dateInf != null;
                 /**Comparaison des dates**/
-                if (dateSup.compareTo(dateInf) >= 0){
+                if (dateSup.compareTo(dateInf) >= 0 && MbSpnDevSta.length() != 0){
                     CommandeFilterElements commandeFilterElements = new CommandeFilterElements();
                     commandeFilterElements.setDateInf(EdtDaInf.getText().toString());
                     commandeFilterElements.setDateSup(EdtDaSup.getText().toString());
+                    commandeFilterElements.setCommandeStatut(statutCommande.getCodSta());
 
-                    commandeFilterListener = (CommandeFilterListener) getActivity();
-                    commandeFilterListener.onDataReceived(commandeFilterElements);
+                    devisFilterListener = (DevisFilterListener) getActivity();
+                    devisFilterListener.onDataReceivedDevis(commandeFilterElements);
                     dismiss();
                 }else{
-                    Toast.makeText(getActivity(), "Intervalle de date incorrecte", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Intervalle de date incorrecte ou statut non selectionné", Toast.LENGTH_LONG).show();
                 }
             }catch (ParseException e){
                 e.printStackTrace();
@@ -143,4 +161,14 @@ public class FiltresCommandesDialog extends DialogFragment {
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    /**popularise Liste statut commande*/
+    public void populariseStatutCommande(){
+        statutCommandes = new ArrayList<>();
+        statutCommandes.add(new StatutCommande("E", "En cours"));
+        statutCommandes.add(new StatutCommande("A", "Archivé"));
+        statutCommandes.add(new StatutCommande("S", "Soldé"));
+
+        statutCommandeAdapter = new StatutCommandeAdapter(getActivity(), android.R.layout.simple_spinner_item, statutCommandes);
+        MbSpnDevSta.setAdapter(statutCommandeAdapter);
+    }
 }

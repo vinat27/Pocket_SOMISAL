@@ -166,6 +166,14 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/TxtDlvlv"
+            android:layout_width="wrap_content"
+            android:textColor="@color/red"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="-12dp"
+            android:layout_height="wrap_content" />
+
         <!--Livreur-->
         <LinearLayout
             android:layout_width="match_parent"

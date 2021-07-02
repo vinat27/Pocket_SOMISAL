@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -35,8 +36,10 @@ import com.sominfor.somisal_app.fragments.DevisFragment;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commercial;
+import com.sominfor.somisal_app.handler.models.DelaiLivraison;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
 import com.sominfor.somisal_app.handler.models.Devis;
+import com.sominfor.somisal_app.handler.models.GestionParametre;
 import com.sominfor.somisal_app.handler.models.LieuVente;
 import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.Magasin;
@@ -64,7 +67,10 @@ import needle.Needle;
 
 import static com.sominfor.somisal_app.activities.AddProduitDevisActivity.FRAGMENT_DEVIS;
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
+import static com.sominfor.somisal_app.fragments.CommandeFragment.delaiLivraisons;
 import static com.sominfor.somisal_app.fragments.DevisFragment.clientListDevis;
+import static com.sominfor.somisal_app.fragments.DevisFragment.delaiDevisLivraisons;
+import static com.sominfor.somisal_app.fragments.HomeFragment.gestionParametresHome;
 
 public class AddDevisActivity extends AppCompatActivity  {
     /**variables globales**/
@@ -74,7 +80,7 @@ public class AddDevisActivity extends AppCompatActivity  {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07,utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, gszon, gstrn, apiUrl09, utilisateurCosoc, utilisateurCoage;
     public RequestQueue rq;
     Client client;
     SearchableSpinner SsnDevCliRasoc;
@@ -89,6 +95,9 @@ public class AddDevisActivity extends AppCompatActivity  {
     List<DelaiReglement> delaiReglements;
     List<ModeReglement> modeReglements;
     List<Commercial> commercialList;
+    List<DelaiLivraison> delaiLivraisonList;
+    List<GestionParametre> gestionParametres;
+    TextView TxtDlvlv;
     /**Adapters**/
     LieuVenteSpinnerAdapter lieuVenteSpinnerAdapter;
     ClientSpinnerAdapter clientSpinnerAdapter;
@@ -100,7 +109,7 @@ public class AddDevisActivity extends AppCompatActivity  {
 
     /**Classes*/
     LieuVente lieuVente;
-    Magasin magasin;
+    Magasin magasin, magasinNotSelected;
     Livreur livreur, livreurNotSelected;
     ModeReglement modeReglement, modeReglementNotSelected;
     DelaiReglement delaiReglement, delaiReglementNotSelected;
@@ -161,7 +170,10 @@ public class AddDevisActivity extends AppCompatActivity  {
         modeReglements = new ArrayList<>();
         delaiReglements = new ArrayList<>();
         commercialList = new ArrayList<>();
+        delaiLivraisonList = new ArrayList<>();
+        gestionParametres = new ArrayList<>();
         apiReceiverMethods = new ApiReceiverMethods(getApplicationContext());
+        magasinNotSelected = new Magasin();
         DevTxesc = 0.0;
         DevTxrem = 0.0;
         DevEcova = 0.0;
@@ -174,6 +186,8 @@ public class AddDevisActivity extends AppCompatActivity  {
         apiUrl05 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allDereg";
         apiUrl06 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
         apiUrl07 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allUscom";
+        apiUrl08 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDlv";
+        apiUrl09 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allChoixBySociete";
 
         /**Instanciation des widgets**/
         SsnDevCliRasoc = findViewById(R.id.MbSpnCliRasoc);
@@ -190,6 +204,14 @@ public class AddDevisActivity extends AppCompatActivity  {
         EdtDevTxrem = findViewById(R.id.EdtDevTxrem);
         EdtDevTxesc = findViewById(R.id.EdtDevTxesc);
         EdtDevEcova = findViewById(R.id.EdtDevEcova);
+        TxtDlvlv = findViewById(R.id.TxtDlvlv);
+        /**Récupération liste de délai de livraison**/
+        if (delaiDevisLivraisons.size()==0){
+            delaiLivraisonList = apiReceiverMethods.recupererDlv(apiUrl08, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
+        }else{
+            delaiLivraisonList = delaiDevisLivraisons;
+        }
+
 
         if (clientListDevis.size() == 0) {
             clients = apiReceiverMethods.recupererListeClients(apiUrl01,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
@@ -198,6 +220,17 @@ public class AddDevisActivity extends AppCompatActivity  {
         }
         clientSpinnerAdapter = new ClientSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, clients);
         SsnDevCliRasoc.setAdapter(clientSpinnerAdapter);
+
+        /**Récupération des données de gestion paramètres**/
+        if(gestionParametresHome.isEmpty()){
+            gestionParametres = apiReceiverMethods.recupererGestParam(apiUrl09,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+        }else{
+            gestionParametres = gestionParametresHome;
+        }
+        /**Gestion de zone géographie**/
+        gszon = gestionParametres.get(0).getDatas();
+        /**Gestion de tournée**/
+        gstrn = gestionParametres.get(1).getDatas();
 
         /**Exécution en background - Popularisation des spinners (Combo boxes)**/
         DelayedProgressDialog pgDialog = new DelayedProgressDialog();
@@ -283,12 +316,48 @@ public class AddDevisActivity extends AppCompatActivity  {
          * Selection Lieu de vente**/
         MbSpnCliLieuv.setOnItemClickListener((adapterView, view, i, l) -> {
             lieuVente = lieuVenteSpinnerAdapter.getItem(i);
+            /**Récupération de magasin par défaut**/
+            if (!lieuVente.getComag().equals("")){
+                /**Inititalisation magasin**/
+                magasinNotSelected = new Magasin();
+                magasinNotSelected.setMagcomag(lieuVente.getComag());
+                int spinnerPosition = magasins.indexOf(magasinNotSelected);
+                if (spinnerPosition != -1){
+                    /**Set value to magasin spinner**/
+                    MbSpnDevMag.setText(MbSpnDevMag.getAdapter().getItem(spinnerPosition).toString());
+                    if (!gszon.equals("N") && !client.getCliZogeo().equals("")){
+                        String codlv = magasinNotSelected.getMagcomag().trim()+" "+client.getCliZogeo();
+                        DelaiLivraison delaiLivraison = new DelaiLivraison();
+                        delaiLivraison.setNudlv(codlv);
+                        int listPosition = delaiLivraisonList.indexOf(delaiLivraison);
+                        if (listPosition != -1){
+                            String dateLivraisonSouhaitee = addDaysToDateLivraison(delaiLivraisonList.get(listPosition).getDldlv());
+                            EdtDevDaliv.setText(dateLivraisonSouhaitee);
+                            String dlvDlv = "Delai: "+delaiLivraisonList.get(listPosition).getDldlv()+" jour(s)";
+                            TxtDlvlv.setText(dlvDlv);
+                        }
+                    }
+                }
+
+            }
         });
 
         /**
          * Selection Magasin**/
         MbSpnDevMag.setOnItemClickListener((adapterView, view, i, l) -> {
             magasin = magasinSpinnerAdapter.getItem(i);
+            if (!gszon.equals("N") && !client.getCliZogeo().equals("")){
+                String codlv = magasin.getMagcomag().trim()+" "+client.getCliZogeo();
+                DelaiLivraison delaiLivraison = new DelaiLivraison();
+                delaiLivraison.setNudlv(codlv);
+                int listPosition = delaiLivraisonList.indexOf(delaiLivraison);
+                if (listPosition != -1){
+                    String dateLivraisonSouhaitee = addDaysToDateLivraison(delaiLivraisonList.get(listPosition).getDldlv());
+                    EdtDevDaliv.setText(dateLivraisonSouhaitee);
+                    String dlvDlv = "Delai: "+delaiLivraisonList.get(listPosition).getDldlv()+" jour(s)";
+                    TxtDlvlv.setText(dlvDlv);
+                }
+            }
         });
 
         /**
@@ -373,7 +442,12 @@ public class AddDevisActivity extends AppCompatActivity  {
                                                }else{
                                                    i.putExtra("Livreur", livreur);
                                                }
-                                               i.putExtra("Magasin", magasin);
+                                               /***Magasin**/
+                                               if (null == magasin){
+                                                   i.putExtra("Magasin", magasinNotSelected);
+                                               }else{
+                                                   i.putExtra("Magasin", magasin);
+                                               }
                                                i.putExtra("devis", devis);
                                                startActivity(i);
                                            }else {
@@ -514,5 +588,18 @@ public class AddDevisActivity extends AppCompatActivity  {
 
             super.onPostExecute(result);
         }
+    }
+
+    /**Add days to dateLivraison**/
+    public String addDaysToDateLivraison(int daysNbr){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = new Date();
+        // convert date to calendar
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        // Add days to calendar
+        c.add(Calendar.DATE, daysNbr);
+        String dateInString = sdf.format(c.getTime());
+        return dateInString;
     }
 }

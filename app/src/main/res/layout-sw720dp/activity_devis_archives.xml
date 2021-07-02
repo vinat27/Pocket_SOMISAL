@@ -51,7 +51,16 @@
                 android:text="Pas de devis archivé"
                 android:textColor="@color/colorPrimary" />
         </LinearLayout>
-
     </FrameLayout>
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/Fab_Filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_baseline_filter_list_24_white"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

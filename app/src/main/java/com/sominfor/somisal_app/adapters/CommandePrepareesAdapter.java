@@ -184,7 +184,7 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 try {
                     Date strDate = sdf.parse(wp.getComdacom());
-                    if (charText1.after(strDate)&&charText.before(strDate)) {
+                    if (charText1.compareTo(strDate) >= 0 && charText.compareTo(strDate) <= 0) {
                         filteredList.add(wp);
                     }
                 } catch (ParseException e) {

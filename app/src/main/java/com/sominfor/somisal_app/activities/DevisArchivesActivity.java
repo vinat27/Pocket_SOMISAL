@@ -3,6 +3,7 @@ package com.sominfor.somisal_app.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,13 +24,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.DevisArchivesAdapter;
 import com.sominfor.somisal_app.adapters.DevisSoldesAdapter;
+import com.sominfor.somisal_app.fragments.FiltresDevisDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
+import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.DevisFilterListener;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -37,14 +42,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
-public class DevisArchivesActivity extends AppCompatActivity {
+public class DevisArchivesActivity extends AppCompatActivity implements DevisFilterListener {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
@@ -58,6 +67,7 @@ public class DevisArchivesActivity extends AppCompatActivity {
     DevisArchivesAdapter devisArchivesAdapter;
     private MenuItem mSearchItem;
     private SearchView sv;
+    FloatingActionButton fab_filter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**Controle orientation***/
@@ -79,6 +89,7 @@ public class DevisArchivesActivity extends AppCompatActivity {
         devisArchivesList = new ArrayList<>();
         recyclerViewDevisArchives = findViewById(R.id.RecyclerViewDevisArchives);
         frameLayout = findViewById(R.id.frameLayout);
+        fab_filter = findViewById(R.id.Fab_Filter);
         devStatut = "H";
 
         /**Gestion du menu d'action**/
@@ -106,6 +117,11 @@ public class DevisArchivesActivity extends AppCompatActivity {
 
         /**Récupération des devis soldés**/
         listeDevisArchives(apiUrl01);
+
+        /**Ouverture filtres au clic du bouton filtre**/
+        fab_filter.setOnClickListener(v -> {
+            openFiltresDevis();
+        });
     }
     /**Récupération de la liste de devis archivés**/
     public void listeDevisArchives(String api_url){
@@ -229,4 +245,25 @@ public class DevisArchivesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**Ouvrir fenetre de filtres**/
+    private void openFiltresDevis() {
+        /***Filtre sur les commandes en cours**/
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FiltresDevisDialog filtresDevisDialog = FiltresDevisDialog.newInstance();
+        filtresDevisDialog.show(fragmentManager, ServeurNode.TAG);
+    }
+
+    @Override
+    public void onDataReceivedDevis(CommandeFilterElements commandeFilterElements) {
+        /**Transformation de date des informations reçues**/
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
+            Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
+
+            devisArchivesAdapter.filterDateRange(dateInf, dateSup);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+    }
 }

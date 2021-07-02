@@ -248,6 +248,7 @@ public class ClientFragment extends Fragment {
                         client.setCliCpaux(jsonObject.getString("CLICPAUX").trim());
                         client.setCliComon(jsonObject.getString("CLICOMON").trim());
                         client.setCliZogeo(jsonObject.getString("CLIZOGEO"));
+                        client.setCliMtplf(jsonObject.getDouble("CLIMTPLF"));
 
                         //Populariser la liste des clients
                         clients.add(client);

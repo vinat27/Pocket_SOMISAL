@@ -33,6 +33,7 @@ import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
+import com.sominfor.somisal_app.interfaces.DevisFilterListener;
 import com.sominfor.somisal_app.utils.CustomTypefaceSpan;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
@@ -52,7 +53,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CommandeFilterListener {
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CommandeFilterListener, DevisFilterListener {
 
     TextView TxtLogin, TxtFiliale;
     Utilisateur utilisateur;
@@ -221,5 +222,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     public void onDataReceived(CommandeFilterElements commandeFilterElements) {
         CommandeFragment commandeFragment = CommandeFragment.getInstance();
         commandeFragment.onDataReceived(commandeFilterElements);
+    }
+
+    /**Filtres sur devis en cours**/
+    @Override
+    public void onDataReceivedDevis(CommandeFilterElements commandeFilterElements) {
+        DevisFragment devisFragment = DevisFragment.getInstance();
+        devisFragment.onDataReceivedDevis(commandeFilterElements);
     }
 }
