@@ -18,7 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.CommandeDetailsActivity;
+import com.sominfor.somisal_app.activities.UpdateCommandeActivity;
+import com.sominfor.somisal_app.fragments.DeleteComAlertDialogFragment;
 import com.sominfor.somisal_app.handler.models.Commande;
+import com.sominfor.somisal_app.handler.models.ServeurNode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -32,20 +35,21 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Créé par vatsou le 21,juin,2021
+ * Créé par vatsou le 26,janvier,2021
  * SOMINFOR
  * Paris, FRANCE
+ * Adapter des commandes en attente
  */
-public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepareesAdapter.CommandePrepareesVh> {
-    private static List<Commande> commandeList;
-    private List<Commande> commandeSearchs;
+public class CommandeAttenteAdapter extends RecyclerView.Adapter<CommandeAttenteAdapter.CommandeVh>{
+private static List<Commande> commandeList;
+private List<Commande> commandeSearchs;
     FragmentManager fragmentManager;
     private final Context context;
 
     /**
      * Constructeur
      **/
-    public CommandePrepareesAdapter(Context context, List<Commande> commandeList, FragmentManager fragmentManager) {
+    public CommandeAttenteAdapter(Context context, List<Commande> commandeList, FragmentManager fragmentManager) {
         this.context = context;
         this.commandeList = commandeList;
         commandeSearchs = new ArrayList<>(commandeList);
@@ -54,17 +58,17 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
 
     @NonNull
     @Override
-    public CommandePrepareesAdapter.CommandePrepareesVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CommandeAttenteAdapter.CommandeVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_commande_soldee, parent, false);
-        return new CommandePrepareesAdapter.CommandePrepareesVh(view);
+        View view = inflater.inflate(R.layout.item_commande, parent, false);
+        return new CommandeAttenteAdapter.CommandeVh(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CommandePrepareesAdapter.CommandePrepareesVh holder, int position) {
+@Override
+public void onBindViewHolder(@NonNull CommandeAttenteAdapter.CommandeVh holder, int position) {
         Commande commande = commandeList.get(position);
 /** Formattage des dates*****/
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
+@SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String ComDacomFormat = "";
         String ComDalivFormat = "";
@@ -76,56 +80,92 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
         formatter.setRoundingMode(RoundingMode.DOWN);
         String vacom = formatter.format(bd.floatValue()) + " " + commande.getComlimon();
 
-        try {
-            ComDacomFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdacom())));
-            ComDalivFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdaliv())));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        /**Initialisation des informations commandes**/
-        holder.TxtComrasoc.setText(commande.getComrasoc());
-        holder.TxtComdaliv.setText(ComDalivFormat);
-        holder.TxtComcoliv.setText(commande.getComliliv());
-        holder.TxtComVacom.setText(vacom);
-        holder.TxtComNucom.setText(commande.getComnucom());
-        holder.TxtComDacom.setText(ComDacomFormat);
+    try {
+        ComDacomFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdacom())));
+        ComDalivFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdaliv())));
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+
+    /**Initialisation des informations devis**/
+    holder.TxtComrasoc.setText(commande.getComrasoc());
+    holder.TxtComdaliv.setText(ComDalivFormat);
+    holder.TxtComVacom.setText(vacom);
+    holder.TxtComNucom.setText(commande.getComnucom());
+    holder.TxtComDacom.setText(ComDacomFormat);
+
+    if (commande.getComcotrn().equals("") || commande.getComcotrn() == null){
+        holder.TxtTournee.setVisibility(View.GONE);
+        holder.TxtComCotrn.setVisibility(View.GONE);
+    }
+
+    if (commande.getComlieuv().equals("") || commande.getComlieuv() == null){
+        holder.TxtComLieuv.setText("");
+    }else{
         holder.TxtComLieuv.setText(commande.getComlilieuv());
-
-
-        /**Au clic du bouton détail**/
-        holder.FabCommandeDetails.setOnClickListener(v -> {
-            Intent i = new Intent(context, CommandeDetailsActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("commande", commande);
-            i.putExtras(bundle);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
-        });
-
-        boolean isExpandable = commandeList.get(position).isExpandable();
-        holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public int getItemCount() {
+    if (commande.getComcoliv().equals("") || commande.getComcoliv() == null){
+        holder.TxtComcoliv.setText("");
+    }else{
+        holder.TxtComcoliv.setText(commande.getComliliv());
+    }
+    holder.TxtComCotrn.setText(commande.getComlitrn());
+    /**Modification**/
+    holder.FabUpdateCom.setOnClickListener(v -> {
+        Intent i = new Intent(context, UpdateCommandeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("commande", commande);
+        i.putExtras(bundle);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    });
+
+    /**Au clic du bouton détail**/
+    holder.FabComDetails.setOnClickListener(v -> {
+        Intent i = new Intent(context, CommandeDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("commande", commande);
+        i.putExtras(bundle);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    });
+
+    /**Suppression**/
+    holder.FabDeleteCom.setOnClickListener(v -> {
+        DeleteComAlertDialogFragment deleteComAlertDialogFragment = DeleteComAlertDialogFragment.newInstance();
+        Bundle args = new Bundle();
+        args.putSerializable("commande", commande);
+        deleteComAlertDialogFragment.setArguments(args);
+        deleteComAlertDialogFragment.show(fragmentManager, ServeurNode.TAG);
+    });
+
+    boolean isExpandable = commandeList.get(position).isExpandable();
+    holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
+        }
+
+@Override
+public int getItemCount() {
         return commandeList == null ? 0 : commandeList.size();
-    }
-    public Commande getItem(int position){
+        }
+
+
+public Commande getItem(int position){
         return commandeList.get(position);
-    }
+        }
 
-    @Override
-    public long getItemId(int position){
+@Override
+public long getItemId(int position){
         return position;
-    }
+}
 
-    public class CommandePrepareesVh extends RecyclerView.ViewHolder {
+    public class CommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComcoliv;
-        MaterialButton FabCommandeDetails;
+        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv, TxtTournee;
+        MaterialButton FabComDetails, FabDeleteCom, FabUpdateCom;
         LinearLayout Lnr01, expandableLayout;
 
-        public CommandePrepareesVh(View itemView) {
+        public CommandeVh(View itemView) {
             super(itemView);
 
             /**Instanciation des widgets**/
@@ -135,8 +175,12 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
             TxtComNucom = itemView.findViewById(R.id.TxtComNucom);
             TxtComDacom = itemView.findViewById(R.id.TxtComDacom);
             TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
+            TxtComCotrn = itemView.findViewById(R.id.TxtComCotrn);
             TxtComcoliv = itemView.findViewById(R.id.TxtComcoliv);
-            FabCommandeDetails = itemView.findViewById(R.id.FabCommandeDetails);
+            FabComDetails = itemView.findViewById(R.id.FabComDetails);
+            FabDeleteCom = itemView.findViewById(R.id.FabDeleteCom);
+            FabUpdateCom = itemView.findViewById(R.id.FabUpdateCom);
+            TxtTournee = itemView.findViewById(R.id.TxtTournee);
             Lnr01 = itemView.findViewById(R.id.Lnr01);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
 
@@ -145,13 +189,15 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
                 commande.setExpandable(!commande.isExpandable());
                 notifyItemChanged(getAdapterPosition());
             });
-        }
+
     }
+}
 
     /**Filtre des informations avec formulaire de recherche**/
     public Filter getFilter() {
         return devisFilter;
     }
+
     private Filter devisFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -183,7 +229,6 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
         }
     };
 
-    /***Filtre par intervalle de dates**/
     public void filterDateRange(Date charText, Date charText1) {
 
         List<Commande> filteredList = new ArrayList<>();
@@ -196,6 +241,8 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
                     Date strDate = sdf.parse(wp.getComdacom());
                     if (charText1.compareTo(strDate) >= 0 && charText.compareTo(strDate) <= 0) {
                         filteredList.add(wp);
+                    }else{
+
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -207,4 +254,5 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
         commandeList.addAll(filteredList);
         notifyDataSetChanged();
     }
+
 }

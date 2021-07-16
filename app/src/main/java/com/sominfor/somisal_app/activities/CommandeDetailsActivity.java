@@ -36,6 +36,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,13 +120,23 @@ public class CommandeDetailsActivity extends AppCompatActivity {
         /**Récupération de l'objet devis**/
         Bundle bundle = getIntent().getExtras();
         commande = (Commande) bundle.getSerializable("commande");
-        String wvacom = String.format("%.2f", commande.getComvacom())+" "+commande.getComlimon();
+        BigDecimal bd = new BigDecimal(commande.getComvacom());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String wvacom = formatter.format(bd.floatValue()) + " " + commande.getComlimon();
 
         /**Set values to text**/
         TxtClirasoc.setText(commande.getComrasoc());
         TxtComStatu.setText(commande.getComlista());
         TxtComLimag.setText(commande.getComlimag());
-        TxtComLiliv.setText(commande.getComliliv());
+        if (commande.getComcoliv().equals("") || commande.getComcoliv() == null){
+            TxtComLiliv.setText("");
+        }else{
+            TxtComLiliv.setText(commande.getComliliv());
+        }
         TxtComVacom.setText(wvacom);
         TxtComadre1.setText(commande.getComadre1());
         TxtComadre2.setText(commande.getComadre2());
@@ -200,7 +214,7 @@ public class CommandeDetailsActivity extends AppCompatActivity {
                 /**Commentaires et Post-it***/
                 commande.setComtxhen(jsonObject.getString("COMTXHEN"));
                 commande.setComtxhpd(jsonObject.getString("COMTXHPI"));
-                commande.setCoxtexte(jsonObject.getString("DEXTEXTE"));
+                commande.setCoxtexte(jsonObject.getString("DCOTEXTE"));
                 /**Formatage de l'array produit**/
                 JSONArray array= jsonObject.getJSONArray("Produits");
                 for(int i=0;i<array.length();i++) {

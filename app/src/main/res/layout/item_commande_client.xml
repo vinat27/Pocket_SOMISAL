@@ -265,12 +265,11 @@
                 <TextView
                     android:id="@+id/TxtTournee"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
                     android:layout_weight="0.3"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/TxtTourneeText"
-                    android:layout_marginLeft="40dp"
-                    />
+                    android:text="@string/TxtTourneeText" />
 
                 <TextView
                     android:id="@+id/TxtComCotrn"

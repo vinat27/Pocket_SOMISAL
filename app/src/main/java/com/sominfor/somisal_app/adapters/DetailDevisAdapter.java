@@ -28,6 +28,10 @@ import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,7 +88,13 @@ public class DetailDevisAdapter extends RecyclerView.Adapter<DetailDevisAdapter.
         holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
         holder.TxtDdvPutar.setText(String.valueOf(detailDevis.getDdvPutar()));
         holder.TxtDdvQtdev.setText(Qtdev);
-        holder.TxtDdvVadev.setText(String.format("%.2f", wvapos));
+        BigDecimal bd = new BigDecimal(wvapos);
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        holder.TxtDdvVadev.setText(formatter.format(bd.floatValue()));
         holder.TxtDdvTxRem.setText(String.valueOf(detailDevis.getDdvTxrem()));
         holder.TxtDdvVarem.setText(String.valueOf(detailDevis.getDdvVarem()));
         /**Au clic du bouton détail**/

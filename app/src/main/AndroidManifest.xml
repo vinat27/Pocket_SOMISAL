@@ -3,6 +3,8 @@
     package="com.sominfor.somisal_app">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".app.SomisalApp"
@@ -13,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/SomisalTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.CommandesPreparees"></activity>
+        <activity android:name=".activities.CommandesCoursActivity"></activity>
+        <activity android:name=".activities.CommandesPreparees" />
         <activity android:name=".activities.CommandesSoldees" />
         <activity
             android:name=".activities.ShowDevisUserActivity"
@@ -129,6 +132,20 @@
             android:name=".activities.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
+        <service
+            android:name=".AutoUpdateClasses.DownloadService"
+            android:exported="false" />
+
+        <provider
+            android:name=".AutoUpdateClasses.UpdateApkFileProvider"
+            android:authorities="${applicationId}.update.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/update_apk_paths" />
+        </provider>
     </application>
+
 
 </manifest>

@@ -24,6 +24,10 @@ import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +77,13 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailCommande.getDcolipro());
         holder.TxtDcopocom.setText(String.valueOf(detailCommande.getDcopocom()));
-        holder.TxtDcoputar.setText(String.format("%.2f", detailCommande.getDcoputar()));
+        BigDecimal bd = new BigDecimal(detailCommande.getDcoputar());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        holder.TxtDcoputar.setText(formatter.format(bd.floatValue()));
         holder.TxtDcoqtcom.setText(String.format("%.3f", detailCommande.getDcoqtcom()));
         holder.TxtDcovacom.setText(String.format("%.2f", wvapos));
         holder.TxtDcoTxRem.setText(String.valueOf(detailCommande.getDcotxrem()));

@@ -26,6 +26,10 @@ import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,7 +71,13 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String DevDadevFormat = "";
         String DevDalivFormat = "";
-        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevlimon().trim();
+        BigDecimal bd = new BigDecimal(devis.getDevVadev());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String vadev = formatter.format(bd.floatValue())+" "+devis.getDevlimon().trim();
 
         try {
             DevDadevFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDadev())));

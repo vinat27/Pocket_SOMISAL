@@ -270,7 +270,7 @@
     <string name="error_SAL13">Raison sociale non référencée</string>
     <string name="error_SAL14">Adresse de livraison non référencée</string>
 
-    <string name="android_auto_update_dialog_title">Mise à jour - GPI Mobile</string>
+    <string name="android_auto_update_dialog_title">Mise à jour - SOMIAPPLI</string>
 
     <string name="android_auto_update_notify_ticker">Découvrez la nouvelle version, cliquez pour mettre à niveau</string>
     <string name="android_auto_update_notify_content">Découvrez la nouvelle version, cliquez pour mettre à niveau</string>

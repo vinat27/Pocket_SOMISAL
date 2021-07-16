@@ -20,6 +20,10 @@ import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.CommandeDetailsActivity;
 import com.sominfor.somisal_app.handler.models.Commande;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,7 +62,13 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String ComDacomFormat = "";
         String ComDalivFormat = "";
-        String vacom = String.format("%.2f", commande.getComvacom()) + " " + commande.getComlimon();
+        BigDecimal bd = new BigDecimal(commande.getComvacom());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String vacom = formatter.format(bd.floatValue()) + " " + commande.getComlimon();
 
         try {
             ComDacomFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdacom())));
@@ -68,6 +78,7 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
         }
 
         switch (commande.getComstatu()){
+            case "I":
             case "E":
                 ((GradientDrawable) holder.TxtIcon.getBackground()).setColor(context.getResources().getColor(R.color.colorPrimary));
                 break;
@@ -92,6 +103,10 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
         holder.TxtComNucom.setText(commande.getComnucom());
         holder.TxtComDacom.setText(ComDacomFormat);
         holder.TxtComLieuv.setText(commande.getComlilieuv());
+        if (commande.getComcotrn().equals("") || commande.getComcotrn() == null){
+            holder.TxtTournee.setVisibility(View.GONE);
+            holder.TxtComCotrn.setVisibility(View.GONE);
+        }
         holder.TxtComCotrn.setText(commande.getComlitrn());
         /**Au clic du bouton détail**/
         holder.FabComDetails.setOnClickListener(v -> {
@@ -124,7 +139,7 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
 
     public class CommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtComrasoc,TxtComdaliv,TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv, TxtIcon;
+        TextView TxtComrasoc,TxtComdaliv,TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv, TxtIcon, TxtTournee;
         MaterialButton FabComDetails;
         LinearLayout Lnr01, expandableLayout;
 
@@ -140,6 +155,7 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
             TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
             TxtComCotrn = itemView.findViewById(R.id.TxtComCotrn);
             TxtComcoliv = itemView.findViewById(R.id.TxtComStatu);
+            TxtTournee = itemView.findViewById(R.id.TxtTournee);
             TxtIcon = itemView.findViewById(R.id.TxtIcon);
             FabComDetails = itemView.findViewById(R.id.FabComDetails);
             Lnr01 = itemView.findViewById(R.id.Lnr01);

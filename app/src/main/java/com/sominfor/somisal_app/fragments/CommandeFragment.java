@@ -36,6 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.activities.AddCommandeActivity;
 import com.sominfor.somisal_app.activities.AddDevisActivity;
+import com.sominfor.somisal_app.activities.CommandesCoursActivity;
 import com.sominfor.somisal_app.activities.CommandesPreparees;
 import com.sominfor.somisal_app.activities.CommandesSoldees;
 import com.sominfor.somisal_app.activities.DashboardActivity;
@@ -43,6 +44,7 @@ import com.sominfor.somisal_app.activities.DelayedProgressDialog;
 import com.sominfor.somisal_app.activities.DevisSoldesActivity;
 import com.sominfor.somisal_app.activities.LoginActivity;
 import com.sominfor.somisal_app.adapters.CommandeAdapter;
+import com.sominfor.somisal_app.adapters.CommandeAttenteAdapter;
 import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
@@ -109,7 +111,7 @@ public class CommandeFragment extends Fragment {
     Utilisateur utilisateur;
     DelayedProgressDialog progressDialogInfo;
     List<Commande> commandeList;
-    CommandeAdapter commandeAdapter;
+    CommandeAttenteAdapter commandeAttenteAdapter;
     ApiReceiverMethods apiReceiverMethods;
     JSONArray coactJson;
 
@@ -135,7 +137,7 @@ public class CommandeFragment extends Fragment {
         recyclerViewCde.setLayoutManager(linearLayoutManager);
         /**Initialisation code opération et statut**/
         coactDel = "DEL";
-        comStatu = "E";
+        comStatu = "I";
         /***Initialisation liste et instanciation de classes**/
         progressDialogInfo = new DelayedProgressDialog();
         serveurNodeController = new ServeurNodeController();
@@ -187,6 +189,11 @@ public class CommandeFragment extends Fragment {
         // Gestion de menu
         int id = item.getItemId();
         switch (id){
+            case R.id.action_cours:
+                Intent intt = new Intent(getActivity(), CommandesCoursActivity.class);
+                intt.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intt);
+                return true;
             case R.id.action_soldes:
                 Intent intent = new Intent(getActivity(), CommandesSoldees.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -212,7 +219,7 @@ public class CommandeFragment extends Fragment {
             Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
 
             Log.v("Date", commandeFilterElements.getDateInf());
-            commandeAdapter.filterDateRange(dateInf, dateSup);
+            commandeAttenteAdapter.filterDateRange(dateInf, dateSup);
         }catch (ParseException e){
             e.printStackTrace();
         }
@@ -237,7 +244,7 @@ public class CommandeFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-                commandeAdapter.getFilter().filter(query);
+                commandeAttenteAdapter.getFilter().filter(query);
                 return true;
             }
         });
@@ -348,8 +355,8 @@ public class CommandeFragment extends Fragment {
                     }
                 }
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                commandeAdapter = new CommandeAdapter(getActivity(),commandeList,fragmentManager);
-                recyclerViewCde.setAdapter(commandeAdapter);
+                commandeAttenteAdapter = new CommandeAttenteAdapter(getActivity(),commandeList,fragmentManager);
+                recyclerViewCde.setAdapter(commandeAttenteAdapter);
             }catch(JSONException e){
                 e.printStackTrace();
 

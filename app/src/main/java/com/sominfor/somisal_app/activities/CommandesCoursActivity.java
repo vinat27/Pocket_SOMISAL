@@ -1,5 +1,12 @@
 package com.sominfor.somisal_app.activities;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,13 +19,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.adapters.CommandeAdapter;
 import com.sominfor.somisal_app.adapters.CommandeSoldeesAdapter;
 import com.sominfor.somisal_app.fragments.FiltresCommandesDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
@@ -53,8 +54,7 @@ import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
-public class CommandesSoldees extends AppCompatActivity implements CommandeFilterListener {
-
+public class CommandesCoursActivity extends AppCompatActivity implements CommandeFilterListener {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
@@ -65,14 +65,14 @@ public class CommandesSoldees extends AppCompatActivity implements CommandeFilte
     ApiReceiverMethods apiReceiverMethods;
     FrameLayout frameLayout;
     List<Commande> commandesSoldeesList;
-    CommandeSoldeesAdapter commandeSoldeesAdapter;
+    CommandeAdapter commandeAdapter;
     FloatingActionButton fab_filter;
     private MenuItem mSearchItem;
     private SearchView sv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_commandes_soldees);
+        setContentView(R.layout.activity_commandes_cours);
 
         /**Controle orientation***/
         if(!getResources().getBoolean(R.bool.isTablet)){
@@ -93,10 +93,10 @@ public class CommandesSoldees extends AppCompatActivity implements CommandeFilte
         commandesSoldeesList = new ArrayList<>();
         recyclerViewCdeSoldees = findViewById(R.id.recyclerViewCdeSoldees);
         frameLayout = findViewById(R.id.frameLayout);
-        comStatut = "S";
+        comStatut = "E";
 
         /**Gestion du menu d'action**/
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle("Commandes Soldées");
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle("Commandes En Cours");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /**Effacer l'ombre sous l'actionBar**/
         getSupportActionBar().setElevation(0);
@@ -119,13 +119,14 @@ public class CommandesSoldees extends AppCompatActivity implements CommandeFilte
         recyclerViewCdeSoldees.setLayoutManager(linearLayoutManager);
 
         /**Liste de commandes soldées**/
-        listeCommandesSoldees(apiUrl01);
+        listeCommandesCours(apiUrl01);
 
         /**onClick sur le fab_filter_*/
         fab_filter.setOnClickListener(v -> {
             openFiltresCommandes();
         });
     }
+
     // Options Menu (ActionBar Menu)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,7 +147,7 @@ public class CommandesSoldees extends AppCompatActivity implements CommandeFilte
 
             @Override
             public boolean onQueryTextChange(String query) {
-                commandeSoldeesAdapter.getFilter().filter(query);
+                commandeAdapter.getFilter().filter(query);
                 return true;
             }
         });
@@ -174,7 +175,7 @@ public class CommandesSoldees extends AppCompatActivity implements CommandeFilte
     }
 
     /**Récupération de la liste de commandes soldées**/
-    public void listeCommandesSoldees(String api_url){
+    public void listeCommandesCours(String api_url){
         RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
         progressDialogInfo.show(getSupportFragmentManager(), "Loading...");
         progressDialogInfo.setCancelable(false);
@@ -238,8 +239,8 @@ public class CommandesSoldees extends AppCompatActivity implements CommandeFilte
                     }
                 }
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                commandeSoldeesAdapter = new CommandeSoldeesAdapter(this,commandesSoldeesList,fragmentManager);
-                recyclerViewCdeSoldees.setAdapter(commandeSoldeesAdapter);
+                commandeAdapter = new CommandeAdapter(this,commandesSoldeesList,fragmentManager);
+                recyclerViewCdeSoldees.setAdapter(commandeAdapter);
             }catch(JSONException e){
                 e.printStackTrace();
 
@@ -286,7 +287,7 @@ public class CommandesSoldees extends AppCompatActivity implements CommandeFilte
             Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
             Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
 
-            commandeSoldeesAdapter.filterDateRange(dateInf, dateSup);
+            commandeAdapter.filterDateRange(dateInf, dateSup);
         } catch (ParseException e) {
             e.printStackTrace();
         }

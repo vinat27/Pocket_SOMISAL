@@ -166,6 +166,7 @@ public class FiltresCommandesClientDialog extends DialogFragment {
     /**popularise Liste statut commande*/
     public void populariseStatutCommande(){
         statutCommandes = new ArrayList<>();
+        statutCommandes.add(new StatutCommande("I", "A valider"));
         statutCommandes.add(new StatutCommande("E", "En cours"));
         statutCommandes.add(new StatutCommande("S", "Soldé"));
         statutCommandes.add(new StatutCommande("P", "Préparation"));

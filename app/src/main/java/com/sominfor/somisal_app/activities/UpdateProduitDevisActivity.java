@@ -486,6 +486,8 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("systeme",systemeAdresse);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 param.put("nudev", devis.getDevNudev());
                 param.put("dadev",devis.getDevDadev());
                 param.put("nucli",client.getCliNucli());
@@ -493,6 +495,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                 param.put("daval", devis.getDevDadev());
                 param.put("lieuv", lieuVente.getColieuv());
                 param.put("comag", magasin.getMagcomag());
+                param.put("comon", client.getCliComon());
                 if (DexTexteSend!=null){
                     param.put("notes", DexTexteSend);
                 }else{

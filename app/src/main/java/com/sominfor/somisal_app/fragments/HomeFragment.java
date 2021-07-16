@@ -49,7 +49,7 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
  * Paris, FRANCE
  */
 public class HomeFragment extends Fragment {
-    TextView TxtCdeNumber, TxtDevNumber, TxthelloScreenUser;
+    TextView TxtCdeNumber, TxtDevNumber, TxthelloScreenUser, TxtSysName;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, devStatu, apiUrl02, apiUrl03, utilisateurCosoc, utilisateurCoage, coactVal, coactDel, coactArc;
@@ -83,11 +83,13 @@ public class HomeFragment extends Fragment {
         /**Instanciation des widgets**/
         TxtCdeNumber = view.findViewById(R.id.CdeNumber);
         TxtDevNumber = view.findViewById(R.id.DevNumber);
+        TxtSysName = view.findViewById(R.id.TxtSysName);
         TxthelloScreenUser = view.findViewById(R.id.helloScreenUser);
         CommandeCardView = view.findViewById(R.id.CommandeCardView);
         DevisCardView = view.findViewById(R.id.DevisCardView);
 
         TxthelloScreenUser.setText(utilisateurLogin);
+        TxtSysName.setText(utilisateur.getUtilisateurFiliale());
         /**Compter le nombre de commandes et de devis**/
 
         countDev(apiUrl01);

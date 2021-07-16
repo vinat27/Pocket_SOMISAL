@@ -25,7 +25,7 @@ public class HttpUtils {
         try {
             URL url = new URL(urlStr);
             uRLConnection = (HttpURLConnection) url.openConnection();
-            uRLConnection.setRequestMethod("GET");
+            uRLConnection.setRequestMethod("POST");
 
             is = uRLConnection.getInputStream();
             buffer = new BufferedReader(new InputStreamReader(is));

@@ -3,6 +3,7 @@ package com.sominfor.somisal_app.fragments;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -272,6 +273,8 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
                 param.put("qtcom", String.valueOf(qtcom));
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
+
+                Log.v("Tarifs", param.toString());
                 return param;
             }
         };

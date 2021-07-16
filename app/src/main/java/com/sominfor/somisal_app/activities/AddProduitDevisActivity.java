@@ -398,6 +398,8 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("systeme",systemeAdresse);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 param.put("nudev","");
                 param.put("dadev",devis.getDevDadev());
                 param.put("nucli",client.getCliNucli());
@@ -405,6 +407,7 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
                 param.put("daval", devis.getDevDadev());
                 param.put("lieuv", lieuVente.getColieuv());
                 param.put("comag", magasin.getMagcomag());
+                param.put("comon", client.getCliComon());
                 if (DexTexteSend!=null){
                     param.put("notes", DexTexteSend);
                 }else{
@@ -446,6 +449,7 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
                 param.put("varem", varemArray.toString());
                 param.put("texte", texteArray.toString());
 
+                Log.v("Envoie", param.toString());
                 return param;
             }
         };

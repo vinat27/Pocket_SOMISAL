@@ -21,6 +21,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
+import com.sominfor.somisal_app.AutoUpdateClasses.UpdateChecker;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.fragments.ClientFragment;
@@ -75,6 +76,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         }else{
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
+
+        UpdateChecker.checkForDialog(DashboardActivity.this);
 
         /**Récupération de session utilisateur**/
         utilisateur = UserSessionManager.getInstance(getApplicationContext()).getUtilisateurDetail();

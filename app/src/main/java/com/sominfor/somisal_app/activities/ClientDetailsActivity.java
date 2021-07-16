@@ -61,6 +61,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -241,7 +245,13 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
             TxtCliville.setText(client.getCliVille());
             TxtCliBopos.setText(client.getCliBopos());
             TxtCliCpays.setText(client.getCliLiCpays());
-            TxtSoldePlafond.setText(String.valueOf(client.getCliMtplf()));
+            BigDecimal bd = new BigDecimal(client.getCliMtplf());
+            DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+            symbols.setGroupingSeparator(' ');
+
+            DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+            formatter.setRoundingMode(RoundingMode.DOWN);
+            TxtSoldePlafond.setText(formatter.format(bd.floatValue()));
 
             serveurNodeController = new ServeurNodeController();
             /**Récupération des informations serveur**/

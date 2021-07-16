@@ -22,10 +22,6 @@ class UpdateDialog {
                             goToDownload(context, downloadUrl);
                         }
                     })
-                    .setNegativeButton(R.string.android_auto_update_dialog_btn_cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    })
                     .setCancelable(false)
                     .show();
         }

@@ -146,6 +146,7 @@ public class ApiReceiverMethods {
                         client.setCliCpaux(jsonObject.getString("CLICPAUX"));
                         client.setCliZogeo(jsonObject.getString("CLIZOGEO"));
                         client.setCliMtplf(jsonObject.getDouble("CLIMTPLF"));
+                        client.setCliComon(jsonObject.getString("CLICOMON"));
 
                         //Populariser la liste des clients
                         clients.add(client);

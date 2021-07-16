@@ -325,10 +325,12 @@ public class AddCommandeActivity extends AppCompatActivity {
                 /**Inititalisation magasin**/
                 magasinNotSelected = new Magasin();
                 magasinNotSelected.setMagcomag(lieuVente.getComag());
+
                 int spinnerPosition = magasins.indexOf(magasinNotSelected);
                 if (spinnerPosition != -1){
                     /**Set value to magasin spinner**/
                     MbSpnComComag.setText(MbSpnComComag.getAdapter().getItem(spinnerPosition).toString());
+                    magasinNotSelected.setMaglimag(MbSpnComComag.getAdapter().getItem(spinnerPosition).toString());
                     if (!gszon.equals("N") && !client.getCliZogeo().equals("")){
                         String codlv = magasinNotSelected.getMagcomag().trim()+" "+client.getCliZogeo();
                         DelaiLivraison delaiLivraison = new DelaiLivraison();
@@ -408,6 +410,7 @@ public class AddCommandeActivity extends AppCompatActivity {
                                                     i.putExtra("tournee", tournee);
                                                 }
                                             } else {
+                                                tournee = new Tournee();
                                                 tournee.setTrnCotrn("");
                                                 tournee.setTrnLitrn("");
                                                 i.putExtra("tournee", tournee);

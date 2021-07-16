@@ -67,7 +67,7 @@ public class CommandeProduitAdapter extends RecyclerView.Adapter<CommandeProduit
         holder.TxtProLipro.setText(detailCommande.getDcolipro());
         holder.TxtDcopocom.setText(String.valueOf(detailCommande.getDcopocom()));
         holder.TxtDcoputar.setText(String.format("%.2f", detailCommande.getDcoputar()));
-        holder.TxtDcoqtcom.setText(String.format("%.3f", detailCommande.getDcoqtcom()));
+        holder.TxtDcoqtcom.setText(String.format("%.1f", detailCommande.getDcoqtcom()));
         holder.TxtDcovacom.setText(String.format("%.2f", detailCommande.getDcovacom()));
         holder.TxtDcoTxRem.setText(String.valueOf(detailCommande.getDcotxrem()));
         holder.TxtDcoVarem.setText(String.format("%.2f", detailCommande.getDcovarem()));

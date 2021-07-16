@@ -63,6 +63,7 @@ class CheckUpdateTask extends AsyncTask<Void, Void, String> {
         try {
 
             JSONObject obj = new JSONObject(result);
+            Log.v("Result", obj.toString());
             String updateMessage = obj.getString(Constants.APK_UPDATE_CONTENT);
             String apkUrl = obj.getString(Constants.APK_DOWNLOAD_URL);
             int apkCode = obj.getInt(Constants.APK_VERSION_CODE);

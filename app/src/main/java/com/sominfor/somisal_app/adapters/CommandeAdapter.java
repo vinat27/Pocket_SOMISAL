@@ -24,6 +24,10 @@ import com.sominfor.somisal_app.fragments.DeleteDevisAlertDialogFragment;
 import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,7 +61,7 @@ private List<Commande> commandeSearchs;
     @Override
     public CommandeAdapter.CommandeVh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_commande, parent, false);
+        View view = inflater.inflate(R.layout.item_commande_soldee, parent, false);
         return new CommandeAdapter.CommandeVh(view);
     }
 
@@ -69,7 +73,13 @@ public void onBindViewHolder(@NonNull CommandeAdapter.CommandeVh holder, int pos
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String ComDacomFormat = "";
         String ComDalivFormat = "";
-    String vacom = String.format("%.2f", commande.getComvacom()) + " " + commande.getComlimon();
+    BigDecimal bd = new BigDecimal(commande.getComvacom());
+    DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+    symbols.setGroupingSeparator(' ');
+
+    DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+    formatter.setRoundingMode(RoundingMode.DOWN);
+    String vacom = formatter.format(bd.floatValue()) + " " + commande.getComlimon();
 
     try {
         ComDacomFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdacom())));
@@ -80,21 +90,28 @@ public void onBindViewHolder(@NonNull CommandeAdapter.CommandeVh holder, int pos
     /**Initialisation des informations devis**/
     holder.TxtComrasoc.setText(commande.getComrasoc());
     holder.TxtComdaliv.setText(ComDalivFormat);
-    holder.TxtComcoliv.setText(commande.getComliliv());
     holder.TxtComVacom.setText(vacom);
     holder.TxtComNucom.setText(commande.getComnucom());
     holder.TxtComDacom.setText(ComDacomFormat);
-    holder.TxtComLieuv.setText(commande.getComlilieuv());
     holder.TxtComCotrn.setText(commande.getComlitrn());
-    /**Modification**/
-    holder.FabUpdateCom.setOnClickListener(v -> {
-        Intent i = new Intent(context, UpdateCommandeActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("commande", commande);
-        i.putExtras(bundle);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
-    });
+
+    if (commande.getComcotrn().equals("") || commande.getComcotrn() == null){
+        holder.TxtTournee.setVisibility(View.GONE);
+        holder.TxtComCotrn.setVisibility(View.GONE);
+    }
+
+    if (commande.getComlieuv().equals("") || commande.getComlieuv() == null){
+        holder.TxtComLieuv.setText("");
+    }else{
+        holder.TxtComLieuv.setText(commande.getComlilieuv());
+    }
+
+    if (commande.getComcoliv().equals("") || commande.getComcoliv() == null){
+        holder.TxtComcoliv.setText("");
+    }else{
+        holder.TxtComcoliv.setText(commande.getComliliv());
+    }
+
 
     /**Au clic du bouton détail**/
     holder.FabComDetails.setOnClickListener(v -> {
@@ -106,14 +123,7 @@ public void onBindViewHolder(@NonNull CommandeAdapter.CommandeVh holder, int pos
         context.startActivity(i);
     });
 
-    /**Suppression**/
-    holder.FabDeleteCom.setOnClickListener(v -> {
-        DeleteComAlertDialogFragment deleteComAlertDialogFragment = DeleteComAlertDialogFragment.newInstance();
-        Bundle args = new Bundle();
-        args.putSerializable("commande", commande);
-        deleteComAlertDialogFragment.setArguments(args);
-        deleteComAlertDialogFragment.show(fragmentManager, ServeurNode.TAG);
-    });
+
 
     boolean isExpandable = commandeList.get(position).isExpandable();
     holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
@@ -136,8 +146,8 @@ public long getItemId(int position){
 
     public class CommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv;
-        MaterialButton FabComDetails, FabDeleteCom, FabUpdateCom;
+        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv, TxtTournee;
+        MaterialButton FabComDetails;
         LinearLayout Lnr01, expandableLayout;
 
         public CommandeVh(View itemView) {
@@ -152,9 +162,9 @@ public long getItemId(int position){
             TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
             TxtComCotrn = itemView.findViewById(R.id.TxtComCotrn);
             TxtComcoliv = itemView.findViewById(R.id.TxtComcoliv);
-            FabComDetails = itemView.findViewById(R.id.FabComDetails);
-            FabDeleteCom = itemView.findViewById(R.id.FabDeleteCom);
-            FabUpdateCom = itemView.findViewById(R.id.FabUpdateCom);
+            TxtTournee = itemView.findViewById(R.id.TxtTournee);
+            FabComDetails = itemView.findViewById(R.id.FabCommandeDetails);
+
             Lnr01 = itemView.findViewById(R.id.Lnr01);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
 

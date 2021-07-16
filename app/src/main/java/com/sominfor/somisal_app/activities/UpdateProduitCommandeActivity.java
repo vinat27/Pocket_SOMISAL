@@ -482,12 +482,15 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("systeme",systemeAdresse);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 param.put("nucom",commande.getComnucom());
                 param.put("dacom",commande.getComdacom());
                 param.put("nucli",commande.getComnucli());
                 param.put("namar", commande.getComnamar());
                 param.put("lieuv", commande.getComlieuv());
                 param.put("comag", commande.getComcomag());
+                param.put("comon", client.getCliComon());
                 if (CoxTexteSend!=null){
                     param.put("notes", CoxTexteSend);
                 }else{

@@ -446,6 +446,8 @@ public class DevisFragment extends Fragment {
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("systeme",systemeAdresse);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 param.put("nudev",dev.getDevNudev());
                 param.put("dadev",dev.getDevDadev());
                 param.put("nucli",dev.getDevNucli());
@@ -505,6 +507,8 @@ public class DevisFragment extends Fragment {
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("systeme",systemeAdresse);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 param.put("nudev",dev.getDevNudev());
                 param.put("dadev",dev.getDevDadev());
                 param.put("nucli",dev.getDevNucli());

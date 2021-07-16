@@ -15,6 +15,12 @@
         app:showAsAction="always" >
         <menu>
             <group android:id="@+id/group1">
+
+                <item
+                    android:id="@+id/action_cours"
+                    android:title="En cours"
+                    android:orderInCategory="1"
+                    app:showAsAction="never"/>
             <item
                 android:id="@+id/action_soldes"
                 android:title="Soldées"

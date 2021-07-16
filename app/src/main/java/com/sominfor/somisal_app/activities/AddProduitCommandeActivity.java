@@ -381,12 +381,15 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
                 param.put("login",utilisateurLogin);
                 param.put("password",utilisateurPassword);
                 param.put("systeme",systemeAdresse);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
                 param.put("nucom","");
                 param.put("dacom",commande.getComdacom());
                 param.put("nucli",client.getCliNucli());
                 param.put("namar", commande.getComnamar());
                 param.put("lieuv", lieuVente.getColieuv());
                 param.put("comag", magasin.getMagcomag());
+                param.put("comon", client.getCliComon());
                 if (CoxTexteSend!=null){
                     param.put("notes", CoxTexteSend);
                 }else{
