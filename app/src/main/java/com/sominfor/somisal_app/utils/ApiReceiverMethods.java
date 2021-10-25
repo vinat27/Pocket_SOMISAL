@@ -33,11 +33,22 @@ import com.sominfor.somisal_app.handler.models.Pays;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.Tournee;
 import com.sominfor.somisal_app.handler.models.Transport;
+<<<<<<< HEAD
+=======
+import com.sominfor.somisal_app.handler.models.Utilisateur;
+>>>>>>> c79a3e0 (Optimisation application)
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+<<<<<<< HEAD
+=======
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+>>>>>>> c79a3e0 (Optimisation application)
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,6 +127,7 @@ public class ApiReceiverMethods {
                         Client client = new Client();
 
                         client.setCliNucli(jsonObject.getString("CLINUCLI"));
+<<<<<<< HEAD
                         client.setCliNacli(jsonObject.getString("CLINACLI"));
                         client.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
                         client.setCliAdre1(jsonObject.getString("CLIADRE1").trim());
@@ -148,6 +160,10 @@ public class ApiReceiverMethods {
                         client.setCliMtplf(jsonObject.getDouble("CLIMTPLF"));
                         client.setCliComon(jsonObject.getString("CLICOMON"));
 
+=======
+                        client.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
+                        client.setCliLiNacli(jsonObject.getString("LIBNACLI").trim());
+>>>>>>> c79a3e0 (Optimisation application)
                         //Populariser la liste des clients
                         clients.add(client);
                     }catch(JSONException e){

@@ -157,7 +157,11 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ClientVh> 
                 /**Parcours de la liste des interventions**/
                 for (Client item : clientSearch) {
                     /**Comparaison des résultats et ajout dans la liste de résultats**/
+<<<<<<< HEAD
                     if (item.getCliRasoc().toLowerCase().contains(filterPattern) || String.valueOf(item.getCliLiNacli()).toLowerCase().contains(filterPattern)) {
+=======
+                    if (item.getCliRasoc().toLowerCase().contains(filterPattern) || String.valueOf(item.getCliLiNacli()).toLowerCase().contains(filterPattern) || String.valueOf(item.getCliNucli()).toLowerCase().contains(filterPattern)) {
+>>>>>>> c79a3e0 (Optimisation application)
                         filteredList.add(item);
                     }
                 }

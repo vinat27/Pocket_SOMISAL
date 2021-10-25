@@ -51,7 +51,11 @@
                     android:background="@drawable/spinner_style"
                     android:orientation="vertical">
 
+<<<<<<< HEAD
                     <!--Lieu de vente-->
+=======
+
+>>>>>>> c79a3e0 (Optimisation application)
                     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                         android:id="@+id/MbSpnCliLieuv"
                         android:layout_width="match_parent"

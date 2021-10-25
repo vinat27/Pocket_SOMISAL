@@ -51,6 +51,10 @@ import com.sominfor.somisal_app.handler.models.Commande;
 import com.sominfor.somisal_app.handler.models.CommandeFilterElements;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Produit;
+<<<<<<< HEAD
+=======
+import com.sominfor.somisal_app.handler.models.ProduitFini;
+>>>>>>> c79a3e0 (Optimisation application)
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.interfaces.CommandeFilterListener;
@@ -73,6 +77,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+<<<<<<< HEAD
+=======
+import java.util.Objects;
+>>>>>>> c79a3e0 (Optimisation application)
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
@@ -209,8 +217,14 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
         TextView TxtCliRasoc, TxtCliNucli, TxtCliNacli, TxtCliadre1, TxtCliAdre2,TxtCliCopos, TxtCliville, TxtCliBopos, TxtCliCpays, TxtSoldeCpteGene, TxtSoldeLimon, TxtSoldePlafond;
         ServeurNodeController serveurNodeController;
         ServeurNode serveurNode;
+<<<<<<< HEAD
         String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage;
         Utilisateur utilisateur;
+=======
+        String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage, apiUrl02;
+        Utilisateur utilisateur;
+        Client clientInfos;
+>>>>>>> c79a3e0 (Optimisation application)
         public GeneralitesClientFragment() {
         }
         @SuppressLint("ValidFragment")
@@ -235,6 +249,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
             TxtSoldeLimon = view.findViewById(R.id.TxtSoldeLimon);
             TxtSoldePlafond = view.findViewById(R.id.TxtSoldePlafond);
 
+<<<<<<< HEAD
             /**Set values to Textviews**/
             TxtCliRasoc.setText(client.getCliRasoc());
             TxtCliNucli.setText(client.getCliNucli());
@@ -258,6 +273,18 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
             serveurNode = serveurNodeController.getServeurNodeInfos();
             /*URL Récupération de la liste des systèmes*/
             apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/soldeByIdClient";
+=======
+
+
+            serveurNodeController = new ServeurNodeController();
+
+            /**Récupération des informations serveur**/
+            serveurNode = serveurNodeController.getServeurNodeInfos();
+            /**URL Récupération API**/
+            apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/soldeByIdClient";
+            apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/infosByClient";
+
+>>>>>>> c79a3e0 (Optimisation application)
             utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
             systemeAdresse = utilisateur.getUtilisateurSysteme();
             utilisateurLogin = utilisateur.getUtilisateurLogin();
@@ -265,9 +292,13 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
             utilisateurCosoc = utilisateur.getUtilisateurCosoc();
             utilisateurCoage = utilisateur.getUtilisateurCoage();
 
+<<<<<<< HEAD
             /**Récupération du solde client**/
             getClientSolde(apiUrl01);
 
+=======
+            infosbyClient(apiUrl02, client.getCliNucli());
+>>>>>>> c79a3e0 (Optimisation application)
             return view;
         }
         /**
@@ -275,7 +306,11 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
          * @param api_url l'url de récupération des information du fichier JSON
          *
          */
+<<<<<<< HEAD
         public void getClientSolde(String api_url){
+=======
+        public void getClientSolde(String api_url, String cliComon, String cliNacpx, String cliCpaux, String cliCpgen){
+>>>>>>> c79a3e0 (Optimisation application)
             RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
             StringRequest stringRequest = new StringRequest(Request.Method.POST, api_url, s -> {
 
@@ -283,11 +318,26 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
                     JSONObject jsonObject = new JSONObject(s);
                     if (jsonObject.getString("SOLDE") == "null"){
                         TxtSoldeCpteGene.setText("0");
+<<<<<<< HEAD
                         TxtSoldeLimon.setText(client.getCliLiComon().trim());
                     }else{
                         String solde = jsonObject.getString("SOLDE");
                         TxtSoldeCpteGene.setText(solde);
                         TxtSoldeLimon.setText(client.getCliLiComon().trim());
+=======
+                        TxtSoldeLimon.setText(clientInfos.getCliLiComon().trim());
+                    }else{
+                        String solde = jsonObject.getString("SOLDE");
+                        Double soldeD = Double.parseDouble(solde);
+                        BigDecimal sd = new BigDecimal(soldeD);
+                        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+                        symbols.setGroupingSeparator(' ');
+
+                        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+                        formatter.setRoundingMode(RoundingMode.DOWN);
+                        TxtSoldeCpteGene.setText(formatter.format(sd.floatValue()));
+                        TxtSoldeLimon.setText(clientInfos.getCliLiComon().trim());
+>>>>>>> c79a3e0 (Optimisation application)
                     }
                 }catch (JSONException e){
                     e.printStackTrace();
@@ -302,11 +352,19 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
                     param.put("password",utilisateurPassword);
                     param.put("cosoc", utilisateurCosoc);
                     param.put("coage", utilisateurCoage);
+<<<<<<< HEAD
                     param.put("comon", client.getCliComon());
                     param.put("nacpx", client.getCliNacpx());
                     param.put("cpaux", client.getCliCpaux());
                     param.put("cpgen", client.getCliCpgen());
 
+=======
+                    param.put("comon", cliComon);
+                    param.put("nacpx", cliNacpx);
+                    param.put("cpaux", cliCpaux);
+                    param.put("cpgen", cliCpgen);
+                    Log.v("Envoi", param.toString());
+>>>>>>> c79a3e0 (Optimisation application)
                     return param;
                 }
             };
@@ -316,6 +374,101 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
             requestQueue.add(stringRequest);
         }
 
+<<<<<<< HEAD
+=======
+        /**
+         *
+         * @param api_url l'url de récupération des information du fichier JSON
+         * @param clinucli
+         *
+         */
+        public void infosbyClient(String api_url, final String clinucli) {
+            RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+            StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+                clientInfos = new Client();
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    JSONObject jsonObjectInfo = jsonObject.getJSONObject("FicheClient");
+                    clientInfos.setCliNucli(jsonObjectInfo.getString("CLINUCLI"));
+                    clientInfos.setCliNacli(jsonObjectInfo.getString("CLINACLI"));
+                    clientInfos.setCliRasoc(jsonObjectInfo.getString("CLIRASOC").trim());
+                    clientInfos.setCliAdre1(jsonObjectInfo.getString("CLIADRE1").trim());
+                    clientInfos.setCliAdre2(jsonObjectInfo.getString("CLIADRE2").trim());
+                    clientInfos.setCliBopos(jsonObjectInfo.getString("CLIBOPOS").trim());
+                    clientInfos.setCliCopos(jsonObjectInfo.getString("CLICOPOS").trim());
+                    clientInfos.setCliVille(jsonObjectInfo.getString("CLIVILLE").trim());
+                    clientInfos.setCliCpays(jsonObjectInfo.getString("CLICPAYS").trim());
+                    clientInfos.setCliLiNacli(jsonObjectInfo.getString("LIBNACLI").trim());
+                    clientInfos.setCliLiComon(jsonObjectInfo.getString("LIBCOMON").trim());
+                    clientInfos.setCliColiv(jsonObjectInfo.getString("CLICOLIV").trim());
+                    clientInfos.setCliLiliv(jsonObjectInfo.getString("LIBCOLIV").trim());
+                    clientInfos.setCliDereg(jsonObjectInfo.getString("CLIDEREG").trim());
+                    clientInfos.setCliMoreg(jsonObjectInfo.getString("CLIMOREG").trim());
+                    clientInfos.setCliCotrn(jsonObjectInfo.getString("CLICOTRN").trim());
+                    clientInfos.setCliLitrn(jsonObjectInfo.getString("LIBCOTRN").trim());
+                    clientInfos.setCliCotrp(jsonObjectInfo.getString("CLICOTRP").trim());
+                    clientInfos.setCliLitrp(jsonObjectInfo.getString("LIBCOTRP").trim());
+                    clientInfos.setClililivth(jsonObjectInfo.getString("LIBLIVTH").trim());
+                    clientInfos.setCliRasol(jsonObjectInfo.getString("CLIRASOL").trim());
+                    clientInfos.setCliAdr1l(jsonObjectInfo.getString("CLIADR1L").trim());
+                    clientInfos.setCliAdr2l(jsonObjectInfo.getString("CLIADR2L").trim());
+                    clientInfos.setCliCopol(jsonObjectInfo.getString("CLICOPOL").trim());
+                    clientInfos.setCliVilll(jsonObjectInfo.getString("CLIVILLL").trim());
+                    clientInfos.setCliBopol(jsonObjectInfo.getString("CLIBOPOL").trim());
+                    clientInfos.setCliCpayl(jsonObjectInfo.getString("CLICPAYL").trim());
+                    clientInfos.setCliNacpx(jsonObjectInfo.getString("CLINACPX"));
+                    clientInfos.setCliCpgen(jsonObjectInfo.getString("CLICPGEN").trim());
+                    clientInfos.setCliCpaux(jsonObjectInfo.getString("CLICPAUX").trim());
+                    clientInfos.setCliComon(jsonObjectInfo.getString("CLICOMON").trim());
+                    clientInfos.setCliZogeo(jsonObjectInfo.getString("CLIZOGEO"));
+                    clientInfos.setCliMtplf(jsonObjectInfo.getDouble("CLIMTPLF"));
+
+                    /**Initialisation des information s de fiche de stock**/
+                    /**Set values to Textviews**/
+                    TxtCliRasoc.setText(clientInfos.getCliRasoc());
+                    TxtCliNucli.setText(clientInfos.getCliNucli());
+                    TxtCliNacli.setText(clientInfos.getCliLiNacli());
+                    TxtCliadre1.setText(clientInfos.getCliAdre1());
+                    TxtCliAdre2.setText(clientInfos.getCliAdre2());
+                    TxtCliCopos.setText(clientInfos.getCliCopos());
+                    TxtCliville.setText(clientInfos.getCliVille());
+                    TxtCliBopos.setText(clientInfos.getCliBopos());
+                    TxtCliCpays.setText(clientInfos.getCliLiCpays());
+                    BigDecimal bd = new BigDecimal(clientInfos.getCliMtplf());
+                    DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+                    symbols.setGroupingSeparator(' ');
+
+                    DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+                    formatter.setRoundingMode(RoundingMode.DOWN);
+                    TxtSoldePlafond.setText(formatter.format(bd.floatValue()));
+
+                    /**Récupération du solde client**/
+                    getClientSolde(apiUrl01, clientInfos.getCliComon(), clientInfos.getCliNacpx(), clientInfos.getCliCpaux(), clientInfos.getCliCpgen());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }, volleyError -> {
+                volleyError.printStackTrace();
+            }) {
+                protected Map<String, String> getParams() {
+                    Map<String, String> param = new HashMap<String, String>();
+                    param.put("systeme",systemeAdresse);
+                    param.put("login",utilisateurLogin);
+                    param.put("password",utilisateurPassword);
+                    param.put("cosoc", utilisateurCosoc);
+                    param.put("coage", utilisateurCoage);
+                    param.put("nucli", clinucli);
+                    return param;
+                }
+            };
+            int socketTimeout = 30000;
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            postRequest.setRetryPolicy(policy);
+            requestQueue.add(postRequest);
+        }
+
+>>>>>>> c79a3e0 (Optimisation application)
     }
 
     /**
@@ -456,6 +609,10 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
                             commande.setComlicpayr(jsonObject.getString("LIBCPAYL").trim());
                             commande.setCombopol(jsonObject.getString("COMBOPOL").trim());
                             commande.setComcomon(jsonObject.getString("COMCOMON"));
+<<<<<<< HEAD
+=======
+                            commande.setComcotrn(jsonObject.getString("COMCOTRN").trim());
+>>>>>>> c79a3e0 (Optimisation application)
 
                             //Populariser la liste des commandes
                             commandeList.add(commande);

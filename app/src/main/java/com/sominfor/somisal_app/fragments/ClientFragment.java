@@ -215,6 +215,7 @@ public class ClientFragment extends Fragment {
                     try{
                         JSONObject jsonObject = array.getJSONObject(i);
                         Client client = new Client();
+<<<<<<< HEAD
 
                         client.setCliNucli(jsonObject.getString("CLINUCLI"));
                         client.setCliNacli(jsonObject.getString("CLINACLI"));
@@ -249,6 +250,11 @@ public class ClientFragment extends Fragment {
                         client.setCliComon(jsonObject.getString("CLICOMON").trim());
                         client.setCliZogeo(jsonObject.getString("CLIZOGEO"));
                         client.setCliMtplf(jsonObject.getDouble("CLIMTPLF"));
+=======
+                        client.setCliNucli(jsonObject.getString("CLINUCLI"));
+                        client.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
+                        client.setCliLiNacli(jsonObject.getString("LIBNACLI").trim());
+>>>>>>> c79a3e0 (Optimisation application)
 
                         //Populariser la liste des clients
                         clients.add(client);
