@@ -244,12 +244,9 @@
     <string name="serveur_node_fragment_BtnTerminer_hint">Terminer</string>
 
 
-    <!--addDevisactivity Controle de formulaire - Erreurs de formulation-->
-<<<<<<< HEAD
-    <string name="error_SAL01">Date de livraison non référencée</string>
-=======
+
     <string name="error_SAL01">Livreur non référencée</string>
->>>>>>> c79a3e0 (Optimisation application)
+
     <string name="error_SAL02">Magasin non référencé</string>
     <string name="error_SAL03">Lieu de vente non référencé</string>
     <string name="error_SAL04">Client non référencé</string>

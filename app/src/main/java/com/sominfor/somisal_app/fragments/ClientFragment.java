@@ -215,46 +215,10 @@ public class ClientFragment extends Fragment {
                     try{
                         JSONObject jsonObject = array.getJSONObject(i);
                         Client client = new Client();
-<<<<<<< HEAD
 
                         client.setCliNucli(jsonObject.getString("CLINUCLI"));
-                        client.setCliNacli(jsonObject.getString("CLINACLI"));
-                        client.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
-                        client.setCliAdre1(jsonObject.getString("CLIADRE1").trim());
-                        client.setCliAdre2(jsonObject.getString("CLIADRE2").trim());
-                        client.setCliBopos(jsonObject.getString("CLIBOPOS").trim());
-                        client.setCliCopos(jsonObject.getString("CLICOPOS").trim());
-                        client.setCliVille(jsonObject.getString("CLIVILLE").trim());
-                        client.setCliCpays(jsonObject.getString("CLICPAYS").trim());
-                        client.setCliLiNacli(jsonObject.getString("LIBNACLI").trim());
-                        client.setCliLiComon(jsonObject.getString("LIBCOMON").trim());
-                        client.setCliColiv(jsonObject.getString("CLICOLIV").trim());
-                        client.setCliLiliv(jsonObject.getString("LIBCOLIV").trim());
-                        client.setCliDereg(jsonObject.getString("CLIDEREG").trim());
-                        client.setCliMoreg(jsonObject.getString("CLIMOREG").trim());
-                        client.setCliCotrn(jsonObject.getString("CLICOTRN").trim());
-                        client.setCliLitrn(jsonObject.getString("LIBCOTRN").trim());
-                        client.setCliCotrp(jsonObject.getString("CLICOTRP").trim());
-                        client.setCliLitrp(jsonObject.getString("LIBCOTRP").trim());
-                        client.setClililivth(jsonObject.getString("LIBLIVTH").trim());
-                        client.setCliRasol(jsonObject.getString("CLIRASOL").trim());
-                        client.setCliAdr1l(jsonObject.getString("CLIADR1L").trim());
-                        client.setCliAdr2l(jsonObject.getString("CLIADR2L").trim());
-                        client.setCliCopol(jsonObject.getString("CLICOPOL").trim());
-                        client.setCliVilll(jsonObject.getString("CLIVILLL").trim());
-                        client.setCliBopol(jsonObject.getString("CLIBOPOL").trim());
-                        client.setCliCpayl(jsonObject.getString("CLICPAYL").trim());
-                        client.setCliNacpx(jsonObject.getString("CLINACPX"));
-                        client.setCliCpgen(jsonObject.getString("CLICPGEN").trim());
-                        client.setCliCpaux(jsonObject.getString("CLICPAUX").trim());
-                        client.setCliComon(jsonObject.getString("CLICOMON").trim());
-                        client.setCliZogeo(jsonObject.getString("CLIZOGEO"));
-                        client.setCliMtplf(jsonObject.getDouble("CLIMTPLF"));
-=======
-                        client.setCliNucli(jsonObject.getString("CLINUCLI"));
                         client.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
                         client.setCliLiNacli(jsonObject.getString("LIBNACLI").trim());
->>>>>>> c79a3e0 (Optimisation application)
 
                         //Populariser la liste des clients
                         clients.add(client);

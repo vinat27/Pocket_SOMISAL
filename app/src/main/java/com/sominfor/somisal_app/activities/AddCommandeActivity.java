@@ -15,7 +15,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -47,13 +51,22 @@ import com.sominfor.somisal_app.utils.UserSessionManager;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 import static com.sominfor.somisal_app.fragments.CommandeFragment.clientListCde;
@@ -100,17 +113,18 @@ public class AddCommandeActivity extends AppCompatActivity {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    Client client;
+    Client client,clientInfos;
     LieuVente lieuVente;
     Magasin magasin, magasinNotSelected;
     Tournee tournee, tourneeNotSelected;
     Livreur livreur, livreurNotSelected;
     Transport transport, transportNotSelected;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, apiUrl09, apiUrl10, apiUrl11, apiUrl12, gszon, gstrn, utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, apiUrl09, apiUrl10, apiUrl11, apiUrl12, apiUrl13, gszon, gslvr, gstrn, utilisateurCosoc, utilisateurCoage;
     Commande commande;
     Pays pays;
     public RequestQueue rq;
     ApiReceiverMethods apiReceiverMethods;
+    DelayedProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +172,8 @@ public class AddCommandeActivity extends AppCompatActivity {
         gestionParametres = new ArrayList<>();
         tourneeNotSelected = new Tournee();
         magasinNotSelected = new Magasin();
+        progressDialog = new DelayedProgressDialog();
+
 
         /**URL Récupération de la liste des clients**/
         apiUrl01 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/client/allClient";
@@ -172,6 +188,7 @@ public class AddCommandeActivity extends AppCompatActivity {
         apiUrl10 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allUscom";
         apiUrl11 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allChoixBySociete";
         apiUrl12 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDlv";
+        apiUrl13 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/infosByClient";
 
         /**Instanciation des widgets**/
         SsnComCliRasoc = findViewById(R.id.MbSpnComRasoc);
@@ -187,7 +204,7 @@ public class AddCommandeActivity extends AppCompatActivity {
         TxtDlvlv = findViewById(R.id.TxtDlvlv);
 
         /**Récupération des données de gestion paramètres**/
-        if(gestionParametresHome.isEmpty()){
+        if(gestionParametresHome.size() == 0){
             gestionParametres = apiReceiverMethods.recupererGestParam(apiUrl11,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         }else{
             gestionParametres = gestionParametresHome;
@@ -195,19 +212,21 @@ public class AddCommandeActivity extends AppCompatActivity {
         /**Gestion de zone géographie**/
         gszon = gestionParametres.get(0).getDatas();
         /**Gestion de tournée**/
-        gstrn = gestionParametres.get(1).getDatas();
+        gstrn = gestionParametres.get(2).getDatas();
+        /**Gestion de livreur**/
+        gslvr = gestionParametres.get(1).getDatas();
 
         /**Gestion tournée**/
         if (gstrn.equals("N")){
             MbSpnComCotrn.setVisibility(View.GONE);
+        }
 
+        /**Gestion livreur**/
+        if (gslvr.equals("N")){
+            MbSpnComColiv.setVisibility(View.GONE);
         }
         /**Récupération de la liste de clients**/
-        if (clientListCde.size()==0) {
-            clientList = apiReceiverMethods.recupererListeClients(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
-        } else {
-            clientList = clientListCde;
-        }
+        clientList = apiReceiverMethods.recupererListeClients(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         clientSpinnerAdapter = new ClientSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, clientList);
         SsnComCliRasoc.setAdapter(clientSpinnerAdapter);
 
@@ -275,46 +294,10 @@ public class AddCommandeActivity extends AppCompatActivity {
         SsnComCliRasoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                /**Récupération Client**/
-                client = clientSpinnerAdapter.getItem(position);
-                /**Initialiser des listes **/
-                if (!client.getCliCotrn().equals("")) {
-                    /**Initialisation Tournée**/
-                    tourneeNotSelected.setTrnLitrn(client.getCliLitrn());
-                    tourneeNotSelected.setTrnCotrn(client.getCliCotrn());
-                    int spinnerPosition = tournees.indexOf(tourneeNotSelected);
-                    if (spinnerPosition != -1)
-                    /**Set value to spinnerLivreur*/
-                        MbSpnComCotrn.setText(MbSpnComCotrn.getAdapter().getItem(spinnerPosition).toString());
-                }
-
-                /**Initialiser des listes **/
-                if (!client.getCliColiv().equals("")) {
-                    /**Initialisation livreur**/
-                    livreurNotSelected = new Livreur();
-                    livreurNotSelected.setLivColiv(client.getCliColiv());
-                    livreurNotSelected.setLivliliv(client.getCliLiliv());
-                    int spinnerPosition = livreurs.indexOf(livreurNotSelected);
-                    if (spinnerPosition != -1)
-                    /**Set value to spinnerLivreur*/
-                        MbSpnComColiv.setText(MbSpnComColiv.getAdapter().getItem(spinnerPosition).toString());
-                }
-
-                /**Initialiser des listes **/
-                if (!client.getCliCotrp().equals("")) {
-                    /**Initialisation livreur**/
-                    transportNotSelected = new Transport();
-                    transportNotSelected.setTrpCotrp(client.getCliCotrp());
-                    transportNotSelected.setTrpLitrp(client.getCliLitrp());
-                    int spinnerPosition = transports.indexOf(transportNotSelected);
-                    if (spinnerPosition != -1)
-                    /**Set value to spinnerLivreur*/
-                        MbSpnComCotrp.setText(MbSpnComCotrp.getAdapter().getItem(spinnerPosition).toString());
-                }
+               infosbyClient(apiUrl13, clientSpinnerAdapter.getItem(position).getCliNucli());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         /**Récupération sélection lieu de ventes**/
@@ -381,7 +364,6 @@ public class AddCommandeActivity extends AppCompatActivity {
             if (SsnComCliRasoc.getSelectedItem() != null) {
                 if (MbSpnCliLieuv.length() != 0) {
                     if (MbSpnComComag.length() != 0) {
-                        if (MbSpnComColiv.getText().length() != 0) {
                                 /**Comparaison des dates**/
                                 try {
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -416,9 +398,16 @@ public class AddCommandeActivity extends AppCompatActivity {
                                                 i.putExtra("tournee", tournee);
                                             }
                                             /**Livreur**/
+                                            if (!gslvr.equals("N")) {
                                             if (null == livreur) {
                                                 i.putExtra("livreur", livreurNotSelected);
                                             } else {
+                                                i.putExtra("livreur", livreur);
+                                            }
+                                            }else{
+                                                livreur = new Livreur();
+                                                livreur.setLivColiv("");
+                                                livreur.setLivliliv("");
                                                 i.putExtra("livreur", livreur);
                                             }
                                             /**Transport**/
@@ -471,9 +460,7 @@ public class AddCommandeActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                        } else {
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL01), Toast.LENGTH_LONG).show();
-                        }
+
                     } else {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL02), Toast.LENGTH_LONG).show();
                     }
@@ -606,6 +593,108 @@ public class AddCommandeActivity extends AppCompatActivity {
         c.add(Calendar.DATE, daysNbr);
         String dateInString = sdf.format(c.getTime());
         return dateInString;
+    }
+
+    public void infosbyClient(String api_url, final String clinucli) {
+        RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
+        progressDialog.show(getSupportFragmentManager(), "Loading...");
+        client = new Client();
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                JSONObject jsonObjectInfo = jsonObject.getJSONObject("FicheClient");
+
+                client.setCliNucli(jsonObjectInfo.getString("CLINUCLI"));
+                client.setCliNacli(jsonObjectInfo.getString("CLINACLI"));
+                client.setCliRasoc(jsonObjectInfo.getString("CLIRASOC").trim());
+                client.setCliAdre1(jsonObjectInfo.getString("CLIADRE1").trim());
+                client.setCliAdre2(jsonObjectInfo.getString("CLIADRE2").trim());
+                client.setCliBopos(jsonObjectInfo.getString("CLIBOPOS").trim());
+                client.setCliCopos(jsonObjectInfo.getString("CLICOPOS").trim());
+                client.setCliVille(jsonObjectInfo.getString("CLIVILLE").trim());
+                client.setCliCpays(jsonObjectInfo.getString("CLICPAYS").trim());
+                client.setCliLiNacli(jsonObjectInfo.getString("LIBNACLI").trim());
+                client.setCliLiComon(jsonObjectInfo.getString("LIBCOMON").trim());
+                client.setCliColiv(jsonObjectInfo.getString("CLICOLIV").trim());
+                client.setCliLiliv(jsonObjectInfo.getString("LIBCOLIV").trim());
+                client.setCliDereg(jsonObjectInfo.getString("CLIDEREG").trim());
+                client.setCliMoreg(jsonObjectInfo.getString("CLIMOREG").trim());
+                client.setCliCotrn(jsonObjectInfo.getString("CLICOTRN").trim());
+                client.setCliLitrn(jsonObjectInfo.getString("LIBCOTRN").trim());
+                client.setCliCotrp(jsonObjectInfo.getString("CLICOTRP").trim());
+                client.setCliLitrp(jsonObjectInfo.getString("LIBCOTRP").trim());
+                client.setClililivth(jsonObjectInfo.getString("LIBLIVTH").trim());
+                client.setCliRasol(jsonObjectInfo.getString("CLIRASOL").trim());
+                client.setCliAdr1l(jsonObjectInfo.getString("CLIADR1L").trim());
+                client.setCliAdr2l(jsonObjectInfo.getString("CLIADR2L").trim());
+                client.setCliCopol(jsonObjectInfo.getString("CLICOPOL").trim());
+                client.setCliVilll(jsonObjectInfo.getString("CLIVILLL").trim());
+                client.setCliBopol(jsonObjectInfo.getString("CLIBOPOL").trim());
+                client.setCliCpayl(jsonObjectInfo.getString("CLICPAYL").trim());
+                client.setCliNacpx(jsonObjectInfo.getString("CLINACPX"));
+                client.setCliCpgen(jsonObjectInfo.getString("CLICPGEN").trim());
+                client.setCliCpaux(jsonObjectInfo.getString("CLICPAUX").trim());
+                client.setCliComon(jsonObjectInfo.getString("CLICOMON").trim());
+                client.setCliZogeo(jsonObjectInfo.getString("CLIZOGEO"));
+                client.setCliMtplf(jsonObjectInfo.getDouble("CLIMTPLF"));
+
+                /**Initialiser des listes **/
+                if (!client.getCliCotrp().equals("")) {
+                    /**Initialisation livreur**/
+                    transportNotSelected = new Transport();
+                    transportNotSelected.setTrpCotrp(client.getCliCotrp());
+                    transportNotSelected.setTrpLitrp(client.getCliLitrp());
+                    int spinnerPosition = transports.indexOf(transportNotSelected);
+                    if (spinnerPosition != -1)
+                    /**Set value to spinnerLivreur*/
+                        MbSpnComCotrp.setText(MbSpnComCotrp.getAdapter().getItem(spinnerPosition).toString());
+                }
+                /**Initialiser des listes **/
+                if (!client.getCliCotrn().equals("")) {
+                    /**Initialisation Tournée**/
+                    tourneeNotSelected.setTrnLitrn(client.getCliLitrn());
+                    tourneeNotSelected.setTrnCotrn(client.getCliCotrn());
+                    int spinnerPosition = tournees.indexOf(tourneeNotSelected);
+                    if (spinnerPosition != -1)
+                    /**Set value to spinnerLivreur*/
+                        MbSpnComCotrn.setText(MbSpnComCotrn.getAdapter().getItem(spinnerPosition).toString());
+                }
+
+                /**Initialiser des listes **/
+                if (!client.getCliColiv().equals("")) {
+                    /**Initialisation livreur**/
+                    livreurNotSelected = new Livreur();
+                    livreurNotSelected.setLivColiv(client.getCliColiv());
+                    livreurNotSelected.setLivliliv(client.getCliLiliv());
+                    int spinnerPosition = livreurs.indexOf(livreurNotSelected);
+                    if (spinnerPosition != -1)
+                    /**Set value to spinnerLivreur*/
+                        MbSpnComColiv.setText(MbSpnComColiv.getAdapter().getItem(spinnerPosition).toString());
+                }
+                progressDialog.cancel();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, volleyError -> {
+            volleyError.printStackTrace();
+            progressDialog.cancel();
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                param.put("nucli", clinucli);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
     }
 
 }

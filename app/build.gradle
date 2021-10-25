@@ -6,12 +6,9 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-<<<<<<< HEAD
-=======
         configurations.all {
             resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
         }
->>>>>>> c79a3e0 (Optimisation application)
         applicationId "com.sominfor.somisal_app"
         minSdkVersion 16
         targetSdkVersion 30

@@ -33,22 +33,13 @@ import com.sominfor.somisal_app.handler.models.Pays;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.Tournee;
 import com.sominfor.somisal_app.handler.models.Transport;
-<<<<<<< HEAD
-=======
-import com.sominfor.somisal_app.handler.models.Utilisateur;
->>>>>>> c79a3e0 (Optimisation application)
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-<<<<<<< HEAD
-=======
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
->>>>>>> c79a3e0 (Optimisation application)
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -127,43 +118,8 @@ public class ApiReceiverMethods {
                         Client client = new Client();
 
                         client.setCliNucli(jsonObject.getString("CLINUCLI"));
-<<<<<<< HEAD
-                        client.setCliNacli(jsonObject.getString("CLINACLI"));
-                        client.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
-                        client.setCliAdre1(jsonObject.getString("CLIADRE1").trim());
-                        client.setCliAdre2(jsonObject.getString("CLIADRE2").trim());
-                        client.setCliBopos(jsonObject.getString("CLIBOPOS").trim());
-                        client.setCliCopos(jsonObject.getString("CLICOPOS").trim());
-                        client.setCliVille(jsonObject.getString("CLIVILLE").trim());
-                        client.setCliCpays(jsonObject.getString("CLICPAYS").trim());
-                        client.setCliLiNacli(jsonObject.getString("LIBNACLI").trim());
-                        client.setCliLiComon(jsonObject.getString("LIBCOMON").trim());
-                        client.setCliColiv(jsonObject.getString("CLICOLIV").trim());
-                        client.setCliLiliv(jsonObject.getString("LIBCOLIV").trim());
-                        client.setCliDereg(jsonObject.getString("CLIDEREG").trim());
-                        client.setCliMoreg(jsonObject.getString("CLIMOREG").trim());
-                        client.setCliCotrn(jsonObject.getString("CLICOTRN").trim());
-                        client.setCliLitrn(jsonObject.getString("LIBCOTRN").trim());
-                        client.setCliCotrp(jsonObject.getString("CLICOTRP").trim());
-                        client.setCliLitrp(jsonObject.getString("LIBCOTRP").trim());
-                        client.setCliRasol(jsonObject.getString("CLIRASOL").trim());
-                        client.setCliAdr1l(jsonObject.getString("CLIADR1L").trim());
-                        client.setCliAdr2l(jsonObject.getString("CLIADR2L").trim());
-                        client.setCliCopol(jsonObject.getString("CLICOPOL").trim());
-                        client.setCliVilll(jsonObject.getString("CLIVILLL").trim());
-                        client.setCliBopol(jsonObject.getString("CLIBOPOL").trim());
-                        client.setCliCpayl(jsonObject.getString("CLICPAYL").trim());
-                        client.setCliNacpx(jsonObject.getString("CLINACPX"));
-                        client.setCliCpgen(jsonObject.getString("CLICPGEN"));
-                        client.setCliCpaux(jsonObject.getString("CLICPAUX"));
-                        client.setCliZogeo(jsonObject.getString("CLIZOGEO"));
-                        client.setCliMtplf(jsonObject.getDouble("CLIMTPLF"));
-                        client.setCliComon(jsonObject.getString("CLICOMON"));
-
-=======
                         client.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
                         client.setCliLiNacli(jsonObject.getString("LIBNACLI").trim());
->>>>>>> c79a3e0 (Optimisation application)
                         //Populariser la liste des clients
                         clients.add(client);
                     }catch(JSONException e){

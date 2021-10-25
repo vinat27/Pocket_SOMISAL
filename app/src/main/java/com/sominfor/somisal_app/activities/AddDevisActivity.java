@@ -1,27 +1,13 @@
 package com.sominfor.somisal_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-<<<<<<< HEAD
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-=======
-
-import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
->>>>>>> c79a3e0 (Optimisation application)
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-<<<<<<< HEAD
-import android.os.Handler;
-import android.os.Looper;
-=======
->>>>>>> c79a3e0 (Optimisation application)
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,15 +15,11 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
-import com.android.volley.RequestQueue;
-=======
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
->>>>>>> c79a3e0 (Optimisation application)
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -62,10 +44,7 @@ import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.Magasin;
 import com.sominfor.somisal_app.handler.models.ModeReglement;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
-<<<<<<< HEAD
-=======
 import com.sominfor.somisal_app.handler.models.Transport;
->>>>>>> c79a3e0 (Optimisation application)
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
@@ -73,37 +52,20 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 
-<<<<<<< HEAD
-=======
 import org.json.JSONException;
 import org.json.JSONObject;
 
->>>>>>> c79a3e0 (Optimisation application)
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-<<<<<<< HEAD
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import needle.Needle;
-
-import static com.sominfor.somisal_app.activities.AddProduitDevisActivity.FRAGMENT_DEVIS;
-import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
-import static com.sominfor.somisal_app.fragments.CommandeFragment.delaiLivraisons;
-=======
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
->>>>>>> c79a3e0 (Optimisation application)
 import static com.sominfor.somisal_app.fragments.DevisFragment.clientListDevis;
 import static com.sominfor.somisal_app.fragments.DevisFragment.delaiDevisLivraisons;
 import static com.sominfor.somisal_app.fragments.HomeFragment.gestionParametresHome;
@@ -116,11 +78,7 @@ public class AddDevisActivity extends AppCompatActivity  {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-<<<<<<< HEAD
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, gszon, gstrn, apiUrl09, utilisateurCosoc, utilisateurCoage;
-=======
     String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, apiUrl06, apiUrl07, apiUrl08, gszon, gstrn, gslvr, apiUrl09, apiUrl10, utilisateurCosoc, utilisateurCoage;
->>>>>>> c79a3e0 (Optimisation application)
     public RequestQueue rq;
     Client client;
     SearchableSpinner SsnDevCliRasoc;
@@ -228,10 +186,7 @@ public class AddDevisActivity extends AppCompatActivity  {
         apiUrl07 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allUscom";
         apiUrl08 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDlv";
         apiUrl09 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allChoixBySociete";
-<<<<<<< HEAD
-=======
         apiUrl10 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/infosByClient";
->>>>>>> c79a3e0 (Optimisation application)
 
         /**Instanciation des widgets**/
         SsnDevCliRasoc = findViewById(R.id.MbSpnCliRasoc);
@@ -256,10 +211,6 @@ public class AddDevisActivity extends AppCompatActivity  {
             delaiLivraisonList = delaiDevisLivraisons;
         }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c79a3e0 (Optimisation application)
         if (clientListDevis.size() == 0) {
             clients = apiReceiverMethods.recupererListeClients(apiUrl01,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         }else{
@@ -277,9 +228,6 @@ public class AddDevisActivity extends AppCompatActivity  {
         /**Gestion de zone géographie**/
         gszon = gestionParametres.get(0).getDatas();
         /**Gestion de tournée**/
-<<<<<<< HEAD
-        gstrn = gestionParametres.get(1).getDatas();
-=======
         gstrn = gestionParametres.get(2).getDatas();
         /**Gestion livreur**/
         gslvr = gestionParametres.get(1).getDatas();
@@ -289,7 +237,6 @@ public class AddDevisActivity extends AppCompatActivity  {
             MbSpnDevColiv.setVisibility(View.GONE);
         }
 
->>>>>>> c79a3e0 (Optimisation application)
 
         /**Exécution en background - Popularisation des spinners (Combo boxes)**/
         DelayedProgressDialog pgDialog = new DelayedProgressDialog();
@@ -331,43 +278,7 @@ public class AddDevisActivity extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 /**Récupération Client**/
-<<<<<<< HEAD
-                client = clientSpinnerAdapter.getItem(position);
-                /**Initialiser des listes **/
-                if (!client.getCliColiv().equals("")) {
-                    /**Initialisation livreur**/
-                    livreurNotSelected = new Livreur();
-                    livreurNotSelected.setLivColiv(client.getCliColiv());
-                    livreurNotSelected.setLivliliv(client.getCliLiliv());
-                    int spinnerPosition = livreurs.indexOf(livreurNotSelected);
-                    if (spinnerPosition != -1)
-                    /**Set value to spinnerLivreur*/
-                    MbSpnDevColiv.setText(MbSpnDevColiv.getAdapter().getItem(spinnerPosition).toString());
-                }
-                /**Initialisation Délai de règlement **/
-                if (!client.getCliDereg().equals("")) {
-                    /**Initialisation délai de reglment**/
-                    delaiReglementNotSelected = new DelaiReglement();
-                    delaiReglementNotSelected.setCoDereg(client.getCliDereg());
-                    int spinnerPosition = delaiReglements.indexOf(delaiReglementNotSelected);
-                    if (spinnerPosition!=-1)
-                    /**Set value to spinnerDelai*/
-                    MbSpnDevDereg.setText(MbSpnDevDereg.getAdapter().getItem(spinnerPosition).toString());
-                }
-
-                /**Initialisation Mode de règlement **/
-                if (!client.getCliMoreg().equals("")) {
-                    /**Initialisation délai de reglment**/
-                    modeReglementNotSelected = new ModeReglement();
-                    modeReglementNotSelected.setCoMoreg(client.getCliMoreg());
-                    int spinnerPosition = modeReglements.indexOf(modeReglementNotSelected);
-                    /**Set value to spinnerMode*/
-                    if (spinnerPosition!=-1)
-                    MbSpnDevMoreg.setText(MbSpnDevMoreg.getAdapter().getItem(spinnerPosition).toString());
-                }
-=======
                 infosbyClient(apiUrl10, clientSpinnerAdapter.getItem(position).getCliNucli());
->>>>>>> c79a3e0 (Optimisation application)
             }
 
             @Override
@@ -500,12 +411,6 @@ public class AddDevisActivity extends AppCompatActivity  {
                                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                                i.putExtra("client", client);
                                                i.putExtra("Lieuvente", lieuVente);
-<<<<<<< HEAD
-                                               if (null == livreur){
-                                                   i.putExtra("Livreur", livreurNotSelected);
-                                               }else{
-                                                   i.putExtra("Livreur", livreur);
-=======
 
                                                if (!gslvr.equals("N")) {
                                                    if (null == livreur) {
@@ -518,7 +423,6 @@ public class AddDevisActivity extends AppCompatActivity  {
                                                    livreur.setLivColiv("");
                                                    livreur.setLivliliv("");
                                                    i.putExtra("livreur", livreur);
->>>>>>> c79a3e0 (Optimisation application)
                                                }
                                                /***Magasin**/
                                                if (null == magasin){
@@ -680,8 +584,6 @@ public class AddDevisActivity extends AppCompatActivity  {
         String dateInString = sdf.format(c.getTime());
         return dateInString;
     }
-<<<<<<< HEAD
-=======
 
     /**Récupération informations client selectionné**/
     public void infosbyClient(String api_url, final String clinucli) {
@@ -785,5 +687,4 @@ public class AddDevisActivity extends AppCompatActivity  {
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
     }
->>>>>>> c79a3e0 (Optimisation application)
 }

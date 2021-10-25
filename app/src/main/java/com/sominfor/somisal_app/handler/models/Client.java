@@ -145,19 +145,11 @@ public class Client implements Serializable {
 
     public Client(){}
 
-<<<<<<< HEAD
-    public Client(String cliNucli, String cliNacli, String cliRasoc) {
-        CliNucli = cliNucli;
-        CliNacli = cliNacli;
-        CliRasoc = cliRasoc;
-    }
-=======
     /*public Client(String cliNucli, String cliNacli, String cliRasoc) {
         CliNucli = cliNucli;
         CliNacli = cliNacli;
         CliRasoc = cliRasoc;
     }*/
->>>>>>> c79a3e0 (Optimisation application)
 
     public String getCliZogeo() {
         return CliZogeo;
