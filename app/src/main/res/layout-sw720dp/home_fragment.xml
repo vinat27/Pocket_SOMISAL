@@ -17,16 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/ImgIcon"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:gravity="center"
-                android:src="@drawable/avatar"
-                android:layout_marginTop="75dp"
-                android:layout_marginLeft="8dp"
-                />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,11 +28,12 @@
                 android:id="@+id/helloScreenText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_light"
                 android:layout_marginTop="@dimen/home_fragment_helloScreenText_marginTop"
                 android:layout_marginLeft="@dimen/home_fragment_helloScreenText_marginLeft"
-                android:textColor="#12dfe7"
+                android:textColor="@color/white"
                 android:text="@string/helloScreenTextTxt"
-                android:textSize="35dp"
+                android:textSize="20dp"
                 />
 
             <TextView
@@ -52,21 +44,41 @@
                 android:layout_marginLeft="@dimen/home_fragment_helloScreenText_marginLeft"
                 android:textColor="@color/white"
                 android:text="vatsou"
-                android:textSize="35dp"
+                android:textSize="22dp"
+                android:fontFamily="@font/roboto_bold"
                 />
 
-            <TextView
-                android:id="@+id/TxtSysName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="80dp"
-                android:gravity="right"
-                android:layout_marginRight="16dp"
-                android:fontFamily="@font/montserrat_bolditalic"
-                android:textColor="@color/orange"
-                android:text=""
-                android:textSize="16dp"
-                />
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/white"
+                    android:text="Mes statisques"
+                    android:textSize="16dp"
+                    />
+
+                <TextView
+                    android:id="@+id/TxtSysName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_marginRight="16dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/white"
+                    android:text="SGMC"
+                    android:textSize="16dp"
+                    />
+
+            </LinearLayout>
 
 
         </LinearLayout>

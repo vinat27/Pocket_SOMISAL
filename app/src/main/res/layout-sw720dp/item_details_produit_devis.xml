@@ -29,6 +29,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:textColor="@color/black"
                 android:textSize="@dimen/item_details_devis_TxtDdvPodev_TextSize"
+                android:visibility="gone"
                 />
 
             <LinearLayout
@@ -51,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/montserrat_semibold"
+                        android:fontFamily="@font/montserrat_bold"
                         android:text="AMANDE EFFILEE BLANCHIE 5 KG"
                         android:paddingLeft="8sp"
                         android:layout_marginTop="2dp"
@@ -120,7 +121,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/montserrat_semibold"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:paddingTop="6dp"
                         android:text="Total H.T"
                         android:paddingLeft="5sp"/>
 
@@ -130,9 +132,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/montserrat_bold"
+                        android:fontFamily="@font/oswald_bold"
                         android:text="28.28 Euros"
-                        android:textSize="17sp"
+                        android:textSize="20sp"
                         android:paddingLeft="8sp"
                         />
 
@@ -153,44 +155,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginBottom="8dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/item_detail_devis_TxtTxRemTitle"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="5sp"
+                    android:textSize="14sp"
+                    android:textColor="@color/green_darken_3"
                     />
 
                 <TextView
                     android:id="@+id/TxtDdvTxRem"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
+                    android:fontFamily="@font/montserrat_bold"
                     android:text="0000002"
-                    android:textSize="16sp"
+                    android:layout_weight="0.4"
+                    android:textSize="14sp"
+                    android:textColor="@color/green_darken_3"
                     android:paddingLeft="8sp"/>
-            </LinearLayout>
-
-            <!--Date devis-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="14dp"
-                android:gravity="center"
-                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:layout_marginLeft="40dp"
+                    android:layout_weight="0.4"
+                    android:layout_marginLeft="15sp"
+                    android:textColor="@color/green_darken_3"
+                    android:textSize="14sp"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/item_detail_devis_TxtVaRemTitle"
                     />
@@ -200,12 +196,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/black"
+                    android:textColor="@color/green_darken_3"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="000000"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:paddingLeft="8sp"/>
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -268,6 +265,7 @@
 
 
         </LinearLayout>
+
     </LinearLayout>
 
 

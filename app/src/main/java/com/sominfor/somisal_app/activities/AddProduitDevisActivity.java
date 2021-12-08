@@ -27,6 +27,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonObject;
 import com.sominfor.somisal_app.R;
@@ -56,6 +57,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,7 +77,8 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
     public static String FRAGMENT_DEVIS = "2";
     private static final int SPLASH_TIME = 4000;
 
-    TextView TxtClirasoc, TxtDevLieuv, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevDaliv, TxtDevVadev;
+    TextView TxtClirasoc, TxtDevLieuv, TxtDevStatu, TxtDevLimag, TxtDevDaliv, TxtDevVadev;
+    Chip chip;
     MaterialButton BtnValider;
     FloatingActionButton fab_add_devis_details;
     LinearLayout Lnr01;
@@ -159,11 +165,11 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
         TxtDevLieuv = findViewById(R.id.TxtDevLieuv);
         TxtDevStatu = findViewById(R.id.TxtDevStatu);
         TxtDevLimag = findViewById(R.id.TxtDevLimag);
-        TxtDevLiliv = findViewById(R.id.TxtDevLiliv);
         TxtDevDaliv = findViewById(R.id.TxtDevDaliv);
         TxtDevVadev = findViewById(R.id.TxtDevVadev);
         BtnValider = findViewById(R.id.BtnValider);
         BtnTerminer = findViewById(R.id.BtnTerminer);
+        chip = findViewById(R.id.chip);
         Lnr01 = findViewById(R.id.Lnr01);
         fab_add_devis_details = findViewById(R.id.fab_add_devis_details);
 
@@ -195,7 +201,6 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
         TxtClirasoc.setText(client.getCliRasoc());
         TxtDevLieuv.setText(lieuVente.getLilieuv());
         TxtDevLimag.setText(magasin.getMaglimag());
-        TxtDevLiliv.setText(livreur.getLivliliv());
         TxtDevStatu.setText(getResources().getString(R.string.AddProduitDevisStatu));
         TxtDevVadev.setText("");
 
@@ -363,9 +368,17 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
         for (DetailDevis dd:listDetailDevis) {
             vadev += dd.getDdvVadev();
         }
-        @SuppressLint("DefaultLocale")
-        String wvadev = String.format("%.2f", vadev)+" "+client.getCliLiComon();
+        BigDecimal bd = new BigDecimal(vadev);
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String wvadev = formatter.format(bd.floatValue())+" "+client.getCliLiComon();
+        String chipValue = listDetailDevis.size()+" produit(s)";
         TxtDevVadev.setText(wvadev);
+        chip.setVisibility(View.VISIBLE);
+        chip.setText(chipValue);
     }
 
     public void insertDevisToAs400(String api_url){

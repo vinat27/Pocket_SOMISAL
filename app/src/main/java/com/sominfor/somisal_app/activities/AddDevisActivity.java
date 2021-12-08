@@ -31,7 +31,6 @@ import com.sominfor.somisal_app.adapters.LieuVenteSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.LivreurSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.MagasinSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.ModeReglementSpinnerAdapter;
-import com.sominfor.somisal_app.fragments.DevisFragment;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.Commercial;
@@ -44,7 +43,6 @@ import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.Magasin;
 import com.sominfor.somisal_app.handler.models.ModeReglement;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
-import com.sominfor.somisal_app.handler.models.Transport;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
@@ -194,7 +192,6 @@ public class AddDevisActivity extends AppCompatActivity  {
         MbSpnCliLieuv = findViewById(R.id.MbSpnCliLieuv);
         MbSpnDevMag = findViewById(R.id.MbSpnDevMag);
         MbSpnDevColiv = findViewById(R.id.MbSpnDevColiv);
-        EdtDevdadev = findViewById(R.id.EdtDevDadev);
         EdtDevDaliv = findViewById(R.id.EdtDevDaliv);
         MbSpnDevMoreg = findViewById(R.id.MbSpnDevMoreg);
         MbSpnDevDereg = findViewById(R.id.MbSpnDevDereg);
@@ -202,7 +199,6 @@ public class AddDevisActivity extends AppCompatActivity  {
         EdtDevRfdev = findViewById(R.id.EdtDevRfdev);
         EdtDevTxrem = findViewById(R.id.EdtDevTxrem);
         EdtDevTxesc = findViewById(R.id.EdtDevTxesc);
-        EdtDevEcova = findViewById(R.id.EdtDevEcova);
         TxtDlvlv = findViewById(R.id.TxtDlvlv);
         /**Récupération liste de délai de livraison**/
         if (delaiDevisLivraisons.size()==0){
@@ -212,7 +208,7 @@ public class AddDevisActivity extends AppCompatActivity  {
         }
 
         if (clientListDevis.size() == 0) {
-            clients = apiReceiverMethods.recupererListeClients(apiUrl01,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+            clients = apiReceiverMethods.recupererListeClientsSansRegroupeur(apiUrl01,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         }else{
             clients = clientListDevis;
         }
@@ -260,12 +256,8 @@ public class AddDevisActivity extends AppCompatActivity  {
 
         /**Initialiser les dates de devis et de livraison à la date courante**/
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        EdtDevdadev.setText(sdf.format(new Date()));
         EdtDevDaliv.setText(sdf.format(new Date()));
-        /**Champ de date, selection de date  DatePicker**/
-        EdtDevdadev.setOnClickListener(v -> DpdialogDadev.show());
-        /**Marquer la date selectionnée dans le champ date devis**/
-        setDateOnEdtDevDadev();
+
         EdtDevDaliv.setOnClickListener(v -> {
             DpdialogDaliv.show();
         });
@@ -299,6 +291,7 @@ public class AddDevisActivity extends AppCompatActivity  {
                 if (spinnerPosition != -1){
                     /**Set value to magasin spinner**/
                     MbSpnDevMag.setText(MbSpnDevMag.getAdapter().getItem(spinnerPosition).toString());
+                    magasinNotSelected.setMaglimag(MbSpnDevMag.getAdapter().getItem(spinnerPosition).toString());
                     if (!gszon.equals("N") && !client.getCliZogeo().equals("")){
                         String codlv = magasinNotSelected.getMagcomag().trim()+" "+client.getCliZogeo();
                         DelaiLivraison delaiLivraison = new DelaiLivraison();
@@ -365,14 +358,14 @@ public class AddDevisActivity extends AppCompatActivity  {
                                     try {
                                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                                         Date currentDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-                                        Date dateDevis = simpleDateFormat.parse(EdtDevdadev.getText().toString());
+                                        Date dateDevis = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
                                         Date dateDevisLivraison = simpleDateFormat.parse(EdtDevDaliv.getText().toString());
                                         assert dateDevis != null;
-                                        if (dateDevis.compareTo(currentDate) >= 0){
+
                                            /**Date devis correcte - Comparaison à la date de livraison**/
                                            if (dateDevisLivraison.compareTo(dateDevis) >= 0){
                                                Devis devis = new Devis();
-                                               devis.setDevDadev(EdtDevdadev.getText().toString());
+                                               devis.setDevDadev(sdf.format(new Date()));
                                                devis.setDevRfdev(EdtDevRfdev.getText().toString());
                                                devis.setDevDaliv(EdtDevDaliv.getText().toString());
                                                /**Vérification si élément sélectionné ou pas**/
@@ -394,9 +387,6 @@ public class AddDevisActivity extends AppCompatActivity  {
                                                if (!EdtDevTxesc.getText().toString().equals(""))
                                                    DevTxesc = Double.parseDouble(Objects.requireNonNull(EdtDevTxesc.getText()).toString());
 
-                                               /**Eco-Participation*/
-                                               if (!EdtDevEcova.getText().toString().equals(""))
-                                                   DevEcova = Double.parseDouble(Objects.requireNonNull(EdtDevEcova.getText()).toString());
 
                                                /***Commercial**/
                                                if (null == commercial){
@@ -414,15 +404,15 @@ public class AddDevisActivity extends AppCompatActivity  {
 
                                                if (!gslvr.equals("N")) {
                                                    if (null == livreur) {
-                                                       i.putExtra("livreur", livreurNotSelected);
+                                                       i.putExtra("Livreur", livreurNotSelected);
                                                    } else {
-                                                       i.putExtra("livreur", livreur);
+                                                       i.putExtra("Livreur", livreur);
                                                    }
                                                }else{
                                                    livreur = new Livreur();
                                                    livreur.setLivColiv("");
                                                    livreur.setLivliliv("");
-                                                   i.putExtra("livreur", livreur);
+                                                   i.putExtra("Livreur", livreur);
                                                }
                                                /***Magasin**/
                                                if (null == magasin){
@@ -435,9 +425,7 @@ public class AddDevisActivity extends AppCompatActivity  {
                                            }else {
                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL09), Toast.LENGTH_LONG).show();
                                            }
-                                        }else{
-                                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL08), Toast.LENGTH_LONG).show();
-                                        }
+
                                     }catch (ParseException e){
                                         e.printStackTrace();
                                     }
@@ -487,18 +475,6 @@ public class AddDevisActivity extends AppCompatActivity  {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    /**Attribuer la date selectionnée au champ de date**/
-    public void setDateOnEdtDevDadev(){
-        Calendar newCalendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DpdialogDadev = new DatePickerDialog(AddDevisActivity.this, (view, year, monthOfYear, dayOfMonth) -> {
-            Calendar newDate = Calendar.getInstance();
-            newDate.set(year, monthOfYear, dayOfMonth);
-            EdtDevdadev.setText(dateFormat.format(newDate.getTime()));
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
     /**Attribuer la date selectionnée au champ de date de livraison**/

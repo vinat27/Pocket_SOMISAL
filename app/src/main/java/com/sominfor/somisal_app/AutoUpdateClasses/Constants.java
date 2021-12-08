@@ -8,5 +8,5 @@ class Constants {
     static final int TYPE_NOTIFICATION = 2;
     static final int TYPE_DIALOG = 1;
     static final String TAG = "UpdateChecker";
-    static final String UPDATE_URL = "http://10.101.12.19:8000/administration/version";
+    static final String UPDATE_URL = "http://som-applis.somdiaa.com:8000/administration/version";
 }

@@ -85,15 +85,17 @@ public class DetailDevisAdapter extends RecyclerView.Adapter<DetailDevisAdapter.
 
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailDevis.getDdvLipro());
-        holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
-        holder.TxtDdvPutar.setText(String.valueOf(detailDevis.getDdvPutar()));
+        //holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
+
         holder.TxtDdvQtdev.setText(Qtdev);
         BigDecimal bd = new BigDecimal(wvapos);
+        BigDecimal pt = new BigDecimal(detailDevis.getDdvPutar());
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
         symbols.setGroupingSeparator(' ');
 
         DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
         formatter.setRoundingMode(RoundingMode.DOWN);
+        holder.TxtDdvPutar.setText(formatter.format(pt.floatValue()));
         holder.TxtDdvVadev.setText(formatter.format(bd.floatValue()));
         holder.TxtDdvTxRem.setText(String.valueOf(detailDevis.getDdvTxrem()));
         holder.TxtDdvVarem.setText(String.valueOf(detailDevis.getDdvVarem()));
@@ -160,7 +162,7 @@ public class DetailDevisAdapter extends RecyclerView.Adapter<DetailDevisAdapter.
 
             /**Instanciation des widgets**/
             TxtProLipro = itemView.findViewById(R.id.TxtProLipro);
-            TxtDdvPodev = itemView.findViewById(R.id.TxtDdvPodev);
+            //TxtDdvPodev = itemView.findViewById(R.id.TxtDdvPodev);
             TxtDdvQtdev = itemView.findViewById(R.id.TxtDdvQtdev);
             TxtDdvPutar = itemView.findViewById(R.id.TxtDdvPutar);
             TxtDdvVadev = itemView.findViewById(R.id.TxtDdvVadev);

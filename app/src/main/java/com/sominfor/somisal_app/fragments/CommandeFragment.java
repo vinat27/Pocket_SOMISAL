@@ -152,7 +152,7 @@ public class CommandeFragment extends Fragment {
         serveurNode = serveurNodeController.getServeurNodeInfos();
         /*URL Récupération de la liste des systèmes*/
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/commande/commandeByStatu";
-        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/allClient";
+        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/allClientSansRgp";
         apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/create/commande/OneCommande";
         apiUrl04 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allCotrn";
         apiUrl05 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allColiv";
@@ -167,7 +167,7 @@ public class CommandeFragment extends Fragment {
         utilisateurCoage = utilisateur.getUtilisateurCoage();
         coactJson = new JSONArray();
         /**Récupération de la liste des clients, tournées, transport et livreur**/
-        clientListCde = apiReceiverMethods.recupererListeClients(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+        clientListCde = apiReceiverMethods.recupererListeClientsSansRegroupeur(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         tourneeListCdeFragment = apiReceiverMethods.recupererListeTournees(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         livreurListCdeFragment = apiReceiverMethods.recupererListeLivreurs(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         transportListCdeFragment = apiReceiverMethods.recupererListeTransport(apiUrl06, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);

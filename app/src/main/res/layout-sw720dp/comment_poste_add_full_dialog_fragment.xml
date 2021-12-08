@@ -41,13 +41,13 @@
             >
             <!--Post-it-->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="56dp"
+                app:boxBackgroundColor="@color/white"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -73,16 +73,35 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/Lnr01"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/roboto_bold"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:text="@string/post_it_devis_full_dialog_Enregistre"
                 android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
-                android:padding="@dimen/login_activity_BtnConnexion_padding"
-                app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+                android:paddingLeft="43dp"
+                android:paddingRight="43dp"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp"
+                app:cornerRadius="32dp"
                 android:textAllCaps="false"
                 app:backgroundTint="@color/colorPrimary"
                 android:textColor="@android:color/white" />
+
+            <LinearLayout
+                android:id="@+id/Lnr01"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:paddingTop="@dimen/login_activity_Lnr01_paddingTop">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="355dp"
+                    android:src="@drawable/posts" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

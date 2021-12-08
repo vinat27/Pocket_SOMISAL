@@ -176,7 +176,7 @@ public class AddCommandeActivity extends AppCompatActivity {
 
 
         /**URL Récupération de la liste des clients**/
-        apiUrl01 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/client/allClient";
+        apiUrl01 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/client/allClientSansRgp";
         apiUrl02 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allLivth";
         apiUrl03 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allComag";
         apiUrl04 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allCotrn";
@@ -198,13 +198,12 @@ public class AddCommandeActivity extends AppCompatActivity {
         MbSpnComCotrn = findViewById(R.id.MbSpnComCotrn);
         MbSpnComColiv = findViewById(R.id.MbSpnComColiv);
         MbSpnComCotrp = findViewById(R.id.MbSpnComCotrp);
-        EdtComDacom = findViewById(R.id.EdtComDacom);
         EdtComDaliv = findViewById(R.id.EdtComDaliv);
         EdtComNamar = findViewById(R.id.EdtComNamar);
         TxtDlvlv = findViewById(R.id.TxtDlvlv);
 
         /**Récupération des données de gestion paramètres**/
-        if(gestionParametresHome.size() == 0){
+        if(gestionParametresHome.isEmpty()){
             gestionParametres = apiReceiverMethods.recupererGestParam(apiUrl11,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         }else{
             gestionParametres = gestionParametresHome;
@@ -226,7 +225,7 @@ public class AddCommandeActivity extends AppCompatActivity {
             MbSpnComColiv.setVisibility(View.GONE);
         }
         /**Récupération de la liste de clients**/
-        clientList = apiReceiverMethods.recupererListeClients(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+        clientList = apiReceiverMethods.recupererListeClientsSansRegroupeur(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         clientSpinnerAdapter = new ClientSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, clientList);
         SsnComCliRasoc.setAdapter(clientSpinnerAdapter);
 
@@ -277,14 +276,14 @@ public class AddCommandeActivity extends AppCompatActivity {
 
         /**Date commande**/
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        EdtComDacom.setText(sdf.format(new Date()));
+
         /**Date de livraison**/
         EdtComDaliv.setText(sdf.format(new Date()));
 
         /**Champ de date, selection de date  DatePicker**/
-        EdtComDacom.setOnClickListener(v -> DpComDacom.show());
+        //EdtComDacom.setOnClickListener(v -> DpComDacom.show());
         /**Marquer la date selectionnée dans le champ date devis**/
-        setDateOnEdtComDacom();
+        //setDateOnEdtComDacom();
         /**Date de livraison**/
         EdtComDaliv.setOnClickListener(v -> DpComDaliv.show());
         setDateOnEdtComDaliv();
@@ -367,11 +366,9 @@ public class AddCommandeActivity extends AppCompatActivity {
                                 /**Comparaison des dates**/
                                 try {
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                                    Date currentDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-                                    Date dateCommande = simpleDateFormat.parse(EdtComDacom.getText().toString());
+                                    Date dateCommande = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
                                     Date dateLivraison = simpleDateFormat.parse(EdtComDaliv.getText().toString());
                                     assert dateCommande != null;
-                                    if (dateCommande.compareTo(currentDate) >= 0) {
                                         /**Date devis correcte - Comparaison à la date de livraison**/
                                         if (dateLivraison.compareTo(dateCommande) >= 0) {
                                             Intent i = new Intent(getApplicationContext(), AdresseLivraisonActivity.class);
@@ -419,7 +416,7 @@ public class AddCommandeActivity extends AppCompatActivity {
                                             /**Set values to Commande**/
                                             commande = new Commande();
                                             /**Set values to object**/
-                                            commande.setComdacom(EdtComDacom.getText().toString());
+                                            commande.setComdacom(simpleDateFormat.format(new Date()));
                                             commande.setComdaliv(EdtComDaliv.getText().toString());
                                             commande.setComnamar(EdtComNamar.getText().toString());
                                             commande.setComrasoc(client.getCliRasoc());
@@ -453,9 +450,7 @@ public class AddCommandeActivity extends AppCompatActivity {
                                         } else {
                                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL09), Toast.LENGTH_LONG).show();
                                         }
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL12), Toast.LENGTH_LONG).show();
-                                    }
+
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }

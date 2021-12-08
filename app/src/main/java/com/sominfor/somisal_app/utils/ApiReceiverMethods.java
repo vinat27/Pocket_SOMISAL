@@ -148,6 +148,52 @@ public class ApiReceiverMethods {
         return clients;
     }
 
+    /**
+     * Récupération de la liste des clients
+     * Spécificité: Avec chargement
+     */
+    public List<Client> recupererListeClientsSansRegroupeur(String api_url, String systemeAdresse, String utilisateurLogin, String utilisateurPassword, String utilisateurCosoc, String utilisateurCoage){
+        RequestQueue requestQueue = new Volley().newRequestQueue(context);
+        List<Client> clients = new ArrayList<>();
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+            try{
+                JSONArray array = new JSONArray(s);
+                for (int i=0; i<array.length(); i++){
+                    try{
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        Client client = new Client();
+
+                        client.setCliNucli(jsonObject.getString("CLINUCLI"));
+                        client.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
+                        client.setCliLiNacli(jsonObject.getString("LIBNACLI").trim());
+                        //Populariser la liste des clients
+                        clients.add(client);
+                    }catch(JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace)
+        {
+            protected Map<String,String> getParams(){
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+        return clients;
+    }
+
     /**Récupération de la liste des magasins**/
     public List<Magasin> recupererListeMagasins(String api_url, String systemeAdresse, String utilisateurLogin, String utilisateurPassword, String utilisateurCosoc, String utilisateurCoage){
         RequestQueue requestQueue = new Volley().newRequestQueue(context);

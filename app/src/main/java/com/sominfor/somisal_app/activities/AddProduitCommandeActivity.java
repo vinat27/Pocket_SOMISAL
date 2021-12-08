@@ -23,6 +23,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.CommandeProduitAdapter;
@@ -52,6 +53,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,7 +69,7 @@ import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 public class AddProduitCommandeActivity extends AppCompatActivity implements CommandeProduitsListener {
     public static String FRAGMENT_COMMANDE = "3";
-    private static final int SPLASH_TIME = 4000;
+    private static final int SPLASH_TIME = 5000;
     Double vacom;
     FloatingActionButton fab_add_commande_details;
     LinearLayout Lnr01;
@@ -74,6 +79,7 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
     MaterialButton BtnTerminer;
     String systemeAdresse, utilisateurLogin, apiUrl02, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, ComDalivFormat, coactOperation;
     TextView TxtComNucom, TxtComRasoc, TxtComLieuv, TxtComStatu, TxtComComag, TxtComColiv, TxtComDaliv, TxtComVacom;
+    Chip chip;
     RecyclerView recyclerViewDetailsCommande;
     CommandeProduitAdapter commandeProduitAdapter;
     List<DetailCommande> detailCommandeList = new ArrayList<>();
@@ -145,11 +151,11 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
         TxtComLieuv = findViewById(R.id.TxtComLieuv);
         TxtComStatu = findViewById(R.id.TxtComStatu);
         TxtComComag = findViewById(R.id.TxtComComag);
-        TxtComColiv = findViewById(R.id.TxtComColiv);
         TxtComDaliv = findViewById(R.id.TxtComDaliv);
         TxtComVacom = findViewById(R.id.TxtComVacom);
         BtnTerminer = findViewById(R.id.BtnTerminer);
         Lnr01 = findViewById(R.id.Lnr01);
+        chip = findViewById(R.id.chip);
         fab_add_commande_details = findViewById(R.id.fab_add_commande_details);
 
         serveurNodeController = new ServeurNodeController();
@@ -183,12 +189,10 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
         commercial = (Commercial) getIntent().getSerializableExtra("commercial");
 
         /**Set values to TextViews**/
-        TxtComNucom.setText("");
         TxtComRasoc.setText(client.getCliRasoc());
         TxtComLieuv.setText(lieuVente.getLilieuv());
         TxtComStatu.setText(getResources().getString(R.string.AddProduitDevisStatu));
         TxtComComag.setText(magasin.getMaglimag());
-        TxtComColiv.setText(livreur.getLivliliv());
         /**Date de livraison**/
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -346,9 +350,16 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
         for (DetailCommande dd:listDetailCommandes) {
             vacom += dd.getDcovacom();
         }
-        @SuppressLint("DefaultLocale")
-        String wvacom = String.format("%.2f", vacom)+" "+client.getCliLiComon();
-        TxtComVacom.setText(wvacom);
+        BigDecimal bd = new BigDecimal(vacom);
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String wvadev = formatter.format(bd.floatValue())+" "+client.getCliLiComon();
+        String chipValue = listDetailCommandes.size()+" produit(s)";
+        TxtComVacom.setText(wvadev);
+        chip.setVisibility(View.VISIBLE);
+        chip.setText(chipValue);
     }
 
     public void insertCommandeToAs400(String api_url){

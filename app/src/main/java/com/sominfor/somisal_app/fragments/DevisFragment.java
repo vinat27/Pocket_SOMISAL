@@ -150,7 +150,7 @@ public class DevisFragment extends Fragment {
         serveurNode = serveurNodeController.getServeurNodeInfos();
         /*URL Récupération de la liste des systèmes*/
         ApiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/devisByStatu";
-        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/allClient";
+        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/allClientSansRgp";
         apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allColiv";
         apiUrl04 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allDereg";
         apiUrl05 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
@@ -183,7 +183,7 @@ public class DevisFragment extends Fragment {
         coactJson = new JSONArray();
         coactJsonDel = new JSONArray();
 
-        clientListDevis = apiReceiverMethods.recupererListeClients(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
+        clientListDevis = apiReceiverMethods.recupererListeClientsSansRegroupeur(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         /**Récupération de la liste des livreurs**/
         livreurListDevis = apiReceiverMethods.recupererListeLivreurs(apiUrl03, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         /**Récupération de la liste de délais de règlement**/

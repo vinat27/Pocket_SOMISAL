@@ -60,7 +60,7 @@ public class CommentPosteAddFullDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         toolbar.setNavigationOnClickListener(v -> dismiss());
-        toolbar.setTitle(getResources().getString(R.string.post_it_devis_full_dialog_setTitle));
+        toolbar.setTitle(getResources().getString(R.string.comment_poste_full_dialog_setTitle));
         BtnValider.setOnClickListener(v -> {
             /**Récupération Post-it**/
             detailDevis.setDdvTxnPo(EdtDdvTxnPo.getText().toString());

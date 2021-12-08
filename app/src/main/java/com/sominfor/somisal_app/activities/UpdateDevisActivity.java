@@ -1,7 +1,5 @@
 package com.sominfor.somisal_app.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -13,18 +11,20 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.DelaiReglementSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.LivreurSpinnerAdapter;
 import com.sominfor.somisal_app.adapters.ModeReglementSpinnerAdapter;
-import com.sominfor.somisal_app.fragments.ClientFragment;
 import com.sominfor.somisal_app.fragments.DevisFragment;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.DelaiReglement;
 import com.sominfor.somisal_app.handler.models.Devis;
+import com.sominfor.somisal_app.handler.models.GestionParametre;
 import com.sominfor.somisal_app.handler.models.LieuVente;
 import com.sominfor.somisal_app.handler.models.Livreur;
 import com.sominfor.somisal_app.handler.models.Magasin;
@@ -35,6 +35,10 @@ import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,19 +50,21 @@ import java.util.Objects;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 import static com.sominfor.somisal_app.fragments.DevisFragment.livreurListDevis;
+import static com.sominfor.somisal_app.fragments.HomeFragment.gestionParametresHome;
 //TODO Set values to MoReg and Dereg - Recevoir Nacli, Lieuv avec les espaces
 
 public class UpdateDevisActivity extends AppCompatActivity {
 
-    TextView TxtClirasoc, TxtDevLieuv, TxtDevLimag, TxtDevLiliv, TxtDevDaliv, TxtDevVadev, TxtDevNudev;
+    TextView TxtClirasoc, TxtDevLieuv, TxtDevLimag, TxtDevLiliv, TxtDevDaliv, TxtDevVadev, TxtNudev, TxtDevStatu;
     MaterialButton BtnValider;
     ServeurNodeController serveurNodeController;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage, apiUrl01,apiUrl02,apiUrl03;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage, apiUrl01, apiUrl02, apiUrl03, apiUrl04, nudev, gszon, gstrn, gslvr;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
     List<Livreur> livreurs;
     List<ModeReglement> modeReglements;
     List<DelaiReglement> delaiReglements;
+    List<GestionParametre> gestionParametres;
     TextInputEditText EdtDevRfdev, EdtDevDaliv;
     MaterialBetterSpinner MbSpnDevColiv, MbSpnDevMoreg, MbSpnDevDereg;
     Devis devis;
@@ -91,17 +97,18 @@ public class UpdateDevisActivity extends AppCompatActivity {
         /**Instanciation des widgets**/
         TxtClirasoc = findViewById(R.id.TxtClirasoc);
         TxtDevLieuv = findViewById(R.id.TxtDevLieuv);
-        TxtDevNudev = findViewById(R.id.TxtDevNudev);
         TxtDevLimag = findViewById(R.id.TxtDevLimag);
-        TxtDevLiliv = findViewById(R.id.TxtDevLiliv);
+        //TxtDevLiliv = findViewById(R.id.TxtDevLiliv);
         TxtDevVadev = findViewById(R.id.TxtDevVadev);
         TxtDevDaliv = findViewById(R.id.TxtDevDaliv);
+        TxtNudev = findViewById(R.id.TxtNuDev);
         BtnValider = findViewById(R.id.BtnTerminer);
         EdtDevDaliv = findViewById(R.id.EdtDevDaliv);
         EdtDevRfdev = findViewById(R.id.EdtDevRfdev);
         MbSpnDevColiv = findViewById(R.id.MbSpnDevColiv);
         MbSpnDevMoreg = findViewById(R.id.MbSpnDevMoreg);
         MbSpnDevDereg = findViewById(R.id.MbSpnDevDereg);
+        TxtDevStatu = findViewById(R.id.TxtDevStatu);
 
         /**Gestion du menu d'action**/
         if (getSupportActionBar() != null) getSupportActionBar().setTitle("Actualisation devis");
@@ -124,12 +131,13 @@ public class UpdateDevisActivity extends AppCompatActivity {
         serveurNode = serveurNodeController.getServeurNodeInfos();
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allColiv";
         apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
-        apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allDereg";
+        apiUrl03 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDereg";
+        apiUrl04 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allChoixBySociete";
 
         livreurs = new ArrayList<>();
+        gestionParametres = new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
         devis = (Devis) bundle.getSerializable("devis");
-        @SuppressLint("DefaultLocale") String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevlimon().trim();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String DevDadevFormat = "";
@@ -145,11 +153,22 @@ public class UpdateDevisActivity extends AppCompatActivity {
         /**Set Data to Textviews**/
         TxtClirasoc.setText(devis.getCliRasoc());
         TxtDevLieuv.setText(devis.getDevLieuv());
-        TxtDevNudev.setText(devis.getDevNudev());
         TxtDevLimag.setText(devis.getDevLimag());
-        TxtDevLiliv.setText(devis.getDevColiv());
+        //TxtDevLiliv.setText(devis.getDevColiv());
+        TxtDevStatu.setText(devis.getDevStatut());
         TxtDevDaliv.setText(DevDalivFormat);
+        /**valeur H.T.*/
+        BigDecimal bd = new BigDecimal(devis.getDevVadev());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String vadev = String.format(formatter.format(bd.floatValue()))+" "+devis.getDevlimon().trim();
         TxtDevVadev.setText(vadev);
+        /**Set Nudev**/
+        nudev = "Devis: #" + devis.getDevNudev();
+        TxtNudev.setText(nudev);
         EdtDevRfdev.setText(devis.getDevRfdev().trim());
         EdtDevDaliv.setText(devis.getDevDaliv());
 
@@ -160,19 +179,37 @@ public class UpdateDevisActivity extends AppCompatActivity {
         setDateOnEdtDevDaliv();
 
         /**Vérifier si liste client est vide sinon récupérer***/
-        if(livreurListDevis ==null){
+        if (livreurListDevis.isEmpty()) {
             /**Récupération de la liste de clients**/
-            livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl01,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
-        }else{
+            livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+        } else {
             livreurs = livreurListDevis;
         }
         livreurSpinnerAdapter = new LivreurSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, livreurs);
         MbSpnDevColiv.setAdapter(livreurSpinnerAdapter);
 
+        /**Récupération des données de gestion paramètres**/
+        if (gestionParametresHome.isEmpty()) {
+            gestionParametres = apiReceiverMethods.recupererGestParam(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+        } else {
+            gestionParametres = gestionParametresHome;
+        }
+        /**Gestion de zone géographie**/
+        gszon = gestionParametres.get(0).getDatas();
+        /**Gestion de tournée**/
+        gstrn = gestionParametres.get(2).getDatas();
+        /**Gestion livreur**/
+        gslvr = gestionParametres.get(1).getDatas();
+
+        /**Gestion livreur**/
+        if (gslvr.equals("N")) {
+            MbSpnDevColiv.setVisibility(View.GONE);
+        }
+
         /**Récupération de la liste des modes de reglemet**/
-        if (DevisFragment.modeReglementListDevis.isEmpty()){
+        if (DevisFragment.modeReglementListDevis.isEmpty()) {
             modeReglements = apiReceiverMethods.recupererModeReglements(apiUrl02, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
-        }else{
+        } else {
             modeReglements = DevisFragment.modeReglementListDevis;
         }
         modeReglementSpinnerAdapter = new ModeReglementSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, modeReglements);
@@ -234,8 +271,8 @@ public class UpdateDevisActivity extends AppCompatActivity {
 
         /**Au clic du bouton suivant***/
         BtnValider.setOnClickListener(v -> {
-                    if (MbSpnDevColiv.length() !=0){
-                        if (EdtDevDaliv.getText().length() != 0){
+
+            if (EdtDevDaliv.getText().length() != 0){
                             try {
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                                 Date currentDate = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
@@ -277,9 +314,17 @@ public class UpdateDevisActivity extends AppCompatActivity {
                                         i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                         i.putExtra("client", client);
                                         i.putExtra("Lieuvente", lieuVente);
-                                        if (null == livreur){
-                                            i.putExtra("Livreur", livreurNotSelected);
-                                        }else{
+                                        /**Livreur**/
+                                        if (!gslvr.equals("N")) {
+                                            if (null == livreur) {
+                                                i.putExtra("Livreur", livreurNotSelected);
+                                            } else {
+                                                i.putExtra("Livreur", livreur);
+                                            }
+                                        } else {
+                                            livreur = new Livreur();
+                                            livreur.setLivColiv("");
+                                            livreur.setLivliliv("");
                                             i.putExtra("Livreur", livreur);
                                         }
                                         i.putExtra("Magasin", magasin);
@@ -296,9 +341,6 @@ public class UpdateDevisActivity extends AppCompatActivity {
                         } else{
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL01), Toast.LENGTH_LONG).show();
                         }
-                    }else {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL11), Toast.LENGTH_LONG).show();
-                    }
         });
     }
 

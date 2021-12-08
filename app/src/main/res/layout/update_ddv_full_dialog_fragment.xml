@@ -69,72 +69,55 @@
             </LinearLayout>
 
 
-            <!--Lieu de vente-->
+
+
+            <!--Unité de vente - Coefficient-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/TxtProUnvteTitle"
-                    android:layout_width="0dp"
+                <!--Unité de vente-->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_weight="0.6"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/item_produit_TxtLieuVente"
-                    android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
-                    />
-
-                <TextView
-                    android:id="@+id/TxtProUnvte"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="Saint Pierre"
-                    android:paddingLeft="8sp"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <!--Statut du devis-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/TxtDdvCoefTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/fiche_devis_activity_TxtDdvCoefTitle"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
-                    />
+                    <TextView
+                        android:id="@+id/TxtProUnvte"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textColor="@color/colorPrimary"
+                        android:text=""
+                        />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/TxtDdvCofvt"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
-                    android:text="" />
+                    android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textColor="@color/colorPrimary"
+                    android:text=""
+                    />
+
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/white"
                 android:layout_margin="10dp"
                 android:hint="@string/devis_add_produit_full_dialog_EdtDdvQtpro"
                 android:singleLine="true">
@@ -154,16 +137,35 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/Lnr01"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/roboto_bold"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:text="@string/post_it_devis_full_dialog_Enregistre"
-                android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
-                android:padding="@dimen/login_activity_BtnConnexion_padding"
-                app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+                android:paddingLeft="43dp"
+                android:paddingRight="43dp"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp"
+                android:text="@string/serveur_node_fragment_BtnValider_hint"
                 android:textAllCaps="false"
-                app:backgroundTint="@color/colorPrimary"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
+                app:cornerRadius="32dp"
+                app:backgroundTint="@color/colorPrimary" />
+
+            <LinearLayout
+                android:id="@+id/Lnr01"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:paddingTop="@dimen/login_activity_Lnr01_paddingTop">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="255dp"
+                    android:src="@drawable/add_to_cart" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -69,6 +69,8 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         holder.TxtProLipro.setText(detailDevis.getDdvLipro());
         holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
         BigDecimal bd = new BigDecimal(detailDevis.getDdvPutar());
+        BigDecimal be = new BigDecimal(detailDevis.getDdvVadev());
+        BigDecimal bf = new BigDecimal(detailDevis.getDdvVarem());
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
         symbols.setGroupingSeparator(' ');
 
@@ -76,9 +78,9 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
         formatter.setRoundingMode(RoundingMode.DOWN);
         holder.TxtDdvPutar.setText(formatter.format(bd.floatValue()));
         holder.TxtDdvQtdev.setText(String.valueOf(detailDevis.getDdvQtdev()));
-        holder.TxtDdvVadev.setText(String.format("%.2f", detailDevis.getDdvVadev()));
+        holder.TxtDdvVadev.setText(formatter.format(be.floatValue()));
         holder.TxtDdvTxRem.setText(String.valueOf(detailDevis.getDdvTxrem()));
-        holder.TxtDdvVarem.setText(String.format("%.2f", detailDevis.getDdvVarem()));
+        holder.TxtDdvVarem.setText(formatter.format(bf.floatValue()));
         /**Au clic du bouton détail**/
         holder.FabDetPro.setOnClickListener(v -> {
             Produit produit = new Produit();
@@ -86,7 +88,7 @@ public class DetailsDevisProduitsAdapter extends RecyclerView.Adapter<DetailsDev
             produit.setPronuprm(detailDevis.getDdvNuprm());
             produit.setProlipro(detailDevis.getDdvLipro());
             if (produit.getPronuprm() != 0) {
-                //Produits
+                /**Produits**/
                 Intent i = new Intent(context, FicheProduitActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("produit", produit);

@@ -45,10 +45,23 @@
 
     <style name="ShapeAppearanceOverlay_card_custom_corners" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">10dp</item>
-        <item name="cornerSizeTopLeft">10dp</item>
-        <item name="cornerSizeBottomRight">10dp</item>
-        <item name="cornerSizeBottomLeft">10dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+    </style>
+
+    <!--Style Card with small rounded corners-->
+    <style name="CustomCardViewSmallRoundStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_small_rounded_corners</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_card_custom_small_rounded_corners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">5dp</item>
+        <item name="cornerSizeTopLeft">5dp</item>
+        <item name="cornerSizeBottomRight">5dp</item>
+        <item name="cornerSizeBottomLeft">5dp</item>
     </style>
 
 

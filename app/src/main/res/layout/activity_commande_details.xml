@@ -13,7 +13,7 @@
         <!--Client Infos-->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView2"
-            style="@style/CustomCardViewStyle"
+            style="@style/CustomCardViewSmallRoundStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -23,18 +23,24 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                    <!--URL Serveur-->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ImgIcon"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="65dp"
+                android:layout_height="190dp"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:src="@drawable/list_alt" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
 
                         <TextView
                             android:id="@+id/TxtClirasoc"
@@ -51,9 +57,6 @@
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                             tools:targetApi="jelly_bean" />
-
-                    </LinearLayout>
-                </RelativeLayout>
 
                 <!--Statut du devis-->
                 <LinearLayout
@@ -118,6 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_marginBottom="16dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -128,12 +132,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/activity_fiche_produit_TxtLilivTitle"
+                        android:text="@string/TxtComDalivTitle_text"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
 
                     <TextView
-                        android:id="@+id/TxtComLiliv"
+                        android:id="@+id/TxtComDaliv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -142,11 +146,16 @@
                         android:textColor="@color/black" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.12"
+                    android:background="@android:color/black" />
                 <!--Montant H.T.-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                    android:layout_marginTop="14dp"
                     android:layout_marginBottom="14dp"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -156,7 +165,7 @@
                         android:id="@+id/TxtMontantHtTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.3"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="@string/activity_fiche_produit_TxtMontantHtTitle"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -167,257 +176,48 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text=""
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/orange_darken_3"
+                        android:fontFamily="@font/oswald_bold"
+                        android:text="1 500 000,00 Franc C.F.A"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!--Facturation-->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView3"
-            style="@style/CustomCardViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <!--Adresse de facturation-->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/TxtFacturationText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/activity_horizontal_margin"
-                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
-                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                            android:layout_marginRight="@dimen/activity_horizontal_margin"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/TxtFacturationText"
-                            android:textColor="@color/orange"
-                            android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
-                            tools:targetApi="jelly_bean" />
-
-                        <TextView
-                            android:id="@+id/TxtComrasoc"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/activity_horizontal_margin"
-                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
-                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                            android:layout_marginRight="@dimen/activity_horizontal_margin"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
-                            tools:targetApi="jelly_bean" />
-
-                    </LinearLayout>
-
-
-                </RelativeLayout>
-
-                <!--Adresse 1-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/TxtComAdresse"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/activity_commande_details_TxtComAdresse_Text"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
-
-                    <TextView
-                        android:id="@+id/TxtComadre1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="" />
-                </LinearLayout>
-
-                <!--Adresse 2-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
-
-                    <TextView
-                        android:id="@+id/TxtComadre2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="" />
-                </LinearLayout>
-
-                <!--Code Postal - Ville-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/TxtCp"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="@string/activity_commande_details_TxtCp"
-                        />
-
-                    <TextView
-                        android:id="@+id/TxtComcopos"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
-                    <TextView
-                        android:id="@+id/TxtVille"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.15"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/activity_commande_details_TxtVille"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
-
-
-                    <TextView
-                        android:id="@+id/TxtComville"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.35"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="" />
-                </LinearLayout>
-
-                <!--Code Postal - Ville-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
-                    android:layout_weight="1"
-                    android:layout_marginBottom="14dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/TxtBp"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="@string/activity_commande_details_TxtBp"
-                        />
-
-                    <TextView
-                        android:id="@+id/TxtCombopos"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
-                    <TextView
-                        android:id="@+id/TxtPays"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.15"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/activity_commande_details_TxtPays"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
-
-
-                    <TextView
-                        android:id="@+id/TxtComcpays"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.35"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="" />
-                </LinearLayout>
 
 
             </LinearLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
 
         <!--Livraison-->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView4"
-            style="@style/CustomCardViewStyle"
+            style="@style/CustomCardViewSmallRoundStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ImgIcon2"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="65dp"
+                android:layout_height="190dp"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:src="@drawable/location_e" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
 
-                    <!--Adresse de livraison-->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/TxtLivraisonText"
@@ -431,7 +231,7 @@
                             android:ellipsize="end"
                             android:fontFamily="@font/montserrat_semibold"
                             android:text="@string/TxtAdrLivraisonText"
-                            android:textColor="@color/orange"
+                            android:textColor="@color/teal"
                             android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                             tools:targetApi="jelly_bean" />
 
@@ -449,10 +249,7 @@
                             android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
                             tools:targetApi="jelly_bean" />
 
-                    </LinearLayout>
 
-
-                </RelativeLayout>
 
                 <!--Adresse 1-->
                 <LinearLayout
@@ -464,19 +261,10 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/activity_commande_details_TxtComAdresse_Text"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
-
-                    <TextView
                         android:id="@+id/TxtComadr1l"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="" />
@@ -492,17 +280,10 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
-
-                    <TextView
                         android:id="@+id/TxtComadr2l"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
@@ -518,14 +299,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="@string/activity_commande_details_TxtCp"
-                        />
+
 
                     <TextView
                         android:id="@+id/TxtComcopol"
@@ -535,14 +309,7 @@
                         android:fontFamily="@font/montserrat_semibold"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.15"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/activity_commande_details_TxtVille"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
+
 
 
                     <TextView
@@ -565,14 +332,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="@string/activity_commande_details_TxtBp"
-                        />
+
 
                     <TextView
                         android:id="@+id/TxtCombopol"
@@ -582,14 +342,7 @@
                         android:fontFamily="@font/montserrat_semibold"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.15"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/activity_commande_details_TxtPays"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        />
+
 
 
                     <TextView
@@ -601,7 +354,7 @@
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="" />
                 </LinearLayout>
-
+            </LinearLayout>
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -609,7 +362,7 @@
 
         <!--Stock-->
         <com.google.android.material.card.MaterialCardView
-            style="@style/CustomCardViewStyle"
+            style="@style/CustomCardViewSmallRoundStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"

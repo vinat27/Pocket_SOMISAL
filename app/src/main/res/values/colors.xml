@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#1a3170</color>
+    <color name="colorPrimary">#1565c0</color>
+    <color name="colorPrimaryDark">#0d47a1</color>
+    <color name="colorAccent">#0d47a1</color>
     <color name="grey_200">#eeeeee</color>
     <color name="orange">#ff9800</color>
     <color name="white">#FFFFFF</color>
     <color name="teal_lighten_4">#b2dfdb</color>
+    <color name="teal">#23b7ff</color>
     <color name="green_darken_3">#2e7d32</color>
     <color name="green_darken_4">#1b5e20</color>
     <color name="orange_darken_3">#ef6c00</color>
@@ -14,4 +15,8 @@
     <color name="grey_darken_3">#424242</color>
     <color name="black">#000000</color>
     <color name="red">#f44336</color>
+    <color name="blue_lighten_2">#B2DFDB</color>
+    <color name="simpletooltip_background">#e0e0e0</color>
+    <color name="simpletooltip_text">@android:color/black</color>
+    <color name="simpletooltip_arrow">#e0e0e0</color>
 </resources>

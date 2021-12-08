@@ -53,7 +53,7 @@ public class UpdateDdvFullDialog extends DialogFragment {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, uniteVente, coeff;
 
 
     public static UpdateDdvFullDialog newInstance(){ return new UpdateDdvFullDialog(); }
@@ -93,9 +93,12 @@ public class UpdateDdvFullDialog extends DialogFragment {
 
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/produit/TarifProduitById";
         /*Set values to Edittexts**/
+
+        uniteVente = "Unité de vente: "+detailDevis.getDdvUnvte();
+        coeff = "Coefficient: "+detailDevis.getDdvCofvt();
         TxtProLiPro.setText(detailDevis.getDdvLipro());
-        TxtProUnvte.setText(detailDevis.getDdvUnvte());
-        TxtDdvCofvt.setText(String.valueOf(detailDevis.getDdvCofvt()));
+        TxtProUnvte.setText(uniteVente);
+        TxtDdvCofvt.setText(coeff);
 
         EdtDdvQtpro.setText(String.format("%.2f", detailDevis.getDdvQtdev()));
 

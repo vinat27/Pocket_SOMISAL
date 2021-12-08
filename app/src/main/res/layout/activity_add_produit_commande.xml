@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back_produit">
+    >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,68 +17,54 @@
             <!--Client Infos-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView2"
-                style="@style/CustomCardViewStyle"
+                style="@style/CustomCardViewSmallRoundStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
+                app:cardBackgroundColor="@color/blue_lighten_2"
                 app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <!--Numéro Commande-->
+                    <ImageView
+                        android:id="@+id/ImgIcon"
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="65dp"
+                        android:layout_height="205dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:src="@drawable/list_alt" />
+
+                    <!--Raison sociale-->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="4dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/TxtComNucom"
-                            android:layout_width="0dp"
+                            android:id="@+id/TxtComRasoc"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="" />
-                    </LinearLayout>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content">
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
+                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                            android:layout_marginRight="@dimen/activity_horizontal_margin"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:textFontWeight="900"
+                            android:text="BOULANGERIE PATISSERIE CARRON"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+                            tools:targetApi="jelly_bean" />
 
-                        <!--Raison sociale-->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/TxtComRasoc"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                                android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
-                                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                                android:ellipsize="end"
-                                android:fontFamily="@font/montserrat_semibold"
-                                android:text="BOULANGERIE PATISSERIE CARRON"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
-                                tools:targetApi="jelly_bean" />
-
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <!--Lieu de vente-->
+                        <!--Lieu de vente-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -93,6 +79,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:layout_weight="0.6"
+                            android:textFontWeight="700"
                             android:fontFamily="@font/montserrat_semibold"
                             android:text="@string/item_devis_TxtLieuVente"
                             />
@@ -166,41 +153,14 @@
                             android:text="" />
                     </LinearLayout>
 
-                    <!--Livreur-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/TxtComLilivTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.6"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/activity_fiche_produit_TxtLilivTitle"
-                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            />
-
-                        <TextView
-                            android:id="@+id/TxtComColiv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text=""
-                            android:textColor="@color/black" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:layout_marginBottom="6dp"
+                        android:layout_marginBottom="16dp"
                         android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
                         android:orientation="horizontal">
                         <TextView
@@ -224,12 +184,16 @@
 
                     </LinearLayout>
 
-
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:alpha="0.12"
+                            android:background="@android:color/black" />
                     <!--Montant H.T.-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/activity_fiche_produit_LinearLayout_marginTop"
+                        android:layout_marginTop="14dp"
                         android:layout_marginBottom="14dp"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -239,7 +203,7 @@
                             android:id="@+id/TxtMontantHtTitle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.3"
                             android:fontFamily="@font/montserrat_semibold"
                             android:text="@string/activity_fiche_produit_TxtMontantHtTitle"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -250,11 +214,13 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text=""
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/orange_darken_3"
+                            android:fontFamily="@font/oswald_bold"
+                            android:text="1 500 000,00 Franc C.F.A"
+                            android:textSize="18sp" />
                     </LinearLayout>
 
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -274,21 +240,41 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/TxtProduits"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/activity_fiche_produit_TxtProduits"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
-                        tools:targetApi="jelly_bean" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/TxtProduits"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                            android:layout_marginRight="@dimen/activity_horizontal_margin"
+                            android:ellipsize="end"
+                            android:layout_alignParentLeft="true"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="@string/activity_fiche_produit_TxtProduits"
+                            android:textColor="@color/teal"
+                            android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+                            tools:targetApi="jelly_bean" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            app:chipBackgroundColor="@color/colorPrimary"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/roboto_bold"
+                            android:visibility="gone" />
+
+
+                    </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/RecyclerViewDetailsCommande"
@@ -333,22 +319,23 @@
             <!--Valider-->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/BtnTerminer"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/Lnr01"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/roboto_bold"
                 android:layout_gravity="center"
                 android:text="@string/serveur_node_fragment_BtnTerminerDevis_hint"
                 android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
                 android:padding="@dimen/login_activity_BtnConnexion_padding"
-                app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="72dp"
+                app:cornerRadius="34dp"
                 android:textAllCaps="false"
                 app:backgroundTint="@color/orange"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_commande_details"
         android:layout_width="wrap_content"
@@ -359,7 +346,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_baseline_add_24"
         app:tint="@android:color/white"
-        app:backgroundTint="@color/orange"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 </RelativeLayout>

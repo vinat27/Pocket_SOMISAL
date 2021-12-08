@@ -28,6 +28,10 @@ import com.sominfor.somisal_app.handler.models.DetailCommande;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,13 +67,19 @@ public class DcoUpdateCommandeAdapter extends RecyclerView.Adapter<DcoUpdateComm
     public void onBindViewHolder(@NonNull DcoUpdateCommandeAdapter.CommandeProduitVh holder, int position) {
         DetailCommande detailCommande = detailCommandeList.get(position);
 
+        BigDecimal bd = new BigDecimal(detailCommande.getDcoputar());
+        BigDecimal dd = new BigDecimal(detailCommande.getDcovacom());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
 
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailCommande.getDcolipro());
         holder.TxtDcopocom.setText(String.valueOf(detailCommande.getDcopocom()));
-        holder.TxtDcoputar.setText(String.format("%.2f", detailCommande.getDcoputar()));
+        holder.TxtDcoputar.setText(formatter.format(bd.floatValue()));
         holder.TxtDcoqtcom.setText(String.format("%.3f", detailCommande.getDcoqtcom()));
-        holder.TxtDcovacom.setText(String.format("%.2f", detailCommande.getDcovacom()));
+        holder.TxtDcovacom.setText(formatter.format(dd.floatValue()));
         holder.TxtDcoTxRem.setText(String.valueOf(detailCommande.getDcotxrem()));
         holder.TxtDcoVarem.setText(String.format("%.2f", detailCommande.getDcovarem()));
         /**Au clic du bouton détail**/

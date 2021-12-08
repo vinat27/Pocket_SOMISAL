@@ -80,7 +80,7 @@ public class FiltresDevisClientDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         toolbar.setNavigationOnClickListener(v -> dismiss());
-        toolbar.setTitle(getResources().getString(R.string.filtres_commandes_dialog));
+        toolbar.setTitle(getResources().getString(R.string.filtres_devis_dialog));
 
         /**Champ de date, selection de date  DatePicker**/
         EdtDaInf.setOnClickListener(v -> DpDaInf.show());

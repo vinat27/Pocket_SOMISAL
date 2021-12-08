@@ -20,17 +20,6 @@
             android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
-            <!--Poste-->
-            <TextView
-                android:id="@+id/TxtDcopocom"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/item_details_devis_TxtDdvPodev_Layout_heigth"
-                android:gravity="center"
-                android:text="1.000"
-                android:fontFamily="@font/montserrat_bold"
-                android:textColor="@color/black"
-                android:textSize="@dimen/item_details_devis_TxtDdvPodev_TextSize"
-                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,43 +40,27 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="AMANDE EFFILEE BLANCHIE 5 KG"
-                        android:paddingLeft="8sp"
-                        android:layout_marginTop="2dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Duo Sud"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="5sp"
                         />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_marginBottom="6dp"
-                    android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/item_detail_devis_TxtQuantite"
+                        android:fontFamily="@font/freesans"
+                        android:text="Qté:"
                         android:paddingLeft="5sp"/>
-
                     <TextView
                         android:id="@+id/TxtDcoqtcom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:fontFamily="@font/montserrat_semibold"
+                        android:fontFamily="@font/freesans"
                         android:text="2.000 K"
-                        android:paddingLeft="8sp"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="@string/item_detail_devis_TxtPrixUnitaire"
-                        android:paddingLeft="15sp"/>
+                        android:paddingLeft="8sp"/>
 
                     <TextView
                         android:id="@+id/TxtDcoputar"
@@ -95,20 +68,16 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:textColor="@color/black"
-                        android:fontFamily="@font/montserrat_semibold"
-                        android:text="2.000 K"
-                        android:paddingLeft="8sp"
-                        android:textSize="16sp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:layout_gravity="right"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                        />
-
+                        android:fontFamily="@font/neuehaasgrotesk"
+                        android:text="350 000"
+                        android:paddingLeft="8sp"/>
                 </LinearLayout>
+
+
+
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -122,7 +91,7 @@
                         android:layout_weight="0.3"
                         android:textColor="@color/colorPrimary"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Total H.T"
+                        android:text="Montant H.T"
                         android:paddingLeft="5sp"/>
 
                     <TextView
@@ -137,9 +106,27 @@
                         android:paddingLeft="8sp"
                         />
 
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:layout_gravity="right"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="14sp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="@string/item_detail_commande_TxtQuantiteLivree"
                         android:paddingLeft="5sp"/>
@@ -148,6 +135,7 @@
                         android:id="@+id/TxtDcoqtliv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text=""
@@ -175,41 +163,33 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:fontFamily="@font/montserrat_semibold"
+                    android:fontFamily="@font/freesans"
                     android:text="@string/item_detail_devis_TxtTxRemTitle"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="5sp"
+                    android:textSize="12sp"
+                    android:textColor="@color/green_darken_3"
                     />
 
                 <TextView
                     android:id="@+id/TxtDcoTxRem"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
+                    android:fontFamily="@font/neuehaasgrotesk"
                     android:text="0000002"
-                    android:textSize="16sp"
+                    android:layout_weight="0.5"
+                    android:textSize="12sp"
+                    android:textColor="@color/green_darken_3"
                     android:paddingLeft="8sp"/>
-            </LinearLayout>
-
-            <!--Date devis-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="14dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_weight="0.4"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:layout_marginLeft="40dp"
-                    android:fontFamily="@font/montserrat_semibold"
+                    android:layout_marginLeft="15sp"
+                    android:textColor="@color/green_darken_3"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/freesans"
                     android:text="@string/item_detail_devis_TxtVaRemTitle"
                     />
 
@@ -218,12 +198,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
+                    android:textColor="@color/green_darken_3"
+                    android:fontFamily="@font/neuehaasgrotesk"
                     android:text="000000"
-                    android:textSize="16sp"
+                    android:textSize="12sp"
                     android:paddingLeft="8sp"/>
             </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

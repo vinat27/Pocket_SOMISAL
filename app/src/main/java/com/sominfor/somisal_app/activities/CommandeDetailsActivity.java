@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -40,10 +41,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
@@ -51,13 +55,13 @@ public class CommandeDetailsActivity extends AppCompatActivity {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, ComDalivFormat;
     Commande commande;
     RecyclerView RecyclerViewDetailsCommandes;
     List<DetailCommande> detailCommandeList;
     DetailCommandeAdapter detailCommandeAdapter;
     DelayedProgressDialog progressDialogInfo;
-    TextView TxtClirasoc,TxtComStatu, TxtComLimag, TxtComLiliv, TxtComVacom, TxtComadre1, TxtComadre2, TxtComcopos, TxtComville, TxtCombopos, TxtComcpays, TxtComrasol, TxtComrasoc, TxtComadr1l, TxtComadr2l, TxtComcopol, TxtComvilll, TxtCombopol, TxtComcpayl;
+    TextView TxtClirasoc,TxtComStatu, TxtComLimag, TxtComLiliv, TxtComVacom, TxtComadre1, TxtComadre2, TxtComcopos, TxtComville, TxtCombopos, TxtComcpays,TxtComDaliv, TxtComrasol, TxtComrasoc, TxtComadr1l, TxtComadr2l, TxtComcopol, TxtComvilll, TxtCombopol, TxtComcpayl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if(!getResources().getBoolean(R.bool.isTablet)){
@@ -84,16 +88,17 @@ public class CommandeDetailsActivity extends AppCompatActivity {
         TxtClirasoc = findViewById(R.id.TxtClirasoc);
         TxtComStatu = findViewById(R.id.TxtComStatu);
         TxtComLimag = findViewById(R.id.TxtComLimag);
-        TxtComLiliv = findViewById(R.id.TxtComLiliv);
+        TxtComDaliv = findViewById(R.id.TxtComDaliv);
         TxtComVacom = findViewById(R.id.TxtComVacom);
-        TxtComadre1 = findViewById(R.id.TxtComadre1);
-        TxtComadre2 = findViewById(R.id.TxtComadre2);
-        TxtComcopos = findViewById(R.id.TxtComcopos);
-        TxtComville = findViewById(R.id.TxtComville);
-        TxtCombopos = findViewById(R.id.TxtCombopos);
-        TxtComcpays = findViewById(R.id.TxtComcpays);
+
+        //TxtComadre1 = findViewById(R.id.TxtComadre1);
+        //TxtComadre2 = findViewById(R.id.TxtComadre2);
+        //TxtComcopos = findViewById(R.id.TxtComcopos);
+        //TxtComville = findViewById(R.id.TxtComville);
+        //TxtCombopos = findViewById(R.id.TxtCombopos);
+        //TxtComcpays = findViewById(R.id.TxtComcpays);
         TxtComrasol = findViewById(R.id.TxtComrasol);
-        TxtComrasoc = findViewById(R.id.TxtComrasoc);
+        //TxtComrasoc = findViewById(R.id.TxtComrasoc);
         TxtComadr1l = findViewById(R.id.TxtComadr1l);
         TxtComadr2l = findViewById(R.id.TxtComadr2l);
         TxtComcopol = findViewById(R.id.TxtComcopol);
@@ -132,26 +137,30 @@ public class CommandeDetailsActivity extends AppCompatActivity {
         TxtClirasoc.setText(commande.getComrasoc());
         TxtComStatu.setText(commande.getComlista());
         TxtComLimag.setText(commande.getComlimag());
-        if (commande.getComcoliv().equals("") || commande.getComcoliv() == null){
-            TxtComLiliv.setText("");
-        }else{
-            TxtComLiliv.setText(commande.getComliliv());
-        }
+
         TxtComVacom.setText(wvacom);
-        TxtComadre1.setText(commande.getComadre1());
-        TxtComadre2.setText(commande.getComadre2());
-        TxtComcopos.setText(commande.getComcopos());
-        TxtComville.setText(commande.getComville());
-        TxtCombopos.setText(commande.getCombopos());
-        TxtComcpays.setText(commande.getComlicpays());
+        //TxtComadre1.setText(commande.getComadre1());
+        //TxtComadre2.setText(commande.getComadre2());
+        //TxtComcopos.setText(commande.getComcopos());
+        //TxtComville.setText(commande.getComville());
+        //TxtCombopos.setText(commande.getCombopos());
+        //TxtComcpays.setText(commande.getComlicpays());
         TxtComrasol.setText(commande.getComrasol());
-        TxtComrasoc.setText(commande.getComrasoc());
+        //TxtComrasoc.setText(commande.getComrasoc());
         TxtComadr1l.setText(commande.getComadr1l());
         TxtComadr2l.setText(commande.getComadr2l());
         TxtComcopol.setText(commande.getComcopol());
         TxtComvilll.setText(commande.getComvilll());
         TxtCombopol.setText(commande.getCombopol());
         TxtComcpayl.setText(commande.getComlicpayr());
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            ComDalivFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(commande.getComdaliv())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        TxtComDaliv.setText(ComDalivFormat);
 
         RecyclerViewDetailsCommandes = findViewById(R.id.RecyclerViewDetailsCommandes);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());

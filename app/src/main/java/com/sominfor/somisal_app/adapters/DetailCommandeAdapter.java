@@ -76,8 +76,8 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
         wvapos = wvapos - wvarem;
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailCommande.getDcolipro());
-        holder.TxtDcopocom.setText(String.valueOf(detailCommande.getDcopocom()));
         BigDecimal bd = new BigDecimal(detailCommande.getDcoputar());
+        BigDecimal dd = new BigDecimal(wvapos);
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
         symbols.setGroupingSeparator(' ');
 
@@ -85,7 +85,7 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
         formatter.setRoundingMode(RoundingMode.DOWN);
         holder.TxtDcoputar.setText(formatter.format(bd.floatValue()));
         holder.TxtDcoqtcom.setText(String.format("%.3f", detailCommande.getDcoqtcom()));
-        holder.TxtDcovacom.setText(String.format("%.2f", wvapos));
+        holder.TxtDcovacom.setText(formatter.format(dd.floatValue()));
         holder.TxtDcoTxRem.setText(String.valueOf(detailCommande.getDcotxrem()));
         holder.TxtDcoVarem.setText(String.valueOf(detailCommande.getDcovarem()));
         holder.TxtDcoqtliv.setText(qtliv);
@@ -142,7 +142,7 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
 
     public class DetailCommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtProLipro,TxtDcopocom,TxtDcoqtcom, TxtDcoputar, TxtDcovacom, TxtDcoTxRem, TxtDcoVarem, TxtDcoqtliv;
+        TextView TxtProLipro,TxtDcoqtcom, TxtDcoputar, TxtDcovacom, TxtDcoTxRem, TxtDcoVarem, TxtDcoqtliv;
         MaterialButton FabDetPro, FabTxnPro;
         LinearLayout Lnr01, expandableLayout;
 
@@ -152,7 +152,6 @@ public class DetailCommandeAdapter extends  RecyclerView.Adapter<DetailCommandeA
 
             /**Instanciation des widgets**/
             TxtProLipro = itemView.findViewById(R.id.TxtProLipro);
-            TxtDcopocom = itemView.findViewById(R.id.TxtDcopocom);
             TxtDcoqtcom = itemView.findViewById(R.id.TxtDcoqtcom);
             TxtDcoputar = itemView.findViewById(R.id.TxtDcoputar);
             TxtDcovacom = itemView.findViewById(R.id.TxtDcovacom);

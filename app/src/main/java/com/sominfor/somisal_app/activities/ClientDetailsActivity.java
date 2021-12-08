@@ -208,7 +208,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
      */
     public static class GeneralitesClientFragment extends Fragment {
         int color;
-        TextView TxtCliRasoc, TxtCliNucli, TxtCliNacli, TxtCliadre1, TxtCliAdre2,TxtCliCopos, TxtCliville, TxtCliBopos, TxtCliCpays, TxtSoldeCpteGene, TxtSoldeLimon, TxtSoldePlafond;
+        TextView TxtCliRasoc, TxtCliNucli, TxtCliNacli, TxtCliadre1, TxtCliAdre2,TxtCliCopos, TxtCliville, TxtCliBopos, TxtCliCpays, TxtSoldeCpteGene, TxtSoldeLimon, TxtSoldePlafond, TxtPlafondLimon;
         ServeurNodeController serveurNodeController;
         ServeurNode serveurNode;
         String apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage, apiUrl02;
@@ -237,7 +237,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
             TxtSoldeCpteGene = view.findViewById(R.id.TxtSoldeCpteGene);
             TxtSoldeLimon = view.findViewById(R.id.TxtSoldeLimon);
             TxtSoldePlafond = view.findViewById(R.id.TxtSoldePlafond);
-
+            TxtPlafondLimon = view.findViewById(R.id.TxtPlafondLimon);
 
 
             serveurNodeController = new ServeurNodeController();
@@ -283,6 +283,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
                         formatter.setRoundingMode(RoundingMode.DOWN);
                         TxtSoldeCpteGene.setText(formatter.format(sd.floatValue()));
                         TxtSoldeLimon.setText(clientInfos.getCliLiComon().trim());
+                        TxtPlafondLimon.setText(clientInfos.getCliLiComon().trim());
                     }
                 }catch (JSONException e){
                     e.printStackTrace();

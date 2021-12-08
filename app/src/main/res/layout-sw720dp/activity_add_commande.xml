@@ -8,21 +8,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/StepTitle"
             android:layout_width="wrap_content"
             android:layout_margin="10dp"
-            android:textColor="@color/colorPrimary"
-            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/teal"
+            android:fontFamily="@font/montserrat_semibold"
             android:text="@string/add_commande_activity_StepTitle"
-            android:textSize="17sp"
-            android:layout_height="wrap_content"></TextView>
+            android:textSize="14sp"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/spinner_style"
+            android:background="@drawable/searchable_spinner_style"
             android:orientation="vertical">
 
             <!--Choix de clients-->
@@ -42,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/spinner_style"
+            android:background="@drawable/searchable_spinner_style"
             android:orientation="vertical">
 
             <!--Lieu de vente-->
@@ -66,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/spinner_style"
+            android:background="@drawable/searchable_spinner_style"
             android:orientation="vertical">
 
             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -80,33 +81,14 @@
                 android:hint="@string/add_commande_activity_MbSpnComComag"
                 app:met_floatingLabel="normal"
                 app:met_hideUnderline="true"
-                app:met_textColor="@color/black"/>
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/black"
+                />
         </LinearLayout>
 
-        <!--Date Commande-->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:hint="@string/add_commande_activity_EdtComDacom"
-            android:inputType="date"
-            app:errorEnabled="true"
-            android:singleLine="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/EdtComDacom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:fontFamily="@font/montserrat_regular" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <!--Référence-->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -114,6 +96,8 @@
             android:hint="@string/add_commande_activity_EdtComNamar"
             android:inputType="text"
             app:errorEnabled="true"
+            android:background="@android:color/transparent"
+            app:boxBackgroundColor="@android:color/transparent"
             android:singleLine="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -128,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/spinner_style"
+            android:background="@drawable/searchable_spinner_style"
             android:orientation="vertical">
 
             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -147,7 +131,6 @@
         </LinearLayout>
         <!--Date Livraison-->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -155,7 +138,8 @@
             android:hint="@string/add_commande_activity_EdtComDaliv"
             android:inputType="date"
             app:errorEnabled="true"
-            android:singleLine="true">
+            android:singleLine="true"
+            app:boxBackgroundColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/EdtComDaliv"
@@ -179,7 +163,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/spinner_style"
+            android:background="@drawable/searchable_spinner_style"
             android:orientation="vertical">
 
             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -201,7 +185,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/spinner_style"
+            android:background="@drawable/searchable_spinner_style"
             android:orientation="vertical">
 
             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -221,18 +205,21 @@
         <!--Valider-->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BtnNext"
+            app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_centerHorizontal="true"
             android:layout_below="@id/Lnr01"
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/roboto_bold"
             android:layout_gravity="right"
-            android:text="@string/serveur_node_fragment_BtnSuivant_hint"
+            android:text="@string/activity_add_devis_BtnValider_hint"
             android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
-            android:padding="@dimen/login_activity_BtnConnexion_padding"
-            app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+            app:cornerRadius="32dp"
             android:textAllCaps="false"
-            app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:textColor="@color/colorPrimary" />
+            app:backgroundTint="@color/colorPrimary"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>

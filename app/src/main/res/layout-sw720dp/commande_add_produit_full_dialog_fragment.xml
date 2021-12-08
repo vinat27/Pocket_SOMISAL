@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/spinner_style"
+                android:background="@drawable/searchable_spinner_style"
                 android:orientation="vertical">
 
                 <!--Choix de clients-->
@@ -73,9 +73,21 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/spinner_style"
                     android:orientation="vertical">
 
+                    <!--<com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                        android:id="@+id/MbSpnDcoUnvte"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:hint="@string/devis_add_produit_full_dialog_MbSpnUnvteTextHint"
+                        app:met_floatingLabel="normal"
+                        app:met_hideUnderline="true"
+                        app:met_textColor="@color/black"
+                        app:met_textColorHint="@color/black" />-->
                     <TextView
                         android:id="@+id/MbSpnDcoUnvte"
                         android:layout_width="match_parent"
@@ -84,8 +96,8 @@
                         android:fontFamily="@font/montserrat_bold"
                         android:textColor="@color/colorPrimary"
                         android:text=""
-                        android:gravity="center"
                         />
+
                 </LinearLayout>
 
                 <!--Coefficient-->
@@ -105,6 +117,7 @@
                         android:inputType="number"
                         android:fontFamily="@font/montserrat_regular" />
                 </com.google.android.material.textfield.TextInputLayout>-->
+
                 <TextView
                     android:id="@+id/TxtDcoCofvt"
                     android:layout_width="match_parent"
@@ -115,25 +128,24 @@
                     android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/colorPrimary"
                     android:text=""
-                    android:gravity="center"
                     />
 
             </LinearLayout>
 
             <!--Coefficient-->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:hint="@string/devis_add_produit_full_dialog_EdtDdvQtpro"
+                app:boxBackgroundColor="@color/white"
                 android:singleLine="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/EdtDcoQtpro"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:fontFamily="@font/montserrat_regular" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -143,15 +155,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"
                 android:layout_gravity="center"
-                android:fontFamily="@font/montserrat_medium"
-                android:padding="@dimen/login_activity_BtnConnexion_padding"
+                android:fontFamily="@font/roboto_bold"
+                android:paddingLeft="43dp"
+                android:paddingRight="43dp"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp"
                 android:text="@string/serveur_node_fragment_BtnValider_hint"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
-                app:backgroundTint="@color/colorPrimary"
-                app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius" />
+                app:cornerRadius="32dp"
+                app:backgroundTint="@color/colorPrimary" />
+            <LinearLayout
+                android:id="@+id/Lnr01"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:paddingTop="@dimen/login_activity_Lnr01_paddingTop">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="255dp"
+                    android:src="@drawable/add_to_cart" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

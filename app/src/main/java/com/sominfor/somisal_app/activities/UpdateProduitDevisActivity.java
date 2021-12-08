@@ -63,14 +63,14 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
     public static String FRAGMENT_DEVIS = "2";
     private static final int SPLASH_TIME = 4000;
 
-    TextView TxtClirasoc, TxtDevLieuv, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevDaliv, TxtDevVadev;
+    TextView TxtClirasoc, TxtDevLieuv, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevDaliv, TxtDevVadev, TxtDevDadev;
     MaterialButton BtnValider;
     FloatingActionButton fab_add_devis_details;
     LinearLayout Lnr01;
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String DevDalivFormat, systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, apiUrl02, apiUrl03;
+    String DevDalivFormat, DevDadevFormat, systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, apiUrl02, apiUrl03;
     RecyclerView RecyclerViewDetailsDevis;
     DdvUpdateProduitsAdapter ddvUpdateProduitsAdapter;
     List<DetailDevis> detailDevisList = new ArrayList<>();
@@ -158,10 +158,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         apiReceiverMethods = new ApiReceiverMethods(getApplicationContext());
 
         TxtClirasoc = findViewById(R.id.TxtClirasoc);
-        TxtDevLieuv = findViewById(R.id.TxtDevLieuv);
-        TxtDevStatu = findViewById(R.id.TxtDevStatu);
-        TxtDevLimag = findViewById(R.id.TxtDevLimag);
-        TxtDevLiliv = findViewById(R.id.TxtDevLiliv);
+        TxtDevDadev = findViewById(R.id.TxtDevDadev);
         TxtDevDaliv = findViewById(R.id.TxtDevDaliv);
         TxtDevVadev = findViewById(R.id.TxtDevVadev);
         BtnValider = findViewById(R.id.BtnValider);
@@ -193,10 +190,6 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
 
         /**Set values to Textviews**/
         TxtClirasoc.setText(devis.getCliRasoc());
-        TxtDevLieuv.setText(lieuVente.getLilieuv());
-        TxtDevLimag.setText(magasin.getMaglimag());
-        TxtDevLiliv.setText(livreur.getLivliliv());
-        TxtDevStatu.setText(getResources().getString(R.string.AddProduitDevisStatu));
         TxtDevVadev.setText("");
 
         /**Récupération de la liste des produits**/
@@ -207,13 +200,12 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             DevDalivFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDaliv())));
+            DevDadevFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDadev())));
         } catch (ParseException e) {
             e.printStackTrace();
         }
         TxtDevDaliv.setText(DevDalivFormat);
-
-
-
+        TxtDevDadev.setText(DevDadevFormat);
 
         /**Terminer Devis**/
         BtnTerminer.setOnClickListener(v -> {

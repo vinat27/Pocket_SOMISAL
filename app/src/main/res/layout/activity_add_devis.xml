@@ -2,22 +2,28 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:local="http://schemas.android.com/tools"
-    android:background="@drawable/back_produit">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView2"
-            style="@style/CustomCardViewStyle"
+        <TextView
+            android:id="@+id/TxtStockTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp"
-            app:cardElevation="0dp">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:ellipsize="end"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Informations Devis"
+            android:textColor="@color/teal"
+            android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+            />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,8 +33,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/spinner_style"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/searchable_spinner_style"
                     android:orientation="vertical">
 
                     <!--Choix de clients-->
@@ -36,7 +44,8 @@
                         android:id="@+id/MbSpnCliRasoc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:layout_marginBottom="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:layout_marginTop="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
                         android:focusableInTouchMode="false"
                         android:fontFamily="@font/montserrat_regular"
                         app:hintText="@string/activity_ass_devis_MbSpinnerClient"
@@ -47,58 +56,74 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/spinner_style"
-                    android:orientation="vertical">
-                    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                        android:id="@+id/MbSpnCliLieuv"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                        android:focusableInTouchMode="false"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:hint="@string/add_devis_activity_MbSpnLieuv"
-                        android:background="@drawable/selector_gray_white_spinner"
-                        app:met_floatingLabel="normal"
-                        app:met_hideUnderline="true"
-                        app:met_textColor="@color/black"
-                        />
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/searchable_spinner_style"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                            android:id="@+id/MbSpnCliLieuv"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:hint="@string/add_devis_activity_MbSpnLieuv"
+                            android:background="@drawable/selector_gray_white_spinner"
+                            app:met_floatingLabel="normal"
+                            app:met_hideUnderline="true"
+                            app:met_textColor="@color/black"
+                            app:met_textColorHint="@color/black"
+                            />
+                    </LinearLayout>
+
+                    <!--Magasin-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/searchable_spinner_style"
+                        android:orientation="vertical">
+
+                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                            android:id="@+id/MbSpnDevMag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:hint="@string/add_devis_activity_MbSpnDevMag"
+                            app:met_floatingLabel="normal"
+                            app:met_hideUnderline="true"
+                            app:met_textColor="@color/black"
+                            app:met_textColorHint="@color/black"/>
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
 
-                <!--Magasin-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/spinner_style"
-                    android:orientation="vertical">
 
-                    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                        android:id="@+id/MbSpnDevMag"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                        android:focusableInTouchMode="false"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:hint="@string/add_devis_activity_MbSpnDevMag"
-                        app:met_floatingLabel="normal"
-                        app:met_hideUnderline="true"
-                        app:met_textColor="@color/black"/>
-                </LinearLayout>
+
+
 
                 <!--Date Devis-->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <!--<com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:hint="@string/add_devis_activity_EdtDevDadev"
-                    android:inputType="date"
+                    android:inputType="none"
                     app:errorEnabled="true"
+                    android:background="@android:color/transparent"
+                    app:boxBackgroundColor="@android:color/transparent"
                     android:singleLine="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -108,17 +133,19 @@
                         android:focusable="false"
                         android:fontFamily="@font/montserrat_regular" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <!--Référence-->
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
                     android:hint="@string/add_devis_activity_EdtDevRfdev"
                     android:inputType="text"
+                    android:background="@android:color/transparent"
+                    app:boxBackgroundColor="@android:color/transparent"
                     app:errorEnabled="true"
                     android:singleLine="true">
 
@@ -128,38 +155,54 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_regular" />
                 </com.google.android.material.textfield.TextInputLayout>
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Livraison"
+                    android:textColor="@color/teal"
+                    android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+                    />
                 <!--Livreur-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/spinner_style"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/searchable_spinner_style"
                 android:orientation="vertical">
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/MbSpnDevColiv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                    android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
                     android:focusableInTouchMode="false"
                     android:fontFamily="@font/montserrat_regular"
                     android:hint="@string/add_devis_activity_MbSpnDevColiv"
                     app:met_floatingLabel="normal"
                     app:met_hideUnderline="true"
-                    app:met_textColor="@color/black" />
+                    app:met_textColor="@color/black"
+                    app:met_textColorHint="@color/black" />
             </LinearLayout>
 
                 <!--Date Livraison-->
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
                     android:hint="@string/add_devis_activity_EdtDevDaliv"
                     app:errorEnabled="true"
                     android:inputType="date"
+                    android:background="@android:color/transparent"
+                    app:boxBackgroundColor="@android:color/transparent"
                     android:singleLine="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -170,29 +213,44 @@
                         android:fontFamily="@font/montserrat_regular" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
                 <TextView
                     android:id="@+id/TxtDlvlv"
                     android:layout_width="wrap_content"
                     android:textColor="@color/red"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/oswald_light"
                     android:layout_marginTop="-12dp"
                     android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Règlement"
+                    android:textColor="@color/teal"
+                    android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+                    />
+
 
                     <!--Règlement-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/spinner_style"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:background="@drawable/searchable_spinner_style"
                         android:orientation="vertical">
 
                         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                             android:id="@+id/MbSpnDevMoreg"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                            android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/montserrat_regular"
                             android:hint="@string/add_devis_activity_MbSpnDevMoreg"
@@ -202,19 +260,21 @@
                             app:met_textColorHint="@color/black" />
                     </LinearLayout>
 
+
+
                     <!--Délai-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/spinner_style"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:background="@drawable/searchable_spinner_style"
                         android:orientation="vertical">
                         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                             android:id="@+id/MbSpnDevDereg"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                            android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/montserrat_regular"
                             android:hint="@string/add_devis_activity_MbSpnDevDereg"
@@ -224,22 +284,29 @@
                             app:met_textColorHint="@color/black" />
                     </LinearLayout>
 
+
+
+
+
                 <!--Remise Globale - Escompte-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                    android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
                     android:orientation="horizontal">
 
 
                         <!--Remise Globale-->
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
                             android:layout_weight="1"
+                            android:layout_marginRight="10dp"
                             android:hint="@string/add_devis_activity_EdtDevTxrem"
+                            android:background="@android:color/transparent"
+                            app:boxBackgroundColor="@android:color/transparent"
                             android:inputType="number"
                             android:singleLine="true">
 
@@ -251,15 +318,15 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-                        <!--Remise Globale-->
+                        <!--Escompte-->
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
                             android:hint="@string/add_devis_activity_EdtDevTxesc"
+                            android:background="@android:color/transparent"
+                            app:boxBackgroundColor="@android:color/transparent"
                             android:inputType="number"
                             android:singleLine="true">
 
@@ -273,21 +340,16 @@
 
                 </LinearLayout>
 
-                <!--Eco-Participation - Commercial-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-
-                        <!--Remise Globale-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
+                        <!--Eco-Participation-->
+                        <!--<com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
                             android:hint="@string/add_devis_activity_EdtDevEcova"
-                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            app:boxBackgroundColor="@android:color/transparent"
                             android:inputType="number"
                             android:singleLine="true">
 
@@ -296,25 +358,22 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/montserrat_regular" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>-->
 
                     <!---->
                     <!--Commercial-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/spinner_style"
-                        android:layout_weight="1"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
+                        android:background="@drawable/searchable_spinner_style"
                         android:orientation="vertical">
                         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                             android:id="@+id/MbSpnDevUscom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
-                            android:layout_marginRight="@dimen/filter_produit_full_dialog_fragment_MbSpnFamille_MarginTop"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/montserrat_regular"
                             android:hint="@string/add_devis_activity_MbSpnDevUscom"
@@ -325,29 +384,27 @@
                     </LinearLayout>
 
 
-
-                </LinearLayout>
-
                 <!--Valider-->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/BtnValider"
+                    app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/Lnr01"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/roboto_bold"
                     android:layout_gravity="center"
                     android:text="@string/activity_add_devis_BtnValider_hint"
                     android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
-                    android:padding="@dimen/login_activity_BtnConnexion_padding"
-                    app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
+                    app:cornerRadius="32dp"
                     android:textAllCaps="false"
                     app:backgroundTint="@color/colorPrimary"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
 
 
     </LinearLayout>

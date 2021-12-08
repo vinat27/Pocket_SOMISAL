@@ -82,7 +82,7 @@
     <string name="fiche_devis_activity_TxtDevStatuTitle">Statut</string>
     <string name="fiche_devis_activity_TxtDevLimagTitle">Magasin</string>
     <string name="activity_fiche_produit_TxtLilivTitle">Livreur</string>
-    <string name="activity_fiche_produit_TxtMontantHtTitle">Montant H.T.</string>
+    <string name="activity_fiche_produit_TxtMontantHtTitle">Total H.T.</string>
     <string name="activity_fiche_produit_FabCommentaires">Commentaires</string>
     <string name="activity_fiche_produit_TxtProduits">PRODUITS</string>
     <string name="activity_fiche_devis_TxtDevNudev">N° devis</string>
@@ -108,7 +108,7 @@
     <string name="add_devis_activity_EdtDevRfdev">Référence</string>
     <string name="add_devis_activity_MbSpnDevColiv">Livreur <font color='#FF0000'>*</font></string>
     <string name="add_devis_activity_MbSpnDevDereg">Délai</string>
-    <string name="add_devis_activity_MbSpnDevMoreg">Règlement</string>
+    <string name="add_devis_activity_MbSpnDevMoreg">Mode Règlement</string>
     <string name="add_devis_activity_EdtDevDaliv">Date Livraison <font color='#FF0000'>*</font></string>
     <string name="add_devis_activity_EdtDevTxrem">Remise Globale</string>
     <string name="add_devis_activity_EdtDevTxesc">Escompte</string>
@@ -302,7 +302,7 @@
     <!--Activity_update_commande-->
     <string name="activity_update_commande_TxtComNucom">N° Commande</string>
     <string name="activity_update_commande_TxtDateCommandeTitle">Date commande</string>
-    <string name="helloScreenTextTxt">Bonjour,</string>
+    <string name="helloScreenTextTxt">Bonjour</string>
     <string name="SearcheableSelectItem">Selectionner</string>
     <string name="add_commande_activityMbSpnCliLieuv">Lieu de vente <font color='#FF0000'>*</font></string>
     <string name="add_commande_activity_MbSpinnerClient">Client <font color='#FF0000'>*</font></string>
@@ -312,4 +312,7 @@
     <string name="filtres_commandes_dialog">Filtres - Commandes</string>
     <string name="filtres_devis_dialog">Filtres - Devis</string>
     <string name="filtre_commande_client_statu_commande">Statut <font color='#FF0000'>*</font></string>
+    <string name="activity_fiche_devis_TxtAdr1l">Adresse</string>
+    <string name="helpTotalTilp">Montant total Hors Taxes du devis</string>
+    <string name="activity_update_produit_TxtDadev">Date Devis</string>
 </resources>

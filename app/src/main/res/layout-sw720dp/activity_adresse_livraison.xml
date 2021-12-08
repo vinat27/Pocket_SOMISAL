@@ -13,20 +13,20 @@
             android:id="@+id/StepTitleLivraison"
             android:layout_width="wrap_content"
             android:layout_margin="10dp"
-            android:textColor="@color/colorPrimary"
-            android:fontFamily="@font/montserrat_bold"
-            android:textSize="17sp"
+            android:textColor="@color/teal"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textSize="14sp"
             android:text="@string/fragment_adresse_livraison_StepTitleLivraison"
             android:layout_height="wrap_content"></TextView>
         <!--Raison Sociale-->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:hint="@string/fragment_adresse_livraison_EdtComRasol"
             app:errorEnabled="true"
+            app:boxBackgroundColor="@color/white"
             android:singleLine="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -41,13 +41,13 @@
 
         <!--Adresse 1-->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:hint="@string/fragment_adresse_livraison_EdtComAdr1l"
             app:errorEnabled="true"
+            app:boxBackgroundColor="@color/white"
             android:singleLine="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,13 +60,13 @@
 
         <!--Adresse 2-->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:hint="@string/fragment_adresse_livraison_EdtComAdr2l"
             app:errorEnabled="true"
+            app:boxBackgroundColor="@color/white"
             android:singleLine="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -85,7 +85,6 @@
 
             <!--Code Postal-->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -93,6 +92,7 @@
                 android:layout_weight="0.5"
                 android:hint="@string/fragment_adresse_livraison_EdtComCopol"
                 app:errorEnabled="true"
+                app:boxBackgroundColor="@color/white"
                 android:singleLine="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -105,7 +105,6 @@
 
             <!--Code Postal-->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -113,6 +112,7 @@
                 android:layout_weight="0.4"
                 android:hint="@string/fragment_adresse_livraison_EdtComVilll"
                 app:errorEnabled="true"
+                app:boxBackgroundColor="@color/white"
                 android:singleLine="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -133,7 +133,6 @@
 
             <!--Boîte Postale-->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -141,6 +140,7 @@
                 android:layout_weight="0.5"
                 android:hint="@string/fragment_adresse_livraison_EdtComBopol"
                 app:errorEnabled="true"
+                app:boxBackgroundColor="@color/white"
                 android:singleLine="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="0.4"
-                android:background="@drawable/spinner_style"
+                android:background="@drawable/searchable_spinner_style"
                 android:orientation="vertical">
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -195,7 +195,7 @@
                 android:textAllCaps="false"
                 app:icon="@drawable/ic_baseline_keyboard_arrow_left_24"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/teal" />
 
             <!--Suivant-->
             <com.google.android.material.button.MaterialButton
@@ -211,7 +211,7 @@
                 android:textAllCaps="false"
                 app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/teal" />
 
         </RelativeLayout>
     </LinearLayout>

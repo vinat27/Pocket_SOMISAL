@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +44,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,19 +56,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
+
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
 
 public class FicheDevisActivity extends AppCompatActivity {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, nudevText;
     Devis devis;
     RecyclerView RecyclerViewDetailsDevis;
     List<DetailDevis> detailDevisList;
     DetailDevisAdapter detailDevisAdapter;
-    TextView TxtClirasoc, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevVadev;
+    TextView TxtClirasoc, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevVadev, TxtNuDev;
     public RequestQueue rq;
+    ImageView helpTotalTilp;
     DelayedProgressDialog progressDialogInfo;
 
     @Override
@@ -81,11 +91,13 @@ public class FicheDevisActivity extends AppCompatActivity {
 
         /**Instanciation des widgets**/
         RecyclerViewDetailsDevis = findViewById(R.id.RecyclerViewDetailsDevis);
+        TxtNuDev = findViewById(R.id.TxtNuDev);
         TxtClirasoc = findViewById(R.id.TxtClirasoc);
         TxtDevStatu = findViewById(R.id.TxtDevStatu);
         TxtDevLimag = findViewById(R.id.TxtDevLimag);
         TxtDevLiliv = findViewById(R.id.TxtDevLiliv);
         TxtDevVadev = findViewById(R.id.TxtDevVadev);
+        helpTotalTilp = findViewById(R.id.helpTotalTilp);
         /**Gestion du menu d'action**/
         if (getSupportActionBar() != null) getSupportActionBar().setTitle("Détails devis");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -110,19 +122,39 @@ public class FicheDevisActivity extends AppCompatActivity {
         devis = (Devis) bundle.getSerializable("devis");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
         RecyclerViewDetailsDevis.setLayoutManager(linearLayoutManager);
-        String vadev = String.format("%.2f", devis.getDevVadev())+" "+devis.getDevlimon().trim();
+        BigDecimal bd = new BigDecimal(devis.getDevVadev());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String vadev = String.format(formatter.format(bd.floatValue()))+" "+devis.getDevlimon().trim();
+
+        helpTotalTilp.setOnClickListener(v -> {
+            new SimpleTooltip.Builder(this)
+                    .anchorView(v)
+                    .text(R.string.helpTotalTilp)
+                    .gravity(Gravity.BOTTOM)
+                    .dismissOnOutsideTouch(true)
+                    .dismissOnInsideTouch(true)
+                    .build()
+                    .show();
+        });
 
         /**Set Data to Textviews**/
+        nudevText = "Devis N°: "+devis.getDevNudev();
+        TxtNuDev.setText(nudevText);
         TxtClirasoc.setText(devis.getCliRasoc());
         TxtDevStatu.setText(devis.getDevStatut());
         TxtDevLimag.setText(devis.getDevLimag());
-        TxtDevLiliv.setText(devis.getDevliliv());
+        //TxtDevLiliv.setText(devis.getDevliliv());
         TxtDevVadev.setText(vadev);
 
         detailDevisList = new ArrayList<>();
 
         /**Récupération details devis**/
         recupererDetailsDevis(apiUrl01, devis.getDevNudev(), devis.getDevComon());
+
 
     }
 
