@@ -669,4 +669,40 @@ public class ApiReceiverMethods {
         return delaiLivraisons;
     }
 
+    /**Comparaison de statuts**/
+    public String recupererStatutDevis(String codeStatutDevis){
+        String libelleStatutDevis = "";
+        switch (codeStatutDevis){
+            case "E":
+                libelleStatutDevis = "En Cours";
+                break;
+            case "H":
+                libelleStatutDevis = "Archivé";
+                break;
+            case "S":
+                libelleStatutDevis = "Soldé";
+        }
+        return libelleStatutDevis;
+    }
+
+    /**Comparaison de statuts**/
+    public String recupererStatutCommande(String codeStatutCommande){
+        String libelleStatutDevis = "";
+        switch (codeStatutCommande){
+            case "E":
+                libelleStatutDevis = "En Cours";
+                break;
+            case "I":
+                libelleStatutDevis = "A valider";
+                break;
+            case "S":
+                libelleStatutDevis = "Soldé";
+                break;
+            case "R":
+                libelleStatutDevis = "Reliquat";
+                break;
+        }
+        return libelleStatutDevis;
+    }
+
 }

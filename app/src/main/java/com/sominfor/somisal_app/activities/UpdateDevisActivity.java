@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sominfor.somisal_app.R;
@@ -31,9 +39,13 @@ import com.sominfor.somisal_app.handler.models.Magasin;
 import com.sominfor.somisal_app.handler.models.ModeReglement;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.VolleyCallBack;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -44,8 +56,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
@@ -53,12 +67,12 @@ import static com.sominfor.somisal_app.fragments.DevisFragment.livreurListDevis;
 import static com.sominfor.somisal_app.fragments.HomeFragment.gestionParametresHome;
 //TODO Set values to MoReg and Dereg - Recevoir Nacli, Lieuv avec les espaces
 
-public class UpdateDevisActivity extends AppCompatActivity {
+public class UpdateDevisActivity extends AppCompatActivity  {
 
     TextView TxtClirasoc, TxtDevLieuv, TxtDevLimag, TxtDevLiliv, TxtDevDaliv, TxtDevVadev, TxtNudev, TxtDevStatu;
     MaterialButton BtnValider;
     ServeurNodeController serveurNodeController;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage, apiUrl01, apiUrl02, apiUrl03, apiUrl04, nudev, gszon, gstrn, gslvr;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage, apiUrl01, apiUrl02, apiUrl03, apiUrl04, apiUrl05, nudev, gszon, gstrn, gslvr;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
     List<Livreur> livreurs;
@@ -68,6 +82,7 @@ public class UpdateDevisActivity extends AppCompatActivity {
     TextInputEditText EdtDevRfdev, EdtDevDaliv;
     MaterialBetterSpinner MbSpnDevColiv, MbSpnDevMoreg, MbSpnDevDereg;
     Devis devis;
+    List<Devis> devisDetail;
     ApiReceiverMethods apiReceiverMethods;
     LivreurSpinnerAdapter livreurSpinnerAdapter;
     ModeReglementSpinnerAdapter modeReglementSpinnerAdapter;
@@ -77,6 +92,7 @@ public class UpdateDevisActivity extends AppCompatActivity {
     ModeReglement modeReglement,modeReglementNotSelected;
     DelaiReglement delaiReglement, delaiReglementNotSelected;
     static UpdateDevisActivity updateDevisActivity;
+    DelayedProgressDialog progressDialogInfo;
 
     /**Nouvelle Instance**/
     public static UpdateDevisActivity getInstance(){
@@ -133,11 +149,14 @@ public class UpdateDevisActivity extends AppCompatActivity {
         apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
         apiUrl03 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allDereg";
         apiUrl04 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allChoixBySociete";
+        apiUrl05 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/devisByNudev";
 
         livreurs = new ArrayList<>();
         gestionParametres = new ArrayList<>();
+        progressDialogInfo = new DelayedProgressDialog();
         Bundle bundle = getIntent().getExtras();
         devis = (Devis) bundle.getSerializable("devis");
+
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String DevDadevFormat = "";
@@ -153,9 +172,7 @@ public class UpdateDevisActivity extends AppCompatActivity {
         /**Set Data to Textviews**/
         TxtClirasoc.setText(devis.getCliRasoc());
         TxtDevLieuv.setText(devis.getDevLieuv());
-        TxtDevLimag.setText(devis.getDevLimag());
-        //TxtDevLiliv.setText(devis.getDevColiv());
-        TxtDevStatu.setText(devis.getDevStatut());
+
         TxtDevDaliv.setText(DevDalivFormat);
         /**valeur H.T.*/
         BigDecimal bd = new BigDecimal(devis.getDevVadev());
@@ -169,12 +186,16 @@ public class UpdateDevisActivity extends AppCompatActivity {
         /**Set Nudev**/
         nudev = "Devis: #" + devis.getDevNudev();
         TxtNudev.setText(nudev);
-        EdtDevRfdev.setText(devis.getDevRfdev().trim());
-        EdtDevDaliv.setText(devis.getDevDaliv());
 
+
+
+        EdtDevDaliv.setText(devis.getDevDaliv());
         EdtDevDaliv.setOnClickListener(v -> {
             DpdialogDaliv.show();
         });
+
+
+
         /**Marquer la date selectionnée dans le champ date livraison**/
         setDateOnEdtDevDaliv();
 
@@ -224,35 +245,8 @@ public class UpdateDevisActivity extends AppCompatActivity {
         delaiReglementSpinnerAdapter = new DelaiReglementSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, delaiReglements);
         MbSpnDevDereg.setAdapter(delaiReglementSpinnerAdapter);
 
-        /**Set values to livreur**/
-        if (!livreurs.isEmpty()){
-            /**Initialisation livreur**/
-            livreurNotSelected = new Livreur();
-            livreurNotSelected.setLivColiv(devis.getDevColiv());
-            livreurNotSelected.setLivliliv(devis.getDevliliv());
-            int spinnerPosition = livreurs.indexOf(livreurNotSelected);
-            if (spinnerPosition != -1)
-            /**Set value to spinnerLivreur*/
-                MbSpnDevColiv.setText(MbSpnDevColiv.getAdapter().getItem(spinnerPosition).toString());
-        }
+        //recupEnteteDevis(apiUrl05, devis.getDevNudev());
 
-        /**Set values to ModeRegelemnt**/
-        if (!modeReglements.isEmpty()){
-            modeReglementNotSelected = new ModeReglement();
-            modeReglementNotSelected.setCoMoreg(devis.getDevMoreg());
-            int spinnerPosition = modeReglements.indexOf(modeReglementNotSelected);
-            if (spinnerPosition!=-1)
-                MbSpnDevMoreg.setText(MbSpnDevMoreg.getAdapter().getItem(spinnerPosition).toString());
-        }
-
-        /**Set Value to Delai*/
-        if (!delaiReglements.isEmpty()){
-            delaiReglementNotSelected = new DelaiReglement();
-            delaiReglementNotSelected.setCoDereg(devis.getDevDereg());
-            int spinnerPosition = delaiReglements.indexOf(delaiReglementNotSelected);
-            if (spinnerPosition!=-1)
-                MbSpnDevDereg.setText(MbSpnDevDereg.getAdapter().getItem(spinnerPosition).toString());
-        }
 
         /**
          * Selection Livreur*/
@@ -299,7 +293,7 @@ public class UpdateDevisActivity extends AppCompatActivity {
                                         Client client = new Client();
                                         client.setCliNucli(devis.getDevNucli());
                                         client.setCliNacli(devis.getDevNacli());
-                                        client.setCliLiComon(devis.getDevComon());
+                                        client.setCliComon(devis.getDevComon());
                                         /**Set Value to lieuv**/
                                         LieuVente lieuVente = new LieuVente();
                                         lieuVente.setColieuv(devis.getDevColieuv());
@@ -378,6 +372,105 @@ public class UpdateDevisActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void recupEnteteDevis(String api_url, final String devNudev, final VolleyCallBack volleyCallBack) {
+        RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
+        progressDialogInfo.show(getSupportFragmentManager(), "Loading...");
+        Devis devisInfo = new Devis();
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(s);
+                JSONObject jsonObjectInfo = jsonObject.getJSONObject("FicheDevis");
+                devisInfo.setDevRfdev(jsonObjectInfo.getString("DEVRFDEV").trim());
+                devisInfo.setDevMoreg(jsonObjectInfo.getString("DEVMOREG"));
+                devisInfo.setDevDereg(jsonObjectInfo.getString("DEVDEREG").trim());
+                devisInfo.setDevColiv(jsonObjectInfo.getString("DEVCOLIV").trim());
+                devisInfo.setDevliliv(jsonObjectInfo.getString("DEVCOLIVLIB").trim());
+                devisInfo.setDevLimag(jsonObjectInfo.getString("DEVCOMAGLIB").trim());
+                devisInfo.setDevStatut(jsonObjectInfo.getString("DEVSTATULIB").trim());
+                devisInfo.setDevComag(jsonObjectInfo.getString("DEVCOMAG").trim());
+                devisInfo.setDevEcova(jsonObjectInfo.getDouble("DEVECOVA"));
+                devisInfo.setDevComon(jsonObjectInfo.getString("DEVCOMON"));
+                devisInfo.setDevLieuv(jsonObjectInfo.getString("DEVLIEUV").trim());
+                devisInfo.setDevTxesc(jsonObjectInfo.getDouble("DEVTXESC"));
+                devisInfo.setDevNucli(jsonObjectInfo.getString("DEVNUCLI"));
+                devisInfo.setDevNacli(jsonObjectInfo.getString("CLINACLI").trim());
+
+                volleyCallBack.onSuccess(devisInfo);
+
+
+                TxtDevLimag.setText(devisInfo.getDevLimag());
+                TxtDevStatu.setText(devisInfo.getDevStatut());
+                EdtDevRfdev.setText(jsonObjectInfo.getString("DEVRFDEV").trim());
+                /**Set values to livreur**/
+                if (!livreurs.isEmpty()){
+                    /**Initialisation livreur**/
+                    livreurNotSelected = new Livreur();
+                    livreurNotSelected.setLivColiv(devisInfo.getDevColiv());
+                    livreurNotSelected.setLivliliv(devisInfo.getDevliliv());
+                    int spinnerPosition = livreurs.indexOf(livreurNotSelected);
+                    if (spinnerPosition != -1)
+                    /**Set value to spinnerLivreur*/
+                        MbSpnDevColiv.setText(MbSpnDevColiv.getAdapter().getItem(spinnerPosition).toString());
+                }
+
+                /**Set values to ModeRegelemnt**/
+                if (!modeReglements.isEmpty()){
+                    modeReglementNotSelected = new ModeReglement();
+                    modeReglementNotSelected.setCoMoreg(devisInfo.getDevMoreg());
+                    int spinnerPosition = modeReglements.indexOf(modeReglementNotSelected);
+                    if (spinnerPosition!=-1)
+                        MbSpnDevMoreg.setText(MbSpnDevMoreg.getAdapter().getItem(spinnerPosition).toString());
+                }
+
+                /**Set Value to Delai*/
+                if (!delaiReglements.isEmpty()){
+                    delaiReglementNotSelected = new DelaiReglement();
+                    delaiReglementNotSelected.setCoDereg(devisInfo.getDevDereg());
+                    int spinnerPosition = delaiReglements.indexOf(delaiReglementNotSelected);
+                    if (spinnerPosition!=-1)
+                        MbSpnDevDereg.setText(MbSpnDevDereg.getAdapter().getItem(spinnerPosition).toString());
+                }
+                progressDialogInfo.cancel();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, volleyError -> {
+            volleyError.printStackTrace();
+            progressDialogInfo.cancel();
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                param.put("devnudev", devNudev);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+    }
+
+    public void onResume(){
+        super.onResume();
+        recupEnteteDevis(apiUrl05, devis.getDevNudev(), devisDet -> {
+            devis.setDevComag(devisDet.getDevComag());
+            devis.setDevNucli(devisDet.getDevNucli());
+            devis.setDevColieuv(devisDet.getDevLieuv());
+            devis.setDevEcova(devisDet.getDevEcova());
+            devis.setDevTxesc(devisDet.getDevTxesc());
+            devis.setDevComon(devisDet.getDevComon());
+            devis.setDevNacli(devisDet.getDevNacli());
+        });
     }
 
 }

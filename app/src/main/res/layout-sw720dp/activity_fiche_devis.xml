@@ -109,13 +109,13 @@
                             />
 
                         <TextView
-                            android:id="@+id/Txt"
+                            android:id="@+id/TxtDevLiliv"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textColor="@color/black"
                             android:fontFamily="@font/roboto_bold"
-                            android:text="Saint Pierre"/>
+                            android:text=""/>
                     </LinearLayout>
 
                     <!--Statut du devis-->
@@ -201,7 +201,7 @@
                             android:layout_weight="1"
                             android:textColor="@color/black"
                             android:fontFamily="@font/roboto_bold"
-                            android:text="13 Jan 2021"/>
+                            android:text=""/>
 
 
                     </LinearLayout>

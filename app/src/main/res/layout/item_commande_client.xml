@@ -65,6 +65,7 @@
                         android:layout_weight="0.3"
                         android:fontFamily="@font/montserrat_semibold"
                         android:paddingLeft="5sp"
+                        android:textSize="11sp"
                         android:text="@string/TxtClirasoc_text"/>
 
                     <TextView
@@ -88,6 +89,7 @@
                     <TextView
                         android:id="@+id/TxtComDalivTitle"
                         android:layout_width="0dp"
+                        android:textSize="11sp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:fontFamily="@font/montserrat_semibold"
@@ -138,6 +140,7 @@
                         android:textColor="@color/colorPrimary"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="@string/TxtComVacomTitle_text"
+                        android:textSize="11sp"
                         android:paddingLeft="5sp"/>
 
                     <TextView
@@ -179,6 +182,7 @@
                     android:layout_weight="0.3"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/item_commande_TxtNumeroCommande"
+                    android:textSize="11sp"
                     android:layout_marginLeft="40dp"
                     />
 
@@ -205,6 +209,7 @@
                 <TextView
                     android:id="@+id/TxtDateCommandeTitle"
                     android:layout_width="0dp"
+                    android:textSize="11sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
                     android:layout_marginLeft="40dp"
@@ -234,6 +239,7 @@
 
                 <TextView
                     android:id="@+id/TxtLieuVente"
+                    android:textSize="11sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"

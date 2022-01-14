@@ -40,6 +40,6 @@ public class Commercial implements Serializable {
         }
         Commercial c = (Commercial) t;
         //Compare however you want, ie
-        return (c.getCoUscom().equals(this.getLiUscom()));
+        return (c.getCoUscom().equals(this.getCoUscom()));
     }
 }

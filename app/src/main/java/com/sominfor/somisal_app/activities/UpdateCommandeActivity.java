@@ -13,7 +13,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -36,17 +40,27 @@ import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Tournee;
 import com.sominfor.somisal_app.handler.models.Transport;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.interfaces.VolleyCallBackCommande;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.sominfor.somisal_app.activities.LoginActivity.protocole;
@@ -64,9 +78,9 @@ public class UpdateCommandeActivity extends AppCompatActivity {
     Tournee tournee, tourneeNotSelected;
     Livreur livreur, livreurNotSelected;
     Transport transport, transportNotSelected;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, gszon, gstrn, apiUrl11, apiUrl07, apiUrl08, apiUrl09, apiUrl10, utilisateurCosoc, utilisateurCoage;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, apiUrl04, gszon, gstrn,gslvr, apiUrl11, apiUrl07, apiUrl08, apiUrl09, apiUrl10, utilisateurCosoc, utilisateurCoage;
     ApiReceiverMethods apiReceiverMethods;
-    Commande commande;
+    Commande commande, commandeInfos;
     TextView TxtComRasoc, TxtComLieuv, TxtComNucom, TxtComLimag, TxtComDacom, TxtComLiliv, TxtComVacom;
     MaterialButton BtnNext;
     MaterialBetterSpinner MbSpnComCotrn, MbSpnComColiv, MbSpnComCotrp;
@@ -76,6 +90,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
     List<Livreur> livreurs;
     List<Transport> transports;
     List<GestionParametre> gestionParametres;
+    DelayedProgressDialog progressDialogInfo;
 
     public static List<Pays> paysFacturationUpdCdeList;
     public static List<DelaiReglement> delaiReglementsUpdCde;
@@ -121,6 +136,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         gestionParametres = new ArrayList<>();
         /**Récupération du serveur node**/
         serveurNode = serveurNodeController.getServeurNodeInfos();
+        progressDialogInfo = new DelayedProgressDialog();
         /**Récupération de commandes*/
         Bundle bundle = getIntent().getExtras();
         commande = (Commande) bundle.getSerializable("commande");
@@ -133,6 +149,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         apiUrl01 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allCotrn";
         apiUrl02 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allColiv";
         apiUrl03 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allCotrp";
+        apiUrl04 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/commande/commandeByNucom";
         apiUrl07 = protocole + "://" + serveurNode.getServeurNodeIp() + "/read/parametre/allPays";
         apiUrl08 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
         apiUrl09 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allDereg";
@@ -144,7 +161,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         TxtComNucom = findViewById(R.id.TxtComNucom);
         TxtComLimag = findViewById(R.id.TxtComLimag);
         TxtComDacom = findViewById(R.id.TxtComDacom);
-        TxtComLiliv = findViewById(R.id.TxtComLiliv);
+        //TxtComLiliv = findViewById(R.id.TxtComLiliv);
         TxtComVacom = findViewById(R.id.TxtComVacom);
         EdtComNamar = findViewById(R.id.EdtComNamar);
         MbSpnComCotrn = findViewById(R.id.MbSpnComCotrn);
@@ -155,10 +172,6 @@ public class UpdateCommandeActivity extends AppCompatActivity {
 
         /**Set values to Textviews*/
         TxtComRasoc.setText(commande.getComrasoc());
-        TxtComLieuv.setText(commande.getComlilieuv());
-        TxtComNucom.setText(commande.getComnucom());
-        TxtComLimag.setText(commande.getComlimag());
-        @SuppressLint("DefaultLocale") String vacom = String.format("%.2f", commande.getComvacom()) + " " + commande.getComlimon().trim();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         String ComDacomFormat = "";
@@ -169,8 +182,14 @@ public class UpdateCommandeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         TxtComDacom.setText(ComDacomFormat);
-        TxtComLiliv.setText(commande.getComliliv());
-        TxtComVacom.setText(vacom);
+        BigDecimal bd = new BigDecimal(commande.getComvacom());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String wvacom = formatter.format(bd.floatValue()) + " " + commande.getComlimon();
+        TxtComVacom.setText(wvacom);
         EdtComNamar.setText(commande.getComnamar());
         EdtComDaliv.setText(commande.getComdaliv());
         EdtComDaliv.setOnClickListener(v -> {
@@ -187,7 +206,15 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         /**Gestion de zone géographie**/
         gszon = gestionParametres.get(0).getDatas();
         /**Gestion de tournée**/
-        gstrn = gestionParametres.get(1).getDatas();
+        gstrn = gestionParametres.get(2).getDatas();
+
+        /**Gestion livreur**/
+        gslvr = gestionParametres.get(1).getDatas();
+
+        /**Gestion livreur**/
+        if (gslvr.equals("N")) {
+            MbSpnComColiv.setVisibility(View.GONE);
+        }
 
         /**Gestion tournée**/
         if (gstrn.equals("N")){
@@ -228,34 +255,6 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         uscomListUpdCde = apiReceiverMethods.recupererCommerciaux(apiUrl10, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
         /**Set values to spinners**/
         /**Set values to tournees**/
-        if (!tournees.isEmpty()) {
-            /**Initialisation tournee**/
-            tourneeNotSelected = new Tournee();
-            tourneeNotSelected.setTrnCotrn(commande.getComcotrn());
-            int spinnerPosition = tournees.indexOf(tourneeNotSelected);
-            if (spinnerPosition != -1)
-            /**Set value to spinnerTournee*/
-                MbSpnComCotrn.setText(MbSpnComCotrn.getAdapter().getItem(spinnerPosition).toString());
-        }
-        /**Set values to livreurs**/
-        if (!livreurs.isEmpty()) {
-            /**Initialisation livreur**/
-            livreurNotSelected = new Livreur();
-            livreurNotSelected.setLivColiv(commande.getComcoliv());
-            int spinnerPosition = livreurs.indexOf(livreurNotSelected);
-            if (spinnerPosition != -1)
-            /**Set value to spinnerLivreur*/
-                MbSpnComColiv.setText(MbSpnComColiv.getAdapter().getItem(spinnerPosition).toString());
-        }
-        /**Set values to transport*/
-        if (!transports.isEmpty()) {
-            transportNotSelected = new Transport();
-            transportNotSelected.setTrpCotrp(commande.getComcotrp());
-            int spinnerPosition = transports.indexOf(transportNotSelected);
-            if (spinnerPosition != -1)
-            /**Set value to spinnerTransport*/
-                MbSpnComCotrp.setText(MbSpnComCotrp.getAdapter().getItem(spinnerPosition).toString());
-        }
 
         /***Selection tournees**/
         MbSpnComCotrn.setOnItemClickListener((parent, view, position, id) -> {
@@ -271,8 +270,6 @@ public class UpdateCommandeActivity extends AppCompatActivity {
         });
 
         BtnNext.setOnClickListener(v -> {
-            if (MbSpnComColiv.getText().length() != 0) {
-                if (MbSpnComCotrn.getText().length() != 0) {
                     /**Comparaison des dates**/
                     try {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -301,10 +298,14 @@ public class UpdateCommandeActivity extends AppCompatActivity {
                                     commande.setComcotrn("");
                                 }
                                 /**Livreur**/
-                                if (null == livreur) {
-                                  commande.setComcoliv(livreurNotSelected.getLivColiv());
-                                } else {
-                                   commande.setComcoliv(livreur.getLivColiv());
+                                if (!gslvr.equals("N")){
+                                    if (null == livreur) {
+                                        commande.setComcoliv(livreurNotSelected.getLivColiv());
+                                    } else {
+                                        commande.setComcoliv(livreur.getLivColiv());
+                                    }
+                                }else{
+                                    commande.setComcoliv("");
                                 }
 
                                 /**Transport**/
@@ -324,12 +325,7 @@ public class UpdateCommandeActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL05), Toast.LENGTH_LONG).show();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL01), Toast.LENGTH_LONG).show();
-            }
+
         });
     }
 
@@ -362,5 +358,139 @@ public class UpdateCommandeActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**Récupération des informations En-tête commande**/
+    public void recupererEnteteCommande(String api_url, final String comNucom, VolleyCallBackCommande callBackCommande){
+        RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
+        progressDialogInfo.show(getSupportFragmentManager(), "Loading...");
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+            commandeInfos = new Commande();
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                JSONObject jsonObjectInfo = jsonObject.getJSONObject("FicheCommande");
+                commandeInfos.setComlimag(jsonObjectInfo.getString("LIBCOMAG").trim());
+                commandeInfos.setComcomag(jsonObjectInfo.getString("COMCOMAG"));
+                commandeInfos.setComnamar(jsonObjectInfo.getString("COMNAMAR").trim());
+                commandeInfos.setComnucli(jsonObjectInfo.getString("COMNUCLI"));
+                commandeInfos.setComcoliv(jsonObjectInfo.getString("COMCOLIV").trim());
+                commandeInfos.setComcotrp(jsonObjectInfo.getString("COMCOTRP"));
+                commandeInfos.setComcotrn(jsonObjectInfo.getString("COMCOTRN").trim());
+                commandeInfos.setComlitrn(jsonObjectInfo.getString("LIBCOTRN").trim());
+                commandeInfos.setComcomon(jsonObjectInfo.getString("COMCOMON"));
+                commandeInfos.setComlieuv(jsonObjectInfo.getString("COMLIEUV"));
+                commandeInfos.setComlimon(jsonObjectInfo.getString("LIBCOMON").trim());
+                commandeInfos.setComlilieuv(jsonObjectInfo.getString("LIBLIEUV").trim());
+                commandeInfos.setComrasol(jsonObjectInfo.getString("COMRASOL").trim());
+                commandeInfos.setComadr1l(jsonObjectInfo.getString("COMADR1L").trim());
+                commandeInfos.setComadr2l(jsonObjectInfo.getString("COMADR2L").trim());
+                commandeInfos.setComcopol(jsonObjectInfo.getString("COMCOPOL").trim());
+                commandeInfos.setComvilll(jsonObjectInfo.getString("COMVILLL").trim());
+                commandeInfos.setCombopol(jsonObjectInfo.getString("COMBOPOL").trim());
+                commandeInfos.setComcpayl(jsonObjectInfo.getString("COMCPAYL").trim());
+                commandeInfos.setComdereg(jsonObjectInfo.getString("COMDEREG"));
+                commandeInfos.setCommoreg(jsonObjectInfo.getString("COMMOREG"));
+                commandeInfos.setComtxrem(jsonObjectInfo.getDouble("COMTXREM"));
+                commandeInfos.setComtxesc(jsonObjectInfo.getDouble("COMTXESC"));
+                commandeInfos.setComecova(jsonObjectInfo.getDouble("COMECOVA"));
+                commandeInfos.setComuscom(jsonObjectInfo.getString("COMUSCOM").trim());
+                commandeInfos.setComnacli(jsonObjectInfo.getString("CLINACLI").trim());
+                commandeInfos.setComadre1(jsonObjectInfo.getString("COMADRE1").trim());
+                commandeInfos.setComadre2(jsonObjectInfo.getString("COMADRE2").trim());
+                commandeInfos.setCombopos(jsonObjectInfo.getString("COMBOPOS").trim());
+                commandeInfos.setComcopos(jsonObjectInfo.getString("COMCOPOS").trim());
+                commandeInfos.setComville(jsonObjectInfo.getString("COMVILLE").trim());
+                commandeInfos.setComcpays(jsonObjectInfo.getString("COMCPAYS").trim());
+
+                callBackCommande.onSuccess(commandeInfos);
+                TxtComLieuv.setText(commande.getComlilieuv());
+                TxtComNucom.setText(commande.getComnucom());
+                TxtComLimag.setText(commande.getComlimag());
+                if (!tournees.isEmpty()) {
+                    /**Initialisation tournee**/
+                    tourneeNotSelected = new Tournee();
+                    tourneeNotSelected.setTrnCotrn(commande.getComcotrn());
+                    int spinnerPosition = tournees.indexOf(tourneeNotSelected);
+                    if (spinnerPosition != -1)
+                    /**Set value to spinnerTournee*/
+                        MbSpnComCotrn.setText(MbSpnComCotrn.getAdapter().getItem(spinnerPosition).toString());
+                }
+                /**Set values to livreurs**/
+                if (!livreurs.isEmpty()) {
+                    /**Initialisation livreur**/
+                    livreurNotSelected = new Livreur();
+                    livreurNotSelected.setLivColiv(commande.getComcoliv());
+                    int spinnerPosition = livreurs.indexOf(livreurNotSelected);
+                    if (spinnerPosition != -1)
+                    /**Set value to spinnerLivreur*/
+                        MbSpnComColiv.setText(MbSpnComColiv.getAdapter().getItem(spinnerPosition).toString());
+                }
+                /**Set values to transport*/
+                if (!transports.isEmpty()) {
+                    transportNotSelected = new Transport();
+                    transportNotSelected.setTrpCotrp(commande.getComcotrp());
+                    int spinnerPosition = transports.indexOf(transportNotSelected);
+                    if (spinnerPosition != -1)
+                    /**Set value to spinnerTransport*/
+                        MbSpnComCotrp.setText(MbSpnComCotrp.getAdapter().getItem(spinnerPosition).toString());
+                }
+                progressDialogInfo.cancel();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, volleyError -> {
+            volleyError.printStackTrace();
+            progressDialogInfo.cancel();
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                param.put("nucom", comNucom);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+    }
+
+    public void onResume(){
+        super.onResume();
+        recupererEnteteCommande(apiUrl04, commande.getComnucom(), commandeDet -> {
+            commande.setComcomag(commandeDet.getComcomag());
+            commande.setComnamar(commandeDet.getComnamar());
+            commande.setComcoliv(commandeDet.getComcoliv());
+            commande.setComcotrp(commandeDet.getComcotrp().trim());
+            commande.setComcomon(commandeDet.getComcomon());
+            commande.setComlimon(commandeDet.getComlimon());
+            commande.setComlimag(commandeDet.getComlimag().trim());
+            commande.setComrasol(commandeDet.getComrasol());
+            commande.setComadr1l(commandeDet.getComadr1l());
+            commande.setComadr2l(commandeDet.getComadr2l());
+            commande.setComcopol(commandeDet.getComcopol());
+            commande.setComvilll(commandeDet.getComvilll());
+            commande.setCombopol(commandeDet.getCombopol());
+            commande.setComcpayl(commandeDet.getComcpayl());
+            commande.setComdereg(commandeDet.getComdereg());
+            commande.setCommoreg(commandeDet.getCommoreg());
+            commande.setComtxrem(commandeDet.getComtxrem());
+            commande.setComtxesc(commandeDet.getComtxesc());
+            commande.setComecova(commandeDet.getComecova());
+            commande.setComuscom(commandeDet.getComuscom());
+            commande.setComnacli(commandeDet.getComnacli());
+            commande.setComlieuv(commandeDet.getComlieuv());
+            commande.setComnucli(commandeDet.getComnucli());
+            commande.setComadre1(commandeDet.getComadre1());
+            commande.setComadre2(commandeDet.getComadre2());
+            commande.setCombopos(commandeDet.getCombopos());
+            commande.setComcopos(commandeDet.getComcopos());
+            commande.setComville(commandeDet.getComville());
+            commande.setComcpays(commandeDet.getComcpays());
+        });
     }
 }

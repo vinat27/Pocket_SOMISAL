@@ -32,6 +32,7 @@ import com.sominfor.somisal_app.adapters.DevisAdapter;
 import com.sominfor.somisal_app.fragments.CommentairesDevisFullDialog;
 import com.sominfor.somisal_app.fragments.FilterProduitFullDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
+import com.sominfor.somisal_app.handler.models.Client;
 import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.Produit;
@@ -64,12 +65,12 @@ public class FicheDevisActivity extends AppCompatActivity {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, nudevText;
-    Devis devis;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, utilisateurCosoc, utilisateurCoage, nudevText;
+    Devis devis, devisInfos;
     RecyclerView RecyclerViewDetailsDevis;
     List<DetailDevis> detailDevisList;
     DetailDevisAdapter detailDevisAdapter;
-    TextView TxtClirasoc, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevVadev, TxtNuDev;
+    TextView TxtClirasoc, TxtDevStatu, TxtDevLimag, TxtDevLiliv, TxtDevVadev, TxtNuDev,TxtDevDaliv;
     public RequestQueue rq;
     ImageView helpTotalTilp;
     DelayedProgressDialog progressDialogInfo;
@@ -97,6 +98,7 @@ public class FicheDevisActivity extends AppCompatActivity {
         TxtDevLimag = findViewById(R.id.TxtDevLimag);
         TxtDevLiliv = findViewById(R.id.TxtDevLiliv);
         TxtDevVadev = findViewById(R.id.TxtDevVadev);
+        TxtDevDaliv = findViewById(R.id.TxtDevDaliv);
         helpTotalTilp = findViewById(R.id.helpTotalTilp);
         /**Gestion du menu d'action**/
         if (getSupportActionBar() != null) getSupportActionBar().setTitle("Détails devis");
@@ -109,6 +111,7 @@ public class FicheDevisActivity extends AppCompatActivity {
         progressDialogInfo = new DelayedProgressDialog();
         /*URL Récupération de la liste des systèmes*/
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/detailDevis";
+        apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/devis/devisByNudev";
         /**Récupération de session utilisateur**/
         utilisateur = UserSessionManager.getInstance(getApplicationContext()).getUtilisateurDetail();
         systemeAdresse = utilisateur.getUtilisateurSysteme();
@@ -145,13 +148,22 @@ public class FicheDevisActivity extends AppCompatActivity {
         nudevText = "Devis N°: "+devis.getDevNudev();
         TxtNuDev.setText(nudevText);
         TxtClirasoc.setText(devis.getCliRasoc());
-        TxtDevStatu.setText(devis.getDevStatut());
-        TxtDevLimag.setText(devis.getDevLimag());
-        //TxtDevLiliv.setText(devis.getDevliliv());
         TxtDevVadev.setText(vadev);
 
-        detailDevisList = new ArrayList<>();
+        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
+        String DevDalivFormat = "";
 
+        try {
+            DevDalivFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDaliv())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        TxtDevDaliv.setText(DevDalivFormat);
+
+        recupEnteteDevis(apiUrl02, devis.getDevNudev());
+
+        detailDevisList = new ArrayList<>();
         /**Récupération details devis**/
         recupererDetailsDevis(apiUrl01, devis.getDevNudev(), devis.getDevComon());
 
@@ -256,4 +268,48 @@ public class FicheDevisActivity extends AppCompatActivity {
         postRequest.setRetryPolicy(policy);
         requestQueue.add(postRequest);
     }
+
+    public void recupEnteteDevis(String api_url, final String devNudev) {
+        RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+            devisInfos = new Devis();
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                JSONObject jsonObjectInfo = jsonObject.getJSONObject("FicheDevis");
+                devisInfos.setCliRasoc(jsonObjectInfo.getString("CLIRASOC").trim());
+                devisInfos.setDevlista(jsonObjectInfo.getString("DEVSTATULIB").trim());
+                devisInfos.setDevComag(jsonObjectInfo.getString("DEVCOMAG"));
+                devisInfos.setDevLimag(jsonObjectInfo.getString("DEVCOMAGLIB").trim());
+                devisInfos.setDevComon(jsonObjectInfo.getString("DEVCOMON"));
+                devisInfos.setDevliliv(jsonObjectInfo.getString("DEVLIEUVLIB").trim());
+
+
+                /**Set values to Textviews**/
+                TxtDevLimag.setText(devisInfos.getDevLimag());
+                TxtDevLiliv.setText(devisInfos.getDevliliv());
+                TxtDevStatu.setText(devisInfos.getDevlista());
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, volleyError -> {
+            volleyError.printStackTrace();
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                param.put("devnudev", devNudev);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+    }
+
 }

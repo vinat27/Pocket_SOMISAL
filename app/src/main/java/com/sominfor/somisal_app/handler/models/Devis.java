@@ -344,6 +344,8 @@ public class Devis implements Serializable {
         return "Devis{" +
                 "DevNudev='" + DevNudev + '\'' +
                 ", DevNucli='" + DevNucli + '\'' +
+                ", DevRfdev='" + DevRfdev + '\'' +
+                ", DevMoreg='" + DevMoreg + '\'' +
                 '}';
     }
 }

@@ -51,6 +51,7 @@
                         android:layout_weight="0.3"
                         android:fontFamily="@font/montserrat_semibold"
                         android:paddingLeft="5sp"
+                        android:textSize="11dp"
                         android:text="@string/TxtClirasoc_text"/>
 
                     <TextView
@@ -76,6 +77,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
+                        android:textSize="11dp"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="@string/TxtComDalivTitle_text"
                         android:paddingLeft="5sp"/>
@@ -124,6 +126,7 @@
                         android:textColor="@color/colorPrimary"
                         android:fontFamily="@font/montserrat_semibold"
                         android:text="@string/TxtComVacomTitle_text"
+                        android:textSize="11dp"
                         android:paddingLeft="5sp"/>
 
                     <TextView
@@ -165,6 +168,7 @@
                     android:layout_weight="0.3"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/item_commande_TxtNumeroCommande"
+                    android:textSize="11dp"
                     android:layout_marginLeft="40dp"
                     />
 
@@ -196,6 +200,7 @@
                     android:layout_marginLeft="40dp"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/TxtDateCommandeTitle"
+                    android:textSize="11dp"
                     />
 
                 <TextView
@@ -225,6 +230,7 @@
                     android:layout_weight="0.3"
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/TxtLieuVenteText"
+                    android:textSize="11dp"
                     android:layout_marginLeft="40dp"
                     />
 
@@ -239,34 +245,7 @@
                     android:paddingLeft="8sp"/>
             </LinearLayout>
 
-            <!--Référence-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/TxtTournee"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/TxtTourneeText"
-                    android:layout_marginLeft="40dp"
-                    />
-
-                <TextView
-                    android:id="@+id/TxtComCotrn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:paddingLeft="8sp"/>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

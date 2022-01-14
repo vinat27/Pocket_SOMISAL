@@ -375,21 +375,41 @@
                 android:layout_height="520dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/TxtProduits"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_fiche_produit_TxtProLipro_marginTop"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="@string/activity_fiche_produit_TxtProduits"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
-                    tools:targetApi="jelly_bean" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/TxtProduits"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:ellipsize="end"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/activity_fiche_produit_TxtProduits"
+                        android:textColor="@color/teal"
+                        android:textSize="@dimen/activity_fiche_produit_TxtProLipro_textSize"
+                        tools:targetApi="jelly_bean" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        app:chipBackgroundColor="@color/colorPrimary"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/roboto_bold"
+                        android:visibility="gone" />
+
+
+                </RelativeLayout>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/RecyclerViewDetailsCommandes"
                     android:layout_width="match_parent"

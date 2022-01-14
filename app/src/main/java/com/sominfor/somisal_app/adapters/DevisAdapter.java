@@ -92,7 +92,6 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
         holder.TxtDevNudev.setText(devis.getDevNudev());
         holder.TxtDevDadev.setText(DevDadevFormat);
         holder.TxtDevLieuv.setText(devis.getDevLieuv().trim());
-        holder.TxtDevRefdev.setText(devis.getDevRfdev().trim());
         /**Au clic du bouton détail**/
         holder.FabDevisDetails.setOnClickListener(v -> {
             Intent i = new Intent(context, FicheDevisActivity.class);
@@ -121,15 +120,12 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
             validerAlertDialogFragment.show(fragmentManager, ServeurNode.TAG);
         });
 
-        holder.FabDeleteDevis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DeleteDevisAlertDialogFragment deleteDevisAlertDialogFragment = DeleteDevisAlertDialogFragment.newInstance();
-                Bundle args = new Bundle();
-                args.putSerializable("devis", devis);
-                deleteDevisAlertDialogFragment.setArguments(args);
-                deleteDevisAlertDialogFragment.show(fragmentManager, ServeurNode.TAG);
-            }
+        holder.FabDeleteDevis.setOnClickListener(v -> {
+            DeleteDevisAlertDialogFragment deleteDevisAlertDialogFragment = DeleteDevisAlertDialogFragment.newInstance();
+            Bundle args = new Bundle();
+            args.putSerializable("devis", devis);
+            deleteDevisAlertDialogFragment.setArguments(args);
+            deleteDevisAlertDialogFragment.show(fragmentManager, ServeurNode.TAG);
         });
 
         boolean isExpandable = devisList.get(position).isExpandable();
@@ -167,7 +163,6 @@ public class DevisAdapter extends RecyclerView.Adapter<DevisAdapter.DevisVh> {
             TxtDevNudev = itemView.findViewById(R.id.TxtDevNudev);
             TxtDevDadev = itemView.findViewById(R.id.TxtDevDadev);
             TxtDevLieuv = itemView.findViewById(R.id.TxtDevLieuv);
-            TxtDevRefdev = itemView.findViewById(R.id.TxtDevRefdev);
             FabDevisDetails = itemView.findViewById(R.id.FabDevisDetails);
             FabUpdateDevis = itemView.findViewById(R.id.FabUpdateDevis);
             FabValiderDevis = itemView.findViewById(R.id.FabValiderDevis);

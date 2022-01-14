@@ -7,22 +7,63 @@
     android:id="@+id/Ctl01"
     tools:context=".activities.LoginActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/Rlt01"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/back_mobile"
         android:orientation="vertical"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         >
 
-        <ImageView
-            android:id="@+id/ImglogoGpi"
-            android:layout_width="@dimen/login_activity_ImglogoGpi_width"
-            android:layout_height="@dimen/login_activity_ImglogoGpi_height"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/activity_top_margin"
-            android:src="@drawable/logo_sominfor"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/ImglogoGpi"
+                android:layout_width="@dimen/login_activity_ImglogoGpi_width"
+                android:layout_height="@dimen/login_activity_ImglogoGpi_height"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="@dimen/activity_top_margin"
+                android:src="@drawable/logo_sominfor"/>
+
+
+            <ImageView
+                android:id="@+id/server_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_baseline_settings_24_blue"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/login_personna_width_tab"
+                android:layout_height="@dimen/login_personna_height_tab"
+                android:layout_gravity="center"
+                android:src="@drawable/login_s"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/activity_login_high_text"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/activity_login_description_text"/>
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/Rlt02"
@@ -50,10 +91,10 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
                     android:hint="@string/login_activity_MbSpnSystem_hint"
-                    app:met_textColor="@color/black"
-                    app:met_textColorHint="@color/black"
                     android:focusableInTouchMode="false"
-                    app:met_floatingLabel="normal" />
+                    app:met_floatingLabel="normal"
+                    app:met_textColor="@color/black"
+                    app:met_textColorHint="@color/black"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -63,17 +104,21 @@
                         android:id="@+id/EdtLogin"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
                         android:drawableTint="@color/white"
                         android:background="@color/white"
                         android:singleLine="true"
                         android:fontFamily="@font/montserrat_regular"
                         android:hint="@string/login_activity_EdtLogin_hint"
+                        android:textColorHint="@color/black"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/EdtPassword"
@@ -85,6 +130,9 @@
                         android:drawableTint="@color/grey_darken_2"
                         android:background="@color/white"
                         android:hint="Mot de passe"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
+                        android:textColorHint="@color/black"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,11 +150,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/roboto_bold"
+                    android:paddingLeft="43dp"
+                    android:paddingRight="43dp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
                     android:gravity="center"
                     android:text="@string/login_activity_BtnConnexion"
                     android:textSize="@dimen/login_activity_BtnConnexion_TextSize"
-                    android:padding="@dimen/login_activity_BtnConnexion_padding"
                     app:cornerRadius="@dimen/login_activity_BtnConnexion_cornerRadius"
                     android:textAllCaps="false"
                     app:backgroundTint="@color/colorPrimary"
@@ -123,8 +174,9 @@
             android:gravity="center"
             android:fontFamily="@font/montserrat_light"
             android:layout_marginBottom="@dimen/login_activity_TxtCopyright_marginBottom"
+            android:layout_marginTop="11dp"
             android:textSize="@dimen/login_activity_TxtCopyright_TextSize"
             />
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

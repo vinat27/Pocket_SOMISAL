@@ -76,7 +76,6 @@ public class DcoUpdateCommandeAdapter extends RecyclerView.Adapter<DcoUpdateComm
         formatter.setRoundingMode(RoundingMode.DOWN);
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailCommande.getDcolipro());
-        holder.TxtDcopocom.setText(String.valueOf(detailCommande.getDcopocom()));
         holder.TxtDcoputar.setText(formatter.format(bd.floatValue()));
         holder.TxtDcoqtcom.setText(String.format("%.3f", detailCommande.getDcoqtcom()));
         holder.TxtDcovacom.setText(formatter.format(dd.floatValue()));
@@ -153,7 +152,7 @@ public class DcoUpdateCommandeAdapter extends RecyclerView.Adapter<DcoUpdateComm
 
     public class CommandeProduitVh extends RecyclerView.ViewHolder {
 
-        TextView TxtProLipro,TxtDcopocom,TxtDcoqtcom, TxtDcoputar, TxtDcovacom, TxtDcoTxRem, TxtDcoVarem;
+        TextView TxtProLipro,TxtDcoqtcom, TxtDcoputar, TxtDcovacom, TxtDcoTxRem, TxtDcoVarem;
         MaterialButton FabDetPro, FabTxnPro, FabUpdatePro, FabDeletePro;
         LinearLayout Lnr01, expandableLayout;
 
@@ -163,7 +162,6 @@ public class DcoUpdateCommandeAdapter extends RecyclerView.Adapter<DcoUpdateComm
 
             /**Instanciation des widgets**/
             TxtProLipro = itemView.findViewById(R.id.TxtProLipro);
-            TxtDcopocom = itemView.findViewById(R.id.TxtDcopocom);
             TxtDcoqtcom = itemView.findViewById(R.id.TxtDcoqtcom);
             TxtDcoputar = itemView.findViewById(R.id.TxtDcoputar);
             TxtDcovacom = itemView.findViewById(R.id.TxtDcovacom);

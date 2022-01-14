@@ -26,6 +26,10 @@ import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Produit;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,9 +68,16 @@ public class DdvUpdateProduitsAdapter extends RecyclerView.Adapter<DdvUpdateProd
         /**Initialisation des informations devis**/
         holder.TxtProLipro.setText(detailDevis.getDdvLipro());
         holder.TxtDdvPodev.setText(String.valueOf(detailDevis.getDdvPodev()));
-        holder.TxtDdvPutar.setText(String.valueOf(detailDevis.getDdvPutar()));
+        BigDecimal pt = new BigDecimal(detailDevis.getDdvPutar());
+        BigDecimal bd = new BigDecimal(detailDevis.getDdvVadev());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        holder.TxtDdvPutar.setText(formatter.format(pt.floatValue()));
         holder.TxtDdvQtdev.setText(String.valueOf(detailDevis.getDdvQtdev()));
-        holder.TxtDdvVadev.setText(String.format("%.2f", detailDevis.getDdvVadev()));
+        holder.TxtDdvVadev.setText(formatter.format(bd.floatValue()));
         holder.TxtDdvTxRem.setText(String.valueOf(detailDevis.getDdvTxrem()));
         holder.TxtDdvVarem.setText(String.format("%.2f", detailDevis.getDdvVarem()));
         /**Au clic du bouton détail**/

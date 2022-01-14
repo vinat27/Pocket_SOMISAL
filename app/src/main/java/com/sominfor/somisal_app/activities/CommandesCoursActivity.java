@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.CommandeAdapter;
+import com.sominfor.somisal_app.adapters.CommandeAttenteAdapter;
 import com.sominfor.somisal_app.adapters.CommandeSoldeesAdapter;
 import com.sominfor.somisal_app.fragments.FiltresCommandesDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
@@ -65,7 +66,7 @@ public class CommandesCoursActivity extends AppCompatActivity implements Command
     ApiReceiverMethods apiReceiverMethods;
     FrameLayout frameLayout;
     List<Commande> commandesSoldeesList;
-    CommandeAdapter commandeAdapter;
+    CommandeAttenteAdapter commandeAttenteAdapter;
     FloatingActionButton fab_filter;
     private MenuItem mSearchItem;
     private SearchView sv;
@@ -96,7 +97,7 @@ public class CommandesCoursActivity extends AppCompatActivity implements Command
         comStatut = "E";
 
         /**Gestion du menu d'action**/
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle("Commandes En Cours");
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle("Commandes");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /**Effacer l'ombre sous l'actionBar**/
         getSupportActionBar().setElevation(0);
@@ -147,7 +148,7 @@ public class CommandesCoursActivity extends AppCompatActivity implements Command
 
             @Override
             public boolean onQueryTextChange(String query) {
-                commandeAdapter.getFilter().filter(query);
+                commandeAttenteAdapter.getFilter().filter(query);
                 return true;
             }
         });
@@ -191,44 +192,14 @@ public class CommandesCoursActivity extends AppCompatActivity implements Command
                     try{
                         JSONObject jsonObject = array.getJSONObject(i);
                         Commande commande = new Commande();
-                        commande.setComrasoc(jsonObject.getString("COMRASOC"));
+                        commande.setComrasoc(jsonObject.getString("CLIRASOC"));
                         commande.setComdaliv(jsonObject.getString("COMDALIV"));
-                        commande.setComliliv(jsonObject.getString("LIBCOLIV").trim());
                         commande.setComvacom(jsonObject.getDouble("COMVACOM"));
                         commande.setComnucom(jsonObject.getString("COMNUCOM"));
-                        commande.setComnucli(jsonObject.getString("COMNUCLI"));
                         commande.setComdacom(jsonObject.getString("COMDACOM"));
-                        commande.setComlieuv(jsonObject.getString("COMLIEUV"));
-                        commande.setComcomag(jsonObject.getString("COMCOMAG"));
-                        commande.setComuscom(jsonObject.getString("COMUSCOM").trim());
                         commande.setComlilieuv(jsonObject.getString("LIBLIEUV").trim());
-                        commande.setComlitrn(jsonObject.getString("LIBCOTRN").trim());
-                        commande.setComstatu(jsonObject.getString("COMSTATU"));
-                        commande.setComlista(jsonObject.getString("LIBSTATU"));
-                        commande.setComlimag(jsonObject.getString("LIBCOMAG"));
-                        commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
-                        commande.setComadre1(jsonObject.getString("COMADRE1").trim());
-                        commande.setComadre2(jsonObject.getString("COMADRE2").trim());
-                        commande.setComcopos(jsonObject.getString("COMCOPOS").trim());
-                        commande.setComville(jsonObject.getString("COMVILLE").trim());
-                        commande.setCombopos(jsonObject.getString("COMBOPOS").trim());
-                        commande.setComlicpays(jsonObject.getString("LIBCPAYS").trim());
-                        commande.setComrasol(jsonObject.getString("COMRASOL").trim());
-                        commande.setComadr1l(jsonObject.getString("COMADR1L").trim());
-                        commande.setComadr2l(jsonObject.getString("COMADR2L").trim());
-                        commande.setComcopol(jsonObject.getString("COMCOPOL").trim());
-                        commande.setComvilll(jsonObject.getString("COMVILLL").trim());
-                        commande.setComlicpayr(jsonObject.getString("LIBCPAYL").trim());
-                        commande.setCombopol(jsonObject.getString("COMBOPOL").trim());
-                        commande.setComcotrp(jsonObject.getString("COMCOTRP"));
-                        commande.setComcotrn(jsonObject.getString("COMCOTRN").trim());
-                        commande.setComcoliv(jsonObject.getString("COMCOLIV").trim());
-                        commande.setComcpays(jsonObject.getString("COMCPAYS"));
-                        commande.setComcpayl(jsonObject.getString("COMCPAYL"));
-                        commande.setComdereg(jsonObject.getString("COMDEREG"));
-                        commande.setCommoreg(jsonObject.getString("COMMOREG"));
                         commande.setComcomon(jsonObject.getString("COMCOMON"));
-                        commande.setComnacli(jsonObject.getString("CLINACLI"));
+                        commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
 
                         //Populariser la liste des commandes
                         commandesSoldeesList.add(commande);
@@ -239,8 +210,8 @@ public class CommandesCoursActivity extends AppCompatActivity implements Command
                     }
                 }
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                commandeAdapter = new CommandeAdapter(this,commandesSoldeesList,fragmentManager);
-                recyclerViewCdeSoldees.setAdapter(commandeAdapter);
+                commandeAttenteAdapter = new CommandeAttenteAdapter(this,commandesSoldeesList,fragmentManager);
+                recyclerViewCdeSoldees.setAdapter(commandeAttenteAdapter);
             }catch(JSONException e){
                 e.printStackTrace();
 
@@ -287,7 +258,7 @@ public class CommandesCoursActivity extends AppCompatActivity implements Command
             Date dateInf = simpleDateFormat.parse(commandeFilterElements.getDateInf());
             Date dateSup = simpleDateFormat.parse(commandeFilterElements.getDateSup());
 
-            commandeAdapter.filterDateRange(dateInf, dateSup);
+            commandeAttenteAdapter.filterDateRange(dateInf, dateSup);
         } catch (ParseException e) {
             e.printStackTrace();
         }

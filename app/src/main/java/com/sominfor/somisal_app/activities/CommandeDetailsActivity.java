@@ -9,8 +9,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -19,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.chip.Chip;
 import com.sominfor.somisal_app.R;
 import com.sominfor.somisal_app.adapters.DetailCommandeAdapter;
 import com.sominfor.somisal_app.adapters.DetailDevisAdapter;
@@ -31,6 +34,7 @@ import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.Devis;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
+import com.sominfor.somisal_app.utils.ApiReceiverMethods;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 
 import org.json.JSONArray;
@@ -55,12 +59,14 @@ public class CommandeDetailsActivity extends AppCompatActivity {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, ComDalivFormat;
-    Commande commande;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, utilisateurCosoc, utilisateurCoage, ComDalivFormat, apiurl02;
+    Commande commande, commandeInfos;
     RecyclerView RecyclerViewDetailsCommandes;
     List<DetailCommande> detailCommandeList;
     DetailCommandeAdapter detailCommandeAdapter;
     DelayedProgressDialog progressDialogInfo;
+    ApiReceiverMethods apiReceiverMethods;
+    Chip chip;
     TextView TxtClirasoc,TxtComStatu, TxtComLimag, TxtComLiliv, TxtComVacom, TxtComadre1, TxtComadre2, TxtComcopos, TxtComville, TxtCombopos, TxtComcpays,TxtComDaliv, TxtComrasol, TxtComrasoc, TxtComadr1l, TxtComadr2l, TxtComcopol, TxtComvilll, TxtCombopol, TxtComcpayl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +83,17 @@ public class CommandeDetailsActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+        /**Récupération de l'objet devis**/
+        Bundle bundle = getIntent().getExtras();
+        commande = (Commande) bundle.getSerializable("commande");
 
         /**Gestion du menu d'action**/
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle("Détails commande");
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(Html.fromHtml("<small>Commande N°"+commande.getComnucom()+"</small>"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /**Effacer l'ombre sous l'actionBar**/
         getSupportActionBar().setElevation(0);
+
+        apiReceiverMethods = new ApiReceiverMethods(getApplicationContext());
 
         /**Initialisation des widgets**/
         TxtClirasoc = findViewById(R.id.TxtClirasoc);
@@ -90,21 +101,14 @@ public class CommandeDetailsActivity extends AppCompatActivity {
         TxtComLimag = findViewById(R.id.TxtComLimag);
         TxtComDaliv = findViewById(R.id.TxtComDaliv);
         TxtComVacom = findViewById(R.id.TxtComVacom);
-
-        //TxtComadre1 = findViewById(R.id.TxtComadre1);
-        //TxtComadre2 = findViewById(R.id.TxtComadre2);
-        //TxtComcopos = findViewById(R.id.TxtComcopos);
-        //TxtComville = findViewById(R.id.TxtComville);
-        //TxtCombopos = findViewById(R.id.TxtCombopos);
-        //TxtComcpays = findViewById(R.id.TxtComcpays);
         TxtComrasol = findViewById(R.id.TxtComrasol);
-        //TxtComrasoc = findViewById(R.id.TxtComrasoc);
         TxtComadr1l = findViewById(R.id.TxtComadr1l);
         TxtComadr2l = findViewById(R.id.TxtComadr2l);
         TxtComcopol = findViewById(R.id.TxtComcopol);
         TxtComvilll = findViewById(R.id.TxtComvilll);
         TxtCombopol = findViewById(R.id.TxtCombopol);
         TxtComcpayl = findViewById(R.id.TxtComcpayl);
+        chip = findViewById(R.id.chip);
 
         serveurNodeController = new ServeurNodeController();
         progressDialogInfo = new DelayedProgressDialog();
@@ -121,10 +125,9 @@ public class CommandeDetailsActivity extends AppCompatActivity {
 
         /*URL Récupération de la liste des systèmes*/
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/commande/detailCommande";
+        apiurl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/commande/commandeByNucom";
 
-        /**Récupération de l'objet devis**/
-        Bundle bundle = getIntent().getExtras();
-        commande = (Commande) bundle.getSerializable("commande");
+
         BigDecimal bd = new BigDecimal(commande.getComvacom());
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
         symbols.setGroupingSeparator(' ');
@@ -135,24 +138,11 @@ public class CommandeDetailsActivity extends AppCompatActivity {
 
         /**Set values to text**/
         TxtClirasoc.setText(commande.getComrasoc());
-        TxtComStatu.setText(commande.getComlista());
-        TxtComLimag.setText(commande.getComlimag());
-
         TxtComVacom.setText(wvacom);
-        //TxtComadre1.setText(commande.getComadre1());
-        //TxtComadre2.setText(commande.getComadre2());
-        //TxtComcopos.setText(commande.getComcopos());
-        //TxtComville.setText(commande.getComville());
-        //TxtCombopos.setText(commande.getCombopos());
-        //TxtComcpays.setText(commande.getComlicpays());
-        TxtComrasol.setText(commande.getComrasol());
-        //TxtComrasoc.setText(commande.getComrasoc());
-        TxtComadr1l.setText(commande.getComadr1l());
-        TxtComadr2l.setText(commande.getComadr2l());
-        TxtComcopol.setText(commande.getComcopol());
-        TxtComvilll.setText(commande.getComvilll());
-        TxtCombopol.setText(commande.getCombopol());
-        TxtComcpayl.setText(commande.getComlicpayr());
+
+        /**Récupération des information en-tête commande**/
+        recupererEnteteCommande(apiurl02, commande.getComnucom());
+
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -210,6 +200,59 @@ public class CommandeDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**Récupération des informations En-tête commande**/
+    public void recupererEnteteCommande(String api_url, final String comNucom){
+        RequestQueue requestQueue = new Volley().newRequestQueue(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
+            commandeInfos = new Commande();
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                JSONObject jsonObjectInfo = jsonObject.getJSONObject("FicheCommande");
+
+                commandeInfos.setComstatu(jsonObjectInfo.getString("COMSTATU"));
+                commandeInfos.setComlimag(jsonObjectInfo.getString("LIBCOMAG").trim());
+                commandeInfos.setComrasol(jsonObjectInfo.getString("COMRASOL").trim());
+                commandeInfos.setComadr1l(jsonObjectInfo.getString("COMADR1L").trim());
+                commandeInfos.setComcopol(jsonObjectInfo.getString("COMCOPOL").trim());
+                commandeInfos.setComvilll(jsonObjectInfo.getString("COMVILLL").trim());
+                commandeInfos.setCombopol(jsonObjectInfo.getString("COMBOPOL").trim());
+                commandeInfos.setComlicpayr(jsonObjectInfo.getString("LIBCPAYS").trim());
+                /**Récupération de libellé statut**/
+                String statut = apiReceiverMethods.recupererStatutCommande(commandeInfos.getComstatu());
+
+                /**Set values to Textviews**/
+                TxtComLimag.setText(commandeInfos.getComlimag());
+                TxtComrasol.setText(commandeInfos.getComrasol());
+                TxtComStatu.setText(statut);
+                TxtComadr1l.setText(commandeInfos.getComadr1l());
+                TxtComadr2l.setText(commandeInfos.getComadr2l());
+                TxtComcopol.setText(commandeInfos.getComcopol());
+                TxtComvilll.setText(commandeInfos.getComvilll());
+                TxtCombopol.setText(commandeInfos.getCombopol());
+                TxtComcpayl.setText(commandeInfos.getComlicpayr());
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, volleyError -> {
+            volleyError.printStackTrace();
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<String, String>();
+                param.put("systeme",systemeAdresse);
+                param.put("login",utilisateurLogin);
+                param.put("password",utilisateurPassword);
+                param.put("cosoc", utilisateurCosoc);
+                param.put("coage", utilisateurCoage);
+                param.put("nucom", comNucom);
+                return param;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        postRequest.setRetryPolicy(policy);
+        requestQueue.add(postRequest);
+    }
 
 
     /***Récupérer les détails devis**/
@@ -226,6 +269,7 @@ public class CommandeDetailsActivity extends AppCompatActivity {
                 commande.setCoxtexte(jsonObject.getString("DCOTEXTE"));
                 /**Formatage de l'array produit**/
                 JSONArray array= jsonObject.getJSONArray("Produits");
+                String chipValue = array.length()+" produit(s)";
                 for(int i=0;i<array.length();i++) {
                     JSONObject object1 = array.getJSONObject(i);
                     DetailCommande detailCommande = new DetailCommande();
@@ -241,8 +285,9 @@ public class CommandeDetailsActivity extends AppCompatActivity {
                     detailCommande.setDconuprm(object1.getInt("DCONUPRM"));
                     detailCommande.setDcoqtliv(object1.getDouble("DCOQTLIV"));
 
+                    chip.setVisibility(View.VISIBLE);
+                    chip.setText(chipValue);
                     detailCommandeList.add(detailCommande);
-
                     progressDialogInfo.cancel();
                 }
 

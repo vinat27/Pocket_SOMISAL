@@ -5,7 +5,7 @@
     <string name="login_activity_MbSpnSystem_hint">Système</string>
     <string name="login_activity_EdtLogin_hint">Identifiant</string>
     <string name="login_activity_BtnConnexion">CONNEXION</string>
-    <string name="login_activity_TxtCopyright_text">Copyright © 2021 - SOMINFOR - Beta 0.9</string>
+    <string name="login_activity_TxtCopyright_text">Copyright © 2021 - SOMINFOR - v.1.0</string>
     <string name="login_activity_Snackbar01_NoServeur">Aucun serveur spécifié.</string>
     <string name="login_activity_Snackbar01_Action">Configurer</string>
     <string name="login_activity_Snackbar01_NoConnexion">Echec connexion au serveur</string>
@@ -315,4 +315,8 @@
     <string name="activity_fiche_devis_TxtAdr1l">Adresse</string>
     <string name="helpTotalTilp">Montant total Hors Taxes du devis</string>
     <string name="activity_update_produit_TxtDadev">Date Devis</string>
+    <string name="commande_fragment_title">Statut: A valider</string>
+    <string name="commande_en_cours_fragment_title">Statut: En cours</string>
+    <string name="activity_login_high_text">AUTHENTIFICATION</string>
+    <string name="activity_login_description_text">Connectez vous avec votre compte AS 400</string>
 </resources>

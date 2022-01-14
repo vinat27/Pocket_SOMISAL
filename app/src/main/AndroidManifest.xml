@@ -130,6 +130,7 @@
             android:screenOrientation="locked" />
         <activity
             android:name=".activities.LoginActivity"
+            android:theme="@style/SomisalTheme.NoActionBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="locked" />
         <service

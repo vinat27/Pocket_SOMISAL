@@ -296,7 +296,6 @@ public class CommandeFragment extends Fragment {
         progressDialogInfo.show(getActivity().getSupportFragmentManager(), "Loading...");
         progressDialogInfo.setCancelable(false);
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
-            Log.v("Commandes",s);
             try{
                 JSONArray array = new JSONArray(s);
                 if (array.length() == 0){
@@ -307,22 +306,23 @@ public class CommandeFragment extends Fragment {
                     try{
                         JSONObject jsonObject = array.getJSONObject(i);
                         Commande commande = new Commande();
-                        commande.setComrasoc(jsonObject.getString("COMRASOC"));
+                        commande.setComrasoc(jsonObject.getString("CLIRASOC"));
                         commande.setComdaliv(jsonObject.getString("COMDALIV"));
-                        commande.setComliliv(jsonObject.getString("LIBCOLIV").trim());
                         commande.setComvacom(jsonObject.getDouble("COMVACOM"));
                         commande.setComnucom(jsonObject.getString("COMNUCOM"));
-                        commande.setComnucli(jsonObject.getString("COMNUCLI"));
                         commande.setComdacom(jsonObject.getString("COMDACOM"));
-                        commande.setComlieuv(jsonObject.getString("COMLIEUV"));
+                        commande.setComlilieuv(jsonObject.getString("LIBLIEUV").trim());
+                        commande.setComcomon(jsonObject.getString("COMCOMON"));
+                        commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
+                        /*
+                        commande.setComliliv(jsonObject.getString("LIBCOLIV").trim());
+                        commande.setComnucli(jsonObject.getString("COMNUCLI"));
                         commande.setComcomag(jsonObject.getString("COMCOMAG"));
                         commande.setComuscom(jsonObject.getString("COMUSCOM").trim());
-                        commande.setComlilieuv(jsonObject.getString("LIBLIEUV").trim());
                         commande.setComlitrn(jsonObject.getString("LIBCOTRN").trim());
                         commande.setComstatu(jsonObject.getString("COMSTATU"));
                         commande.setComlista(jsonObject.getString("LIBSTATU"));
                         commande.setComlimag(jsonObject.getString("LIBCOMAG"));
-                        commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
                         commande.setComadre1(jsonObject.getString("COMADRE1").trim());
                         commande.setComadre2(jsonObject.getString("COMADRE2").trim());
                         commande.setComcopos(jsonObject.getString("COMCOPOS").trim());
@@ -343,8 +343,8 @@ public class CommandeFragment extends Fragment {
                         commande.setComcpayl(jsonObject.getString("COMCPAYL"));
                         commande.setComdereg(jsonObject.getString("COMDEREG"));
                         commande.setCommoreg(jsonObject.getString("COMMOREG"));
-                        commande.setComcomon(jsonObject.getString("COMCOMON"));
-                        commande.setComnacli(jsonObject.getString("CLINACLI"));
+
+                        commande.setComnacli(jsonObject.getString("CLINACLI"));*/
 
                         //Populariser la liste des commandes
                         commandeList.add(commande);

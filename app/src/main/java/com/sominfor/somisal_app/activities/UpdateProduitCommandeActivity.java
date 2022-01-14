@@ -56,6 +56,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,16 +92,7 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
     List<DetailCommande> detailDelCommandeList = new ArrayList<>();
     public static List<Produit> produitsUpdateCommandes;
     Client client;
-    LieuVente lieuVente;
-    Magasin magasin;
-    Tournee tournee;
-    Transport transport;
     Commande commande;
-    Livreur livreur;
-    Pays paysFacturation, paysLivraison;
-    ModeReglement modeReglement;
-    DelaiReglement delaiReglement;
-    Commercial commercial;
     ApiReceiverMethods apiReceiverMethods;
     String CoxTexteSend = "";
     String ComTxnEnSend = "";
@@ -156,7 +151,6 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
         TxtComLieuv = findViewById(R.id.TxtComLieuv);
         TxtComStatu = findViewById(R.id.TxtComStatu);
         TxtComComag = findViewById(R.id.TxtComComag);
-        TxtComColiv = findViewById(R.id.TxtComColiv);
         TxtComDaliv = findViewById(R.id.TxtComDaliv);
         TxtComVacom = findViewById(R.id.TxtComVacom);
         BtnTerminer = findViewById(R.id.BtnTerminer);
@@ -190,7 +184,6 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
         TxtComLieuv.setText(commande.getComlilieuv());
         TxtComStatu.setText(commande.getComlista());
         TxtComComag.setText(commande.getComlimag());
-        TxtComColiv.setText(commande.getComliliv());
 
         /**Date de livraison**/
         @SuppressLint("SimpleDateFormat") SimpleDateFormat fromUser = new SimpleDateFormat("dd MMM yyyy");
@@ -201,13 +194,17 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
             e.printStackTrace();
         }
         TxtComDaliv.setText(ComDalivFormat);
-        String wvacom = String.format("%.2f", commande.getComvacom()) + " " + commande.getComlimon();
+        BigDecimal bd = new BigDecimal(commande.getComvacom());
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+
+        DecimalFormat formatter = new DecimalFormat("###,###.##", symbols);
+        formatter.setRoundingMode(RoundingMode.DOWN);
+        String wvacom = formatter.format(bd.floatValue()) + " " + commande.getComlimon();
         TxtComVacom.setText(wvacom);
 
         produitsUpdateCommandes = apiReceiverMethods.recupererProduits(apiUrl01, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         recupererDetailsCommande(apiUrl03, commande.getComnucom());
-
-        Log.v("Entete", CoxTexteSend);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         dcoUpdateCommandeAdapter = new DcoUpdateCommandeAdapter(getApplicationContext(), detailCommandeList, fragmentManager);
@@ -234,7 +231,6 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
                 varemArray = new JSONArray();
                 texteArray = new JSONArray();
                 coactJson = new JSONArray();
-
                 if (!detailDelCommandeList.isEmpty()){
                     detailCommandeList.addAll(detailDelCommandeList);
                 }
@@ -381,7 +377,7 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
                 /**Commentaires et Post-it***/
                 ComTxnEnSend = jsonObject.getString("COMTXHEN");
                 ComTxnPdSend = jsonObject.getString("COMTXHPI");
-                CoxTexteSend = jsonObject.getString("DEXTEXTE");
+                CoxTexteSend = jsonObject.getString("DCOTEXTE");
                 /**Formatage de l'array produit**/
                 JSONArray array= jsonObject.getJSONArray("Produits");
                 for(int i=0;i<array.length();i++) {
@@ -490,7 +486,7 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
                 param.put("namar", commande.getComnamar());
                 param.put("lieuv", commande.getComlieuv());
                 param.put("comag", commande.getComcomag());
-                param.put("comon", client.getCliComon());
+                param.put("comon", commande.getComcomon());
                 if (CoxTexteSend!=null){
                     param.put("notes", CoxTexteSend);
                 }else{
@@ -553,8 +549,6 @@ public class UpdateProduitCommandeActivity extends AppCompatActivity implements 
                 param.put("txrem", txremArray.toString());
                 param.put("varem", varemArray.toString());
                 param.put("texte", texteArray.toString());
-
-                Log.v("Envoi", param.toString());
 
                 return param;
             }

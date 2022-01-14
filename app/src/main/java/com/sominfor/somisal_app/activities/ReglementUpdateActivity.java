@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -47,17 +49,10 @@ public class ReglementUpdateActivity extends AppCompatActivity {
     ServeurNode serveurNode;
     Utilisateur utilisateur;
     String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, utilisateurCosoc, utilisateurCoage;
-    Client client;
-    LieuVente lieuVente;
-    Magasin magasin;
-    Tournee tournee;
-    Transport transport;
     Commande commande;
-    Livreur livreur;
-    Pays paysFacturation, paysLivraison;
     ModeReglement modeReglement, modeReglementNotSelected;
     DelaiReglement delaiReglement, delaiReglementNotSelected;
-    Commercial commercial;
+    Commercial commercial, commercialNotSelected;
     ApiReceiverMethods apiReceiverMethods;
     MaterialBetterSpinner MbSpnComMoreg, MbSpnComDereg, MbSpnComUscom;
     TextInputEditText EdtComTxrem, EdtComTxesc, EdtComEcova, EdtComTelep, EdtComIdcor;
@@ -129,9 +124,14 @@ public class ReglementUpdateActivity extends AppCompatActivity {
         apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allMoreg";
         apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allDereg";
         apiUrl03 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/parametre/allUscom";
+
         /**Récupération des informations envoyées***/
         commande = (Commande) getIntent().getSerializableExtra("commande");
         commercial = new Commercial();
+        /**Initialisation des Edittext*/
+        EdtComTxrem.setText(String.valueOf(commande.getComtxrem()));
+        EdtComTxesc.setText(String.valueOf(commande.getComtxesc()));
+        EdtComEcova.setText(String.valueOf(commande.getComecova()));
 
         /***Récupération de la liste des modes de reglement**/
         if (modeReglementsUpdCde == null){
@@ -169,6 +169,17 @@ public class ReglementUpdateActivity extends AppCompatActivity {
             if (spinnerPosition!=-1)
             /**Set value to spinnerDelai*/
                 MbSpnComDereg.setText(MbSpnComDereg.getAdapter().getItem(spinnerPosition).toString());
+        }
+
+        /**Initialisation Commercial **/
+        if (!commercialList.isEmpty()) {
+            /**Initialisation délai de reglment**/
+            commercialNotSelected = new Commercial();
+            commercialNotSelected.setCoUscom(commande.getComuscom());
+            int spinnerPosition = commercialList.indexOf(commercialNotSelected);
+            if (spinnerPosition!=-1)
+            /**Set value to spinnerDelai*/
+                MbSpnComUscom.setText(MbSpnComUscom.getAdapter().getItem(spinnerPosition).toString());
         }
 
         /**Initialisation Mode de règlement **/
@@ -229,8 +240,6 @@ public class ReglementUpdateActivity extends AppCompatActivity {
                     }else{
                         commande.setComuscom(commercial.getCoUscom());
                     }
-
-
                     Intent i = new Intent(getApplicationContext(), UpdateProduitCommandeActivity.class);
                     i.putExtra("commande", commande);
                     finish();
@@ -243,5 +252,22 @@ public class ReglementUpdateActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_SAL07), Toast.LENGTH_LONG).show();
             }
         });
+    }
+    // Options Menu (ActionBar Menu)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_add_commande_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

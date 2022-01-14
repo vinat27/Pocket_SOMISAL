@@ -13,12 +13,16 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.PasswordTransformationMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -56,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText EdtLogin, EdtPassword;
     Button BtnConnexion;
     String ApiUrl01, ApiUrl02, systemeFiliale, systemeAdresse, systemeCosoc, systemeCoage;
+    ImageView server_settings;
     RequestQueue requestQueue;
     boolean statutServeur;
     ConstraintLayout constraintLayout;
@@ -77,9 +82,17 @@ public class LoginActivity extends AppCompatActivity {
         EdtPassword = findViewById(R.id.EdtPassword);
         BtnConnexion = findViewById(R.id.BtnConnexion);
         constraintLayout = findViewById(R.id.Ctl01);
+        server_settings = findViewById(R.id.server_settings);
         serveurNodeController = new ServeurNodeController();
         systemes = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
+
+        server_settings.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
 
 
         /**controle connexion au serveur Node**/
@@ -134,13 +147,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // Options Menu (ActionBar Menu)
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activity_login, menu);
-        return true;
-    }
 
     @Override
     public void onBackPressed() {
@@ -152,19 +158,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // A la selection du menu
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Gestion de menus
-        int id = item.getItemId();
-        if (id == R.id.handleSystem){
-            /**Ecran des paramètres***/
-            Intent intent = new Intent(LoginActivity.this, SettingsActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 
     /**

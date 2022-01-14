@@ -140,24 +140,16 @@ public class DevisArchivesActivity extends AppCompatActivity implements DevisFil
                     try{
                         JSONObject jsonObject = array.getJSONObject(i);
                         Devis devis = new Devis();
-                        devis.setCliRasoc(jsonObject.getString("CLIRASOC"));
+                        devis.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
                         devis.setDevDaliv(jsonObject.getString("DEVDALIV"));
                         devis.setDevVadev(jsonObject.getDouble("DEVVADEV"));
-                        devis.setDevComon(jsonObject.getString("DEVCOMON"));
+                        devis.setDevlimon(jsonObject.getString("LIBCOMON").trim());
                         devis.setDevNudev(jsonObject.getString("DEVNUDEV"));
-                        devis.setDevNucom(jsonObject.getString("DEVNUCOM"));
                         devis.setDevDadev(jsonObject.getString("DEVDADEV"));
-                        devis.setDevLieuv(jsonObject.getString("DEVLIEUVLIB"));
-                        devis.setDevColieuv(jsonObject.getString("DEVLIEUV"));
-                        devis.setDevRfdev(jsonObject.getString("DEVRFDEV"));
-                        devis.setDevStatut(jsonObject.getString("DEVSTATULIB"));
-                        devis.setDevComag(jsonObject.getString("DEVCOMAG"));
-                        devis.setDevLimag(jsonObject.getString("DEVCOMAGLIB"));
-                        devis.setDevColiv(jsonObject.getString("DEVCOLIV").trim());
-                        devis.setDevliliv(jsonObject.getString("DEVCOLIVLIB"));
-                        devis.setDevNacli(jsonObject.getString("CLINACLI"));
-                        devis.setDevNucli(jsonObject.getString("DEVNUCLI"));
-                        devis.setDevlimon(jsonObject.getString("DEVCOMONLIB"));
+                        devis.setDevStatut(jsonObject.getString("DEVSTATU"));
+                        devis.setDevComon(jsonObject.getString("DEVCOMON"));
+                        devis.setDevLieuv(jsonObject.getString("LIBLIEUV").trim());
+                        devis.setDevNucom(jsonObject.getString("DEVNUCOM").trim());
 
                         //Populariser la liste des produits
                         devisArchivesList.add(devis);

@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/spinner_style"
+                android:background="@drawable/searchable_spinner_style"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/spinner_style"
+                android:background="@drawable/searchable_spinner_style"
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
@@ -82,7 +82,7 @@
 
             <!--Remise Globale-->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxBackgroundColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -102,8 +102,8 @@
 
             <!--Remise Globale-->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
+                app:boxBackgroundColor="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
@@ -128,7 +128,7 @@
 
             <!--Eco-Participation-->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxBackgroundColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -163,7 +163,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/spinner_style"
+            android:background="@drawable/searchable_spinner_style"
             android:orientation="vertical">
             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                 android:id="@+id/MbSpnComUscom"
@@ -182,7 +182,7 @@
 
         <!--Eco-Participation-->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -199,7 +199,7 @@
 
         <!--Correspondant-->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

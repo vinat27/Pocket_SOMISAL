@@ -93,24 +93,7 @@ public void onBindViewHolder(@NonNull CommandeAdapter.CommandeVh holder, int pos
     holder.TxtComVacom.setText(vacom);
     holder.TxtComNucom.setText(commande.getComnucom());
     holder.TxtComDacom.setText(ComDacomFormat);
-    holder.TxtComCotrn.setText(commande.getComlitrn());
 
-    if (commande.getComcotrn().equals("") || commande.getComcotrn() == null){
-        holder.TxtTournee.setVisibility(View.GONE);
-        holder.TxtComCotrn.setVisibility(View.GONE);
-    }
-
-    if (commande.getComlieuv().equals("") || commande.getComlieuv() == null){
-        holder.TxtComLieuv.setText("");
-    }else{
-        holder.TxtComLieuv.setText(commande.getComlilieuv());
-    }
-
-    if (commande.getComcoliv().equals("") || commande.getComcoliv() == null){
-        holder.TxtComcoliv.setText("");
-    }else{
-        holder.TxtComcoliv.setText(commande.getComliliv());
-    }
 
 
     /**Au clic du bouton détail**/
@@ -146,7 +129,7 @@ public long getItemId(int position){
 
     public class CommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv, TxtTournee;
+        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComcoliv, TxtTournee;
         MaterialButton FabComDetails;
         LinearLayout Lnr01, expandableLayout;
 
@@ -160,7 +143,6 @@ public long getItemId(int position){
             TxtComNucom = itemView.findViewById(R.id.TxtComNucom);
             TxtComDacom = itemView.findViewById(R.id.TxtComDacom);
             TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
-            TxtComCotrn = itemView.findViewById(R.id.TxtComCotrn);
             TxtComcoliv = itemView.findViewById(R.id.TxtComcoliv);
             TxtTournee = itemView.findViewById(R.id.TxtTournee);
             FabComDetails = itemView.findViewById(R.id.FabCommandeDetails);
