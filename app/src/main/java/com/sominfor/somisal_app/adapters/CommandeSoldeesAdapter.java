@@ -88,14 +88,9 @@ public class CommandeSoldeesAdapter extends RecyclerView.Adapter<CommandeSoldees
         holder.TxtComVacom.setText(vacom);
         holder.TxtComNucom.setText(commande.getComnucom());
         holder.TxtComDacom.setText(ComDacomFormat);
-        holder.TxtComCotrn.setText(commande.getComlitrn());
+        holder.TxtComLieuv.setText(commande.getComlilieuv());
 
-        if (commande.getComcotrn().equals("") || commande.getComcotrn() == null){
-            holder.TxtTournee.setVisibility(View.GONE);
-            holder.TxtComCotrn.setVisibility(View.GONE);
-        }
-
-        if (commande.getComlieuv().equals("") || commande.getComlieuv() == null){
+        /*if (commande.getComlieuv().equals("") || commande.getComlieuv() == null){
             holder.TxtComLieuv.setText("");
         }else{
             holder.TxtComLieuv.setText(commande.getComlilieuv());
@@ -105,7 +100,7 @@ public class CommandeSoldeesAdapter extends RecyclerView.Adapter<CommandeSoldees
             holder.TxtComcoliv.setText("");
         }else{
             holder.TxtComcoliv.setText(commande.getComliliv());
-        }
+        }*/
 
 
         /**Au clic du bouton détail**/
@@ -137,7 +132,7 @@ public class CommandeSoldeesAdapter extends RecyclerView.Adapter<CommandeSoldees
 
     public class CommandeSoldeesVH extends RecyclerView.ViewHolder {
 
-        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComcoliv, TxtComCotrn, TxtTournee;
+        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComcoliv;
         MaterialButton FabCommandeDetails;
         LinearLayout Lnr01, expandableLayout;
 
@@ -152,8 +147,6 @@ public class CommandeSoldeesAdapter extends RecyclerView.Adapter<CommandeSoldees
             TxtComDacom = itemView.findViewById(R.id.TxtComDacom);
             TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
             TxtComcoliv = itemView.findViewById(R.id.TxtComcoliv);
-            TxtComCotrn = itemView.findViewById(R.id.TxtComCotrn);
-            TxtTournee = itemView.findViewById(R.id.TxtTournee);
             FabCommandeDetails = itemView.findViewById(R.id.FabCommandeDetails);
             Lnr01 = itemView.findViewById(R.id.Lnr01);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);

@@ -83,9 +83,9 @@ public class CommandePrepareesAdapter extends RecyclerView.Adapter<CommandePrepa
             e.printStackTrace();
         }
         /**Initialisation des informations commandes**/
+
         holder.TxtComrasoc.setText(commande.getComrasoc());
         holder.TxtComdaliv.setText(ComDalivFormat);
-        holder.TxtComcoliv.setText(commande.getComliliv());
         holder.TxtComVacom.setText(vacom);
         holder.TxtComNucom.setText(commande.getComnucom());
         holder.TxtComDacom.setText(ComDacomFormat);

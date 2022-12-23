@@ -139,6 +139,8 @@ public class CommandeDetailsActivity extends AppCompatActivity {
         /**Set values to text**/
         TxtClirasoc.setText(commande.getComrasoc());
         TxtComVacom.setText(wvacom);
+        String statut = apiReceiverMethods.recupererStatutCommande(commande.getComstatu());
+        TxtComStatu.setText(statut);
 
         /**Récupération des information en-tête commande**/
         recupererEnteteCommande(apiurl02, commande.getComnucom());
@@ -217,13 +219,10 @@ public class CommandeDetailsActivity extends AppCompatActivity {
                 commandeInfos.setComvilll(jsonObjectInfo.getString("COMVILLL").trim());
                 commandeInfos.setCombopol(jsonObjectInfo.getString("COMBOPOL").trim());
                 commandeInfos.setComlicpayr(jsonObjectInfo.getString("LIBCPAYS").trim());
-                /**Récupération de libellé statut**/
-                String statut = apiReceiverMethods.recupererStatutCommande(commandeInfos.getComstatu());
 
                 /**Set values to Textviews**/
                 TxtComLimag.setText(commandeInfos.getComlimag());
                 TxtComrasol.setText(commandeInfos.getComrasol());
-                TxtComStatu.setText(statut);
                 TxtComadr1l.setText(commandeInfos.getComadr1l());
                 TxtComadr2l.setText(commandeInfos.getComadr2l());
                 TxtComcopol.setText(commandeInfos.getComcopol());

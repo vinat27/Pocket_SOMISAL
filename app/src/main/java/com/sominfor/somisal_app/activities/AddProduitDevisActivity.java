@@ -346,6 +346,7 @@ public class AddProduitDevisActivity extends AppCompatActivity implements DevisP
         Bundle args = new Bundle();
         args.putString("clinucli", client.getCliNucli());
         args.putString("clinacli", client.getCliNacli());
+        args.putString("devdereg", devis.getDevDereg());
         args.putString("clilieuv", lieuVente.getColieuv());
         devisAddProduitFullDialog.setArguments(args);
         //devisPostItFullDialog.setTargetFragment(devisPostItFullDialog, 100);

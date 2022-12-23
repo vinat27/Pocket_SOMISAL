@@ -129,7 +129,7 @@ public long getItemId(int position){
 
     public class CommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComcoliv, TxtTournee;
+        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComcoliv;
         MaterialButton FabComDetails;
         LinearLayout Lnr01, expandableLayout;
 
@@ -144,7 +144,6 @@ public long getItemId(int position){
             TxtComDacom = itemView.findViewById(R.id.TxtComDacom);
             TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
             TxtComcoliv = itemView.findViewById(R.id.TxtComcoliv);
-            TxtTournee = itemView.findViewById(R.id.TxtTournee);
             FabComDetails = itemView.findViewById(R.id.FabCommandeDetails);
 
             Lnr01 = itemView.findViewById(R.id.Lnr01);

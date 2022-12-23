@@ -103,11 +103,6 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
         holder.TxtComNucom.setText(commande.getComnucom());
         holder.TxtComDacom.setText(ComDacomFormat);
         holder.TxtComLieuv.setText(commande.getComlilieuv());
-        if (commande.getComcotrn().equals("") || commande.getComcotrn() == null){
-            holder.TxtTournee.setVisibility(View.GONE);
-            holder.TxtComCotrn.setVisibility(View.GONE);
-        }
-        holder.TxtComCotrn.setText(commande.getComlitrn());
         /**Au clic du bouton détail**/
         holder.FabComDetails.setOnClickListener(v -> {
             Intent i = new Intent(context, CommandeDetailsActivity.class);
@@ -139,7 +134,7 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
 
     public class CommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtComrasoc,TxtComdaliv,TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv, TxtIcon, TxtTournee;
+        TextView TxtComrasoc,TxtComdaliv,TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComcoliv, TxtIcon;
         MaterialButton FabComDetails;
         LinearLayout Lnr01, expandableLayout;
 
@@ -153,9 +148,7 @@ public class CommandeClientAdapter extends RecyclerView.Adapter<CommandeClientAd
             TxtComNucom = itemView.findViewById(R.id.TxtComNucom);
             TxtComDacom = itemView.findViewById(R.id.TxtComDacom);
             TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
-            TxtComCotrn = itemView.findViewById(R.id.TxtComCotrn);
             TxtComcoliv = itemView.findViewById(R.id.TxtComStatu);
-            TxtTournee = itemView.findViewById(R.id.TxtTournee);
             TxtIcon = itemView.findViewById(R.id.TxtIcon);
             FabComDetails = itemView.findViewById(R.id.FabComDetails);
             Lnr01 = itemView.findViewById(R.id.Lnr01);

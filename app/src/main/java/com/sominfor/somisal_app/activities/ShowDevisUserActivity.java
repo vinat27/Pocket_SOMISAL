@@ -139,28 +139,15 @@ public class ShowDevisUserActivity extends AppCompatActivity {
                     try{
                         JSONObject jsonObject = array.getJSONObject(i);
                         Devis devis = new Devis();
-                        devis.setCliRasoc(jsonObject.getString("CLIRASOC"));
+                        devis.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
                         devis.setDevDaliv(jsonObject.getString("DEVDALIV"));
                         devis.setDevVadev(jsonObject.getDouble("DEVVADEV"));
                         devis.setDevlimon(jsonObject.getString("LIBCOMON").trim());
                         devis.setDevNudev(jsonObject.getString("DEVNUDEV"));
                         devis.setDevDadev(jsonObject.getString("DEVDADEV"));
-                        devis.setDevLieuv(jsonObject.getString("LIBLIEUV"));
-                        devis.setDevColieuv(jsonObject.getString("DEVLIEUV"));
-                        devis.setDevRfdev(jsonObject.getString("DEVRFDEV").trim());
                         devis.setDevStatut(jsonObject.getString("DEVSTATU"));
-                        devis.setDevComag(jsonObject.getString("DEVCOMAG"));
-                        devis.setDevLimag(jsonObject.getString("LIBCOMAG"));
-                        devis.setDevColiv(jsonObject.getString("DEVCOLIV").trim());
-                        devis.setDevliliv(jsonObject.getString("LIBCOLIV"));
-                        devis.setDevNucli(jsonObject.getString("DEVNUCLI"));
-                        devis.setDevMoreg(jsonObject.getString("DEVMOREG"));
-                        devis.setDevDereg(jsonObject.getString("DEVDEREG"));
-                        devis.setDevEcova(jsonObject.getDouble("DEVECOVA"));
-                        devis.setDevTxesc(jsonObject.getDouble("DEVTXESC"));
-                        devis.setDevUscom(jsonObject.getString("DEVUSCOM").trim());
                         devis.setDevComon(jsonObject.getString("DEVCOMON"));
-                        devis.setDevlista(jsonObject.getString("LIBSTATU").trim());
+                        devis.setDevLieuv(jsonObject.getString("LIBLIEUV").trim());
                         //Populariser la liste des produits
                         devisList.add(devis);
                         progressDialogInfo.cancel();

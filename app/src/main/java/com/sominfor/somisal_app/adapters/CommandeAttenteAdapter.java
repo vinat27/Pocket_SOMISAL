@@ -93,6 +93,7 @@ public void onBindViewHolder(@NonNull CommandeAttenteAdapter.CommandeVh holder, 
     holder.TxtComVacom.setText(vacom);
     holder.TxtComNucom.setText(commande.getComnucom());
     holder.TxtComDacom.setText(ComDacomFormat);
+    holder.TxtComLieuv.setText(commande.getComlilieuv());
 
 
     /**Modification**/
@@ -145,7 +146,7 @@ public long getItemId(int position){
 
     public class CommandeVh extends RecyclerView.ViewHolder {
 
-        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv, TxtComCotrn, TxtComcoliv, TxtTournee;
+        TextView TxtComrasoc, TxtComdaliv, TxtComVacom, TxtComNucom, TxtComDacom, TxtComLieuv;
         MaterialButton FabComDetails, FabDeleteCom, FabUpdateCom;
         LinearLayout Lnr01, expandableLayout;
 
@@ -158,10 +159,10 @@ public long getItemId(int position){
             TxtComVacom = itemView.findViewById(R.id.TxtComVacom);
             TxtComNucom = itemView.findViewById(R.id.TxtComNucom);
             TxtComDacom = itemView.findViewById(R.id.TxtComDacom);
+            TxtComLieuv = itemView.findViewById(R.id.TxtComLieuv);
             FabComDetails = itemView.findViewById(R.id.FabComDetails);
             FabDeleteCom = itemView.findViewById(R.id.FabDeleteCom);
             FabUpdateCom = itemView.findViewById(R.id.FabUpdateCom);
-            TxtTournee = itemView.findViewById(R.id.TxtTournee);
             Lnr01 = itemView.findViewById(R.id.Lnr01);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
 

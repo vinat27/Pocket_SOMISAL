@@ -87,7 +87,8 @@
                         app:met_floatingLabel="normal"
                         app:met_hideUnderline="true"
                         app:met_textColor="@color/black"
-                        app:met_textColorHint="@color/black" />-->
+                        app:met_textColorHint="@color/black" />
+                    -->
                     <TextView
                         android:id="@+id/MbSpnDcoUnvte"
                         android:layout_width="match_parent"
@@ -101,10 +102,10 @@
 
                 <!--Coefficient-->
                 <!--<com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    app:boxBackgroundColor="@color/white"
+                    android:layout_margin="7dp"
                     android:layout_weight="1"
                     android:hint="@string/devis_add_produit_full_dialog_EdtDdvCofvt"
                     android:singleLine="true">
@@ -113,11 +114,14 @@
                         android:id="@+id/EdtDdvCofvt"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
                         android:textIsSelectable="true"
                         android:inputType="none"
                         android:focusable="false"
                         android:fontFamily="@font/montserrat_regular" />
-                </com.google.android.material.textfield.TextInputLayout>-->
+                </com.google.android.material.textfield.TextInputLayout>
+               -->
                 <TextView
                     android:id="@+id/TxtDcoCofvt"
                     android:layout_width="match_parent"
@@ -145,6 +149,8 @@
                     android:id="@+id/EdtDdvQtpro"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
                     android:inputType="numberDecimal"
                     android:fontFamily="@font/montserrat_regular" />
             </com.google.android.material.textfield.TextInputLayout>

@@ -314,6 +314,7 @@ public class CommandeFragment extends Fragment {
                         commande.setComlilieuv(jsonObject.getString("LIBLIEUV").trim());
                         commande.setComcomon(jsonObject.getString("COMCOMON"));
                         commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
+                        commande.setComstatu(comStatu);
                         /*
                         commande.setComliliv(jsonObject.getString("LIBCOLIV").trim());
                         commande.setComnucli(jsonObject.getString("COMNUCLI"));

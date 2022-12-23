@@ -45,6 +45,7 @@ import com.sominfor.somisal_app.handler.models.ModeReglement;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
+import com.sominfor.somisal_app.utils.AsyncTaskExecutorService;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -200,14 +201,8 @@ public class AddDevisActivity extends AppCompatActivity  {
         EdtDevTxrem = findViewById(R.id.EdtDevTxrem);
         EdtDevTxesc = findViewById(R.id.EdtDevTxesc);
         TxtDlvlv = findViewById(R.id.TxtDlvlv);
-        /**Récupération liste de délai de livraison**/
-        if (delaiDevisLivraisons.size()==0){
-            delaiLivraisonList = apiReceiverMethods.recupererDlv(apiUrl08, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
-        }else{
-            delaiLivraisonList = delaiDevisLivraisons;
-        }
 
-        if (clientListDevis.size() == 0) {
+        if (clientListDevis.isEmpty()) {
             clients = apiReceiverMethods.recupererListeClientsSansRegroupeur(apiUrl01,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
         }else{
             clients = clientListDevis;
@@ -488,35 +483,21 @@ public class AddDevisActivity extends AppCompatActivity  {
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    private class SpinnerTask extends AsyncTask<Void, Integer, Void>
-    {
-
-
+    public class SpinnerTask extends AsyncTaskExecutorService<Void, Void, Void>{
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values){
-            super.onProgressUpdate(values);
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
+        protected Void doInBackground(Void aVoid) {
             lieuVentes = apiReceiverMethods.recupererListeLieuv(apiUrl02,systemeAdresse,utilisateurLogin,utilisateurPassword,utilisateurCosoc, utilisateurCoage);
             magasins = apiReceiverMethods.recupererListeMagasins(apiUrl03, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
             livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
             modeReglements = apiReceiverMethods.recupererModeReglements(apiUrl06, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
             delaiReglements = apiReceiverMethods.recupererDelaiReglements(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword,utilisateurCosoc, utilisateurCoage);
             commercialList = apiReceiverMethods.recupererCommerciaux(apiUrl07, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
+            delaiLivraisonList = apiReceiverMethods.recupererDlv(apiUrl08, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Void aVoid) {
             // Now start your activity
             runOnUiThread(new Runnable() {
                 @Override
@@ -543,8 +524,6 @@ public class AddDevisActivity extends AppCompatActivity  {
                     MbSpnDevUscom.setAdapter(commercialSpinnerAdapter);
                 }
             });
-
-            super.onPostExecute(result);
         }
     }
 

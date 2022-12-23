@@ -234,19 +234,19 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
             TxtCliville = view.findViewById(R.id.TxtCliville);
             TxtCliBopos = view.findViewById(R.id.TxtCliBopos);
             TxtCliCpays = view.findViewById(R.id.TxtCliCpays);
+
             TxtSoldeCpteGene = view.findViewById(R.id.TxtSoldeCpteGene);
             TxtSoldeLimon = view.findViewById(R.id.TxtSoldeLimon);
             TxtSoldePlafond = view.findViewById(R.id.TxtSoldePlafond);
             TxtPlafondLimon = view.findViewById(R.id.TxtPlafondLimon);
 
-
             serveurNodeController = new ServeurNodeController();
-
             /**Récupération des informations serveur**/
             serveurNode = serveurNodeController.getServeurNodeInfos();
             /**URL Récupération API**/
             apiUrl01 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/soldeByIdClient";
             apiUrl02 = protocole+"://"+serveurNode.getServeurNodeIp()+"/read/client/infosByClient";
+
 
             utilisateur = UserSessionManager.getInstance(getActivity().getApplicationContext()).getUtilisateurDetail();
             systemeAdresse = utilisateur.getUtilisateurSysteme();
@@ -518,33 +518,15 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
                         try{
                             JSONObject jsonObject = array.getJSONObject(i);
                             Commande commande = new Commande();
-                            commande.setComrasoc(jsonObject.getString("COMRASOC"));
+                            commande.setComrasoc(jsonObject.getString("CLIRASOC"));
                             commande.setComdaliv(jsonObject.getString("COMDALIV"));
-                            commande.setComliliv(jsonObject.getString("LIBCOLIV").trim());
                             commande.setComvacom(jsonObject.getDouble("COMVACOM"));
                             commande.setComnucom(jsonObject.getString("COMNUCOM"));
                             commande.setComdacom(jsonObject.getString("COMDACOM"));
                             commande.setComlilieuv(jsonObject.getString("LIBLIEUV").trim());
-                            commande.setComlitrn(jsonObject.getString("LIBCOTRN").trim());
-                            commande.setComstatu(jsonObject.getString("COMSTATU"));
-                            commande.setComlista(jsonObject.getString("LIBSTATU").trim());
-                            commande.setComlimag(jsonObject.getString("LIBCOMAG").trim());
-                            commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
-                            commande.setComadre1(jsonObject.getString("COMADRE1").trim());
-                            commande.setComadre2(jsonObject.getString("COMADRE2").trim());
-                            commande.setComcopos(jsonObject.getString("COMCOPOS").trim());
-                            commande.setComville(jsonObject.getString("COMVILLE").trim());
-                            commande.setCombopos(jsonObject.getString("COMBOPOS").trim());
-                            commande.setComlicpays(jsonObject.getString("LIBCPAYS").trim());
-                            commande.setComrasol(jsonObject.getString("COMRASOL").trim());
-                            commande.setComadr1l(jsonObject.getString("COMADR1L").trim());
-                            commande.setComadr2l(jsonObject.getString("COMADR2L").trim());
-                            commande.setComcopol(jsonObject.getString("COMCOPOL").trim());
-                            commande.setComvilll(jsonObject.getString("COMVILLL").trim());
-                            commande.setComlicpayr(jsonObject.getString("LIBCPAYL").trim());
-                            commande.setCombopol(jsonObject.getString("COMBOPOL").trim());
                             commande.setComcomon(jsonObject.getString("COMCOMON"));
-                            commande.setComcotrn(jsonObject.getString("COMCOTRN").trim());
+                            commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
+                            commande.setComstatu(jsonObject.getString("COMSTATU"));
 
                             //Populariser la liste des commandes
                             commandeList.add(commande);
@@ -700,26 +682,16 @@ public class ClientDetailsActivity extends AppCompatActivity implements Commande
                         try{
                             JSONObject jsonObject = array.getJSONObject(i);
                             Devis devis = new Devis();
-                            devis.setCliRasoc(client.getCliRasoc());
+                            devis.setCliRasoc(jsonObject.getString("CLIRASOC").trim());
                             devis.setDevDaliv(jsonObject.getString("DEVDALIV"));
                             devis.setDevVadev(jsonObject.getDouble("DEVVADEV"));
-                            devis.setDevlimon(jsonObject.getString("LIBCOMON"));
+                            devis.setDevlimon(jsonObject.getString("LIBCOMON").trim());
                             devis.setDevNudev(jsonObject.getString("DEVNUDEV"));
                             devis.setDevDadev(jsonObject.getString("DEVDADEV"));
-                            devis.setDevLieuv(jsonObject.getString("LIBLIEUV").trim());
-                            devis.setDevColieuv(jsonObject.getString("DEVLIEUV"));
-                            devis.setDevRfdev(jsonObject.getString("DEVRFDEV"));
                             devis.setDevStatut(jsonObject.getString("DEVSTATU"));
-                            devis.setDevlista(jsonObject.getString("LIBSTATU"));
-                            devis.setDevComag(jsonObject.getString("DEVCOMAG"));
-                            devis.setDevLimag(jsonObject.getString("LIBCOMAG").trim());
-                            devis.setDevColiv(jsonObject.getString("DEVCOLIV").trim());
-                            devis.setDevliliv(jsonObject.getString("LIBCOLIV").trim());
-                            devis.setDevNacli(client.getCliNacli());
-                            devis.setDevNucli(jsonObject.getString("DEVNUCLI"));
-                            devis.setDevMoreg(jsonObject.getString("DEVMOREG"));
-                            devis.setDevDereg(jsonObject.getString("DEVDEREG"));
                             devis.setDevComon(jsonObject.getString("DEVCOMON"));
+                            devis.setDevLieuv(jsonObject.getString("LIBLIEUV").trim());
+
 
                             //Populariser la liste des produits
                             devisList.add(devis);

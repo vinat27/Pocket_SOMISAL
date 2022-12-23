@@ -77,17 +77,17 @@
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:layout_weight="0.6"
                             android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/item_devis_TxtLieuVente"
+                            android:text="@string/activity_update_produit_TxtDadev"
                             />
 
                         <TextView
-                            android:id="@+id/TxtDevLieuv"
+                            android:id="@+id/TxtDevDadev"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textColor="@color/black"
                             android:fontFamily="@font/montserrat_semibold"
-                            android:text="Saint Pierre"
+                            android:text=""
                             android:paddingLeft="8sp"/>
                     </LinearLayout>
 

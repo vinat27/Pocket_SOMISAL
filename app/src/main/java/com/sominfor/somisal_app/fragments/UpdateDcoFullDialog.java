@@ -113,7 +113,7 @@ public class UpdateDcoFullDialog extends DialogFragment {
             if (EdtDdvQtpro.getText().length() != 0){
                 if (Double.parseDouble(EdtDdvQtpro.getText().toString()) != 0){
                     /**Calcul du tarif**/
-                    calculTarifRemise(apiUrl01, detailCommande.getDcocopro(), detailCommande.getDcounvte(), detailCommande.getDcoLieuv(), detailCommande.getDcoNacli(), detailCommande.getDcoDacom(), detailCommande.getDcoNucli(), Double.parseDouble(EdtDdvQtpro.getText().toString()));
+                    calculTarifRemise(apiUrl01, detailCommande.getDcocopro(), detailCommande.getDcounvte(), detailCommande.getDcoLieuv(), detailCommande.getDcoNacli(), Integer.parseInt(detailCommande.getDcoDereg()), detailCommande.getDcoDacom(), detailCommande.getDcoNucli(), Double.parseDouble(EdtDdvQtpro.getText().toString()));
                 }else{
                     Toast.makeText(getActivity(), "Quantité invalide - Minimum 1", Toast.LENGTH_LONG).show();
                 }
@@ -137,7 +137,7 @@ public class UpdateDcoFullDialog extends DialogFragment {
     }
 
     /**Récupération des tarifs et remises**/
-    public void calculTarifRemise(String api_url, final int proCopro, final String proUnvte, final String cliLieuv, final String cliNacli, final String dadev, final String cliNucli, final Double qtcom) {
+    public void calculTarifRemise(String api_url, final int proCopro, final String proUnvte, final String cliLieuv, final String cliNacli, final int wdereg, final String dadev, final String cliNucli, final Double qtcom) {
         RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
             Valrem valrem = new Valrem();
@@ -197,6 +197,7 @@ public class UpdateDcoFullDialog extends DialogFragment {
                 param.put("qtcom", String.valueOf(qtcom));
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
+                param.put("moreg", String.valueOf(wdereg));
                 return param;
             }
         };

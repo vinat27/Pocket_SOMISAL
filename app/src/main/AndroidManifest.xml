@@ -116,6 +116,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="locked"
+            android:exported="true"
             android:theme="@style/SomisalTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

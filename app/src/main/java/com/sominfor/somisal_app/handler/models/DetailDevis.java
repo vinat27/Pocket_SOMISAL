@@ -31,6 +31,7 @@ public class DetailDevis implements Serializable, Comparable<DetailDevis> {
     private String DdvNacli;
     private String DdvLieuv;
     private String DdvCoact;
+    private String DdvDereg;
 
     //Expandables
     private boolean expandable;
@@ -53,6 +54,14 @@ public class DetailDevis implements Serializable, Comparable<DetailDevis> {
         DdvTxnPo = ddvTxnPo;
         DdvComon = ddvcomon;
         this.expandable = false;
+    }
+
+    public String getDdvDereg() {
+        return DdvDereg;
+    }
+
+    public void setDdvDereg(String ddvDereg) {
+        DdvDereg = ddvDereg;
     }
 
     public String getDdvCoact() {

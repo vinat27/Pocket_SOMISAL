@@ -47,6 +47,7 @@ import com.sominfor.somisal_app.handler.models.Tournee;
 import com.sominfor.somisal_app.handler.models.Transport;
 import com.sominfor.somisal_app.handler.models.Utilisateur;
 import com.sominfor.somisal_app.utils.ApiReceiverMethods;
+import com.sominfor.somisal_app.utils.AsyncTaskExecutorService;
 import com.sominfor.somisal_app.utils.UserSessionManager;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -229,12 +230,7 @@ public class AddCommandeActivity extends AppCompatActivity {
         clientSpinnerAdapter = new ClientSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, clientList);
         SsnComCliRasoc.setAdapter(clientSpinnerAdapter);
 
-        /**Récupération liste de délai de livraison**/
-        if (delaiLivraisons.size()==0){
-            delaiLivraisonList = apiReceiverMethods.recupererDlv(apiUrl12, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
-        }else{
-            delaiLivraisonList = delaiLivraisons;
-        }
+
 
         if (livreurListCdeFragment.size()==0){
             livreurs = apiReceiverMethods.recupererListeLivreurs(apiUrl05, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
@@ -523,23 +519,10 @@ public class AddCommandeActivity extends AppCompatActivity {
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    private class SpinnerTask extends AsyncTask<Void, Integer, Void> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
+    private class SpinnerTask extends AsyncTaskExecutorService<Void, Void, Void> {
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
+        protected Void doInBackground(Void avoid) {
             lieuVentes = apiReceiverMethods.recupererListeLieuv(apiUrl02, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
 
             tournees = apiReceiverMethods.recupererListeTournees(apiUrl04, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
@@ -550,12 +533,12 @@ public class AddCommandeActivity extends AppCompatActivity {
             modeReglements = apiReceiverMethods.recupererModeReglements(apiUrl08, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
             delaiReglements = apiReceiverMethods.recupererDelaiReglements(apiUrl09, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
             uscomList = apiReceiverMethods.recupererCommerciaux(apiUrl10, systemeAdresse, utilisateurLogin, utilisateurPassword, utilisateurCosoc, utilisateurCoage);
-
+            delaiLivraisonList = apiReceiverMethods.recupererDlv(apiUrl12, systemeAdresse, utilisateurLogin, utilisateurPassword,  utilisateurCosoc, utilisateurCoage);
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Void avoid) {
             // Now start your activity
             runOnUiThread(new Runnable() {
                 @Override
@@ -572,8 +555,6 @@ public class AddCommandeActivity extends AppCompatActivity {
 
                 }
             });
-
-            super.onPostExecute(result);
         }
     }
 

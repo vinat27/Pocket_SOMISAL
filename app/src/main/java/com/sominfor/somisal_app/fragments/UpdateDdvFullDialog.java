@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.activities.DelayedProgressDialog;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
 import com.sominfor.somisal_app.handler.models.DetailDevis;
 import com.sominfor.somisal_app.handler.models.ServeurNode;
@@ -116,7 +117,7 @@ public class UpdateDdvFullDialog extends DialogFragment {
             if (EdtDdvQtpro.getText().length() != 0){
                 if (Double.parseDouble(EdtDdvQtpro.getText().toString()) != 0){
                     /**Calcul du tarif**/
-                    calculTarifRemise(apiUrl01, detailDevis.getDdvCopro(), detailDevis.getDdvUnvte(), detailDevis.getDdvLieuv(), detailDevis.getDdvNacli(), detailDevis.getDdvDadev(), detailDevis.getDdvNucli(), Double.parseDouble(EdtDdvQtpro.getText().toString()));
+                    calculTarifRemise(apiUrl01, detailDevis.getDdvCopro(), detailDevis.getDdvUnvte(), detailDevis.getDdvLieuv(), detailDevis.getDdvNacli(), Integer.parseInt(detailDevis.getDdvDereg()), detailDevis.getDdvDadev(), detailDevis.getDdvNucli(), Double.parseDouble(EdtDdvQtpro.getText().toString()));
                 }else{
                     Toast.makeText(getActivity(), "Quantité invalide - Minimum 1", Toast.LENGTH_LONG).show();
                 }
@@ -139,8 +140,11 @@ public class UpdateDdvFullDialog extends DialogFragment {
         }
     }
     /**Récupération des tarifs et remises**/
-    public void calculTarifRemise(String api_url, final int proCopro, final String proUnvte, final String cliLieuv, final String cliNacli, final String dadev, final String cliNucli, final Double qtcom) {
+    public void calculTarifRemise(String api_url, final int proCopro, final String proUnvte, final String cliLieuv, final String cliNacli, final int wdereg, final String dadev, final String cliNucli, final Double qtcom) {
         RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+        DelayedProgressDialog pgDialog = new DelayedProgressDialog();
+        pgDialog.show(getActivity().getSupportFragmentManager(), "Load");
+        pgDialog.setCancelable(false);
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
             Valrem valrem = new Valrem();
             try {
@@ -175,13 +179,16 @@ public class UpdateDdvFullDialog extends DialogFragment {
 
                     devisProduitsListener = (DevisProduitsListener) getActivity();
                     devisProduitsListener.onDataReceived(detailDevis);
+                    pgDialog.cancel();
                     dismiss();
 
                 }else{
+                    pgDialog.cancel();
                     Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                 }
 
             } catch (JSONException e) {
+                pgDialog.cancel();
                 e.printStackTrace();
             }
         }, Throwable::printStackTrace) {
@@ -199,6 +206,7 @@ public class UpdateDdvFullDialog extends DialogFragment {
                 param.put("qtcom", String.valueOf(qtcom));
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
+                param.put("moreg", String.valueOf(wdereg));
                 return param;
             }
         };

@@ -84,7 +84,7 @@
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="" />
+                         />
                 </LinearLayout>
 
                 <!--Magasin-->

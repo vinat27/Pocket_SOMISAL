@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:fontFamily="@font/montserrat_semibold"
-                        android:text="Statut:"
+                        android:text="Date:"
                         android:paddingLeft="5sp"/>
 
                     <TextView
@@ -244,53 +244,18 @@
                     android:text="Saint Pierre"
                     android:paddingLeft="8sp"/>
             </LinearLayout>
-
-            <!--Référence-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/TxtReference"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="Référence"
-                    android:layout_marginLeft="40dp"
-                    />
-
-                <TextView
-                    android:id="@+id/TxtDevRefdev"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/montserrat_semibold"
-                    android:text="*"
-                    android:paddingLeft="8sp"/>
-            </LinearLayout>
-
-
-
-
-
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/FabDevisDetails"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
-                    android:layout_marginRight="9dp"
-                    android:text="DETAILS"
-                    android:layout_gravity="bottom|right"
-                    android:textColor="@color/white"
-                    app:icon="@drawable/ic_baseline_visibility_24"
-                    app:iconTint="@color/white"
-                    app:backgroundTint="@color/colorPrimary"/>
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                   android:id="@+id/FabDevisDetails"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="9dp"
+                   android:layout_marginRight="9dp"
+                   android:text="DETAILS"
+                   android:layout_gravity="bottom|right"
+                   android:textColor="@color/white"
+                   app:icon="@drawable/ic_baseline_visibility_24"
+                   app:iconTint="@color/white"
+                   app:backgroundTint="@color/colorPrimary"/>
 
 
 

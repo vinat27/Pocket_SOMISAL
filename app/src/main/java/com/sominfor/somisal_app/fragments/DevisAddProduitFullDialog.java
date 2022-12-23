@@ -3,6 +3,7 @@ package com.sominfor.somisal_app.fragments;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.activities.DelayedProgressDialog;
 import com.sominfor.somisal_app.adapters.ProduitsSearchableAdapter;
 import com.sominfor.somisal_app.adapters.UniteSpinnerAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
@@ -73,10 +75,11 @@ public class DevisAddProduitFullDialog extends DialogFragment {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, cliNucli, cliNacli, clilieuv, utilisateurCosoc, utilisateurCoage, uniteVente, coeff;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, cliNucli, cliNacli, clilieuv, devdereg, utilisateurCosoc, utilisateurCoage, uniteVente, coeff;
     public RequestQueue rq;
     Double wvarem, wvapos;
     ApiReceiverMethods apiReceiverMethods;
+    int wdereg;
 
 
     public static DevisAddProduitFullDialog newInstance(){ return new DevisAddProduitFullDialog(); }
@@ -129,6 +132,8 @@ public class DevisAddProduitFullDialog extends DialogFragment {
         cliNucli = getArguments().getString("clinucli");
         cliNacli = getArguments().getString("clinacli");
         clilieuv = getArguments().getString("clilieuv");
+        devdereg = getArguments().getString("devdereg");
+        wdereg = Integer.parseInt(devdereg);
         /**Format de date de commande**/
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         dacom = sdf.format(new Date());
@@ -168,7 +173,7 @@ public class DevisAddProduitFullDialog extends DialogFragment {
         BtnValider.setOnClickListener(v -> {
             if (SsnDdvCopro.getSelectedItem()!=null && EdtDdvQtpro.getText().length() != 0){
                 /**Calcul du tarif**/
-                calculTarifRemise(apiUrl02, produit.getProcopro(), produit.getProunvte(), clilieuv, cliNacli, dacom, cliNucli, Double.parseDouble(EdtDdvQtpro.getText().toString()));
+                calculTarifRemise(apiUrl02, produit.getProcopro(), produit.getProunvte(), clilieuv, cliNacli, wdereg, dacom, cliNucli, Double.parseDouble(EdtDdvQtpro.getText().toString()));
 
             }else{
                 Toast.makeText(getActivity(), getResources().getString(R.string.devis_add_produit_full_dialog_fields_error), Toast.LENGTH_LONG).show();
@@ -202,8 +207,11 @@ public class DevisAddProduitFullDialog extends DialogFragment {
     }
 
     /**Récupération des tarifs et remises**/
-    public void calculTarifRemise(String api_url, final int proCopro, final String proUnvte, final String cliLieuv, final String cliNacli, final String dadev, final String cliNucli, final Double qtcom) {
+    public void calculTarifRemise(String api_url, final int proCopro, final String proUnvte, final String cliLieuv, final String cliNacli, final int climoreg, final String dadev, final String cliNucli, final Double qtcom) {
         RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+        DelayedProgressDialog pgDialog = new DelayedProgressDialog();
+        pgDialog.show(getActivity().getSupportFragmentManager(), "Load");
+        pgDialog.setCancelable(false);
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
             Valrem valrem = new Valrem();
             try {
@@ -245,16 +253,20 @@ public class DevisAddProduitFullDialog extends DialogFragment {
                     detailDevis.setDdvNucli(cliNucli);
                     detailDevis.setDdvNacli(cliNacli);
                     detailDevis.setDdvLieuv(clilieuv);
+                    detailDevis.setDdvDereg(devdereg);
                     /***Appel de callBack**/
                     devisProduitsListener = (DevisProduitsListener) getActivity();
                     devisProduitsListener.onDataReceived(detailDevis);
+                    pgDialog.cancel();
                     dismiss();
 
                 }else{
+                    pgDialog.cancel();
                     Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                 }
 
             } catch (JSONException e) {
+                pgDialog.cancel();
                 e.printStackTrace();
             }
         }, Throwable::printStackTrace) {
@@ -272,6 +284,8 @@ public class DevisAddProduitFullDialog extends DialogFragment {
                 param.put("qtcom", String.valueOf(qtcom));
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
+                param.put("moreg", String.valueOf(wdereg));
+
                 return param;
             }
         };

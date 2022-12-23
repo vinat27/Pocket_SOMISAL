@@ -501,7 +501,7 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                 }
                 /**Commentaires Pied**/
                 if (DevTxnPdSend != null){
-                    param.put("txbot", DevTxnPdSend);
+                    param.put("txbot", DevTxnPdSend.trim());
                 }else{
                     param.put("txbot","");
                 }
@@ -527,6 +527,8 @@ public class UpdateProduitDevisActivity extends AppCompatActivity implements Dev
                 param.put("txrem", txremArray.toString());
                 param.put("varem", varemArray.toString());
                 param.put("texte", texteArray.toString());
+
+                Log.v("Infos", param.toString());
 
                 return param;
             }

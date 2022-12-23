@@ -32,6 +32,7 @@ public class DetailCommande implements Serializable,Comparable<DetailCommande> {
     private String dcoNacli;
     private String dcoLieuv;
     private String dcoCoact;
+    private String dcoDereg;
 
     /**Libelles**/
     private boolean expandable;
@@ -56,6 +57,14 @@ public class DetailCommande implements Serializable,Comparable<DetailCommande> {
         Dcovacom = dcovacom;
         this.dcolipro = dcolipro;
         this.dcotxn = dcotxn;
+    }
+
+    public String getDcoDereg() {
+        return dcoDereg;
+    }
+
+    public void setDcoDereg(String dcoDereg) {
+        this.dcoDereg = dcoDereg;
     }
 
     public String getDcoDacom() {

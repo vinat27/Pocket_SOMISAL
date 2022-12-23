@@ -200,6 +200,7 @@ public class CommandesCoursActivity extends AppCompatActivity implements Command
                         commande.setComlilieuv(jsonObject.getString("LIBLIEUV").trim());
                         commande.setComcomon(jsonObject.getString("COMCOMON"));
                         commande.setComlimon(jsonObject.getString("LIBCOMON").trim());
+                        commande.setComstatu(comStatut);
 
                         //Populariser la liste des commandes
                         commandesSoldeesList.add(commande);

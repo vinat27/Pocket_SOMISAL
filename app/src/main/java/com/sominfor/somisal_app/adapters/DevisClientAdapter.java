@@ -72,6 +72,7 @@ public class DevisClientAdapter extends RecyclerView.Adapter<DevisClientAdapter.
         formatter.setRoundingMode(RoundingMode.DOWN);
         String vadev = formatter.format(bd.floatValue())+" "+devis.getDevlimon().trim();
 
+
         try {
             DevDadevFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDadev())));
             DevDalivFormat = fromUser.format(Objects.requireNonNull(myFormat.parse(devis.getDevDaliv())));
@@ -93,12 +94,11 @@ public class DevisClientAdapter extends RecyclerView.Adapter<DevisClientAdapter.
         }
         /**Initialisation des informations devis**/
         holder.TxtClirasoc.setText(devis.getCliRasoc().trim());
-        holder.TxtDevDaliv.setText(devis.getDevlista());
+        holder.TxtDevDaliv.setText(DevDadevFormat);
         holder.TxtDevVadev.setText(vadev);
         holder.TxtDevNudev.setText(devis.getDevNudev());
         holder.TxtDevDadev.setText(DevDadevFormat);
         holder.TxtDevLieuv.setText(devis.getDevLieuv().trim());
-        holder.TxtDevRefdev.setText(devis.getDevRfdev().trim());
         /**Au clic du bouton détail**/
         holder.FabDevisDetails.setOnClickListener(v -> {
             Intent i = new Intent(context, FicheDevisActivity.class);
@@ -130,7 +130,7 @@ public class DevisClientAdapter extends RecyclerView.Adapter<DevisClientAdapter.
 
     public class DevisVh extends RecyclerView.ViewHolder {
 
-        TextView TxtClirasoc,TxtDevDaliv,TxtDevVadev, TxtDevNudev, TxtDevDadev, TxtDevLieuv, TxtDevRefdev, TxtIcon;
+        TextView TxtClirasoc,TxtDevDaliv,TxtDevVadev, TxtDevNudev, TxtDevDadev, TxtDevLieuv, TxtIcon;
         MaterialButton FabDevisDetails;
         LinearLayout Lnr01, expandableLayout;
 
@@ -144,7 +144,6 @@ public class DevisClientAdapter extends RecyclerView.Adapter<DevisClientAdapter.
             TxtDevNudev = itemView.findViewById(R.id.TxtDevNudev);
             TxtDevDadev = itemView.findViewById(R.id.TxtDevDadev);
             TxtDevLieuv = itemView.findViewById(R.id.TxtDevLieuv);
-            TxtDevRefdev = itemView.findViewById(R.id.TxtDevRefdev);
             TxtIcon = itemView.findViewById(R.id.TxtIcon);
             FabDevisDetails = itemView.findViewById(R.id.FabDevisDetails);
             Lnr01 = itemView.findViewById(R.id.Lnr01);

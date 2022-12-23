@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sominfor.somisal_app.R;
+import com.sominfor.somisal_app.activities.DelayedProgressDialog;
 import com.sominfor.somisal_app.adapters.ProduitsSearchableAdapter;
 import com.sominfor.somisal_app.adapters.UniteSpinnerAdapter;
 import com.sominfor.somisal_app.handler.controllers.ServeurNodeController;
@@ -77,10 +78,11 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
     ServeurNodeController serveurNodeController;
     ServeurNode serveurNode;
     Utilisateur utilisateur;
-    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, utilisateurCosoc, utilisateurCoage, cliNucli, cliNacli, clilieuv, uniteVente, coeff;
+    String systemeAdresse, utilisateurLogin, utilisateurPassword, apiUrl01, apiUrl02, apiUrl03, dacom, messageErreur, utilisateurCosoc, utilisateurCoage, cliNucli, cliNacli, clilieuv, comdereg, uniteVente, coeff;
     public RequestQueue rq;
     Double wvarem, wvapos;
     ApiReceiverMethods apiReceiverMethods;
+    int wdereg;
     public static CommandeAddProduitFullDialog newInstance(){ return new CommandeAddProduitFullDialog(); }
 
     @Override
@@ -130,6 +132,8 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
         cliNucli = getArguments().getString("clinucli");
         cliNacli = getArguments().getString("clinacli");
         clilieuv = getArguments().getString("clilieuv");
+        comdereg = getArguments().getString("comdereg");
+        wdereg = Integer.parseInt(comdereg);
         /**Format de date de commande**/
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         dacom = sdf.format(new Date());
@@ -170,7 +174,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
             if (SsnDcoCopro.getSelectedItem()!=null && EdtDcoQtpro.getText().length() != 0){
                 if (Double.parseDouble(EdtDcoQtpro.getText().toString()) != 0){
                     /**Calcul du tarif**/
-                    calculTarifRemise(apiUrl02, produit.getProcopro(), produit.getProunvte(), clilieuv, cliNacli, dacom, cliNucli, Double.parseDouble(EdtDcoQtpro.getText().toString()));
+                    calculTarifRemise(apiUrl02, produit.getProcopro(), produit.getProunvte(), clilieuv, cliNacli, wdereg, dacom, cliNucli, Double.parseDouble(EdtDcoQtpro.getText().toString()));
                 }else{
                     Toast.makeText(getActivity(), "Quantité invalide - Minimum 1", Toast.LENGTH_LONG).show();
                 }
@@ -205,8 +209,11 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
     }
 
     /**Récupération des tarifs et remises**/
-    public void calculTarifRemise(String api_url, final int proCopro, final String proUnvte, final String cliLieuv, final String cliNacli, final String dadev, final String cliNucli, final Double qtcom) {
+    public void calculTarifRemise(String api_url, final int proCopro, final String proUnvte, final String cliLieuv, final String cliNacli, final int wdereg, final String dadev, final String cliNucli, final Double qtcom) {
         RequestQueue requestQueue = new Volley().newRequestQueue(getActivity().getApplicationContext());
+        DelayedProgressDialog pgDialog = new DelayedProgressDialog();
+        pgDialog.show(getActivity().getSupportFragmentManager(), "Load");
+        pgDialog.setCancelable(false);
         StringRequest postRequest = new StringRequest(Request.Method.POST, api_url, s -> {
             Valrem valrem = new Valrem();
             try {
@@ -246,16 +253,20 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
                     detailCommande.setDcoNucli(cliNucli);
                     detailCommande.setDcoNacli(cliNacli);
                     detailCommande.setDcoLieuv(clilieuv);
+                    detailCommande.setDcoDereg(comdereg);
 
                     commandeProduitsListener = (CommandeProduitsListener) getActivity();
                     commandeProduitsListener.onDataReceived(detailCommande);
+                    pgDialog.cancel();
                     dismiss();
 
                 }else{
+                    pgDialog.cancel();
                     Toast.makeText(getActivity(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                 }
 
             } catch (JSONException e) {
+                pgDialog.cancel();
                 e.printStackTrace();
             }
         }, Throwable::printStackTrace) {
@@ -273,6 +284,7 @@ public class CommandeAddProduitFullDialog extends DialogFragment {
                 param.put("qtcom", String.valueOf(qtcom));
                 param.put("cosoc", utilisateurCosoc);
                 param.put("coage", utilisateurCoage);
+                param.put("moreg", String.valueOf(wdereg));
 
                 Log.v("Tarifs", param.toString());
                 return param;

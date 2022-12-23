@@ -330,6 +330,7 @@ public class AddProduitCommandeActivity extends AppCompatActivity implements Com
         args.putString("clinucli", client.getCliNucli());
         args.putString("clinacli", client.getCliNacli());
         args.putString("clilieuv", lieuVente.getColieuv());
+        args.putString("comdereg", delaiReglement.getCoDereg());
         commandeAddProduitFullDialog.setArguments(args);
         //devisPostItFullDialog.setTargetFragment(devisPostItFullDialog, 100);
         commandeAddProduitFullDialog.show(fragmentManager, ServeurNode.TAG);
